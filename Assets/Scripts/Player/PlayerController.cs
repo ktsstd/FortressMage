@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Cinemachine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     private PhotonView pv;
     private CinemachineVirtualCamera virtualCamera;
@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     private new Camera camera;
 
     private Ray ray;
+
+    private Vector3 receivePos;
+    private Quaternion receiveRot;
+    public float damping = 10.0f;
 
     private int speed = 3;
     private bool isMoving = false;
@@ -33,7 +37,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Move();
+        if (pv.IsMine)
+        {
+            Move();
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
+        }
     }
 
     Vector3 targetPos;
@@ -64,6 +77,21 @@ public class PlayerController : MonoBehaviour
             {
                 isMoving = false;
             }
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 자신의 로컬 캐릭터인경우자신의데이터를다른네트워크유저에게송신
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            receivePos = (Vector3)stream.ReceiveNext();
+            receiveRot = (Quaternion)stream.ReceiveNext();
         }
     }
 }
