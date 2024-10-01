@@ -19,8 +19,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Quaternion receiveRot;
     public float damping = 10.0f;
 
-    private int speed = 3;
+
+    public float playerHp = 100;
+    public float playerAtk = 10;
+    private float defaultSpped = 3;
+    public float playerSpeed = 3;
     private bool isMoving = false;
+    private bool isStun = false;
 
     void Start()
     {
@@ -39,13 +44,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (pv.IsMine)
         {
-            Move();
+            if (!isStun)
+                Move();
         }
         else
         {
             transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Keypad0)) // 이동속도 감소 테스트용
+        {
+            OnSpeedDown(3f, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad1)) // 기절 지속시간 확인 테스트용
+        {
+            OnPlayerStun(2f);
         }
     }
 
@@ -71,7 +86,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 0.1f);
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, playerSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, targetPos) < 0.1f)
             {
@@ -93,5 +108,54 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             receivePos = (Vector3)stream.ReceiveNext();
             receiveRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    // 투사체에서 피격대상 == 플레이어면 PlayerControllder.OnHitPlayer(입힐 대미지로 피해 주기) - 
+    public void OnHitPlayer(float _damage)
+    {
+        playerHp -= _damage;
+        // 피격 애니메이션 실행
+    }
+
+    private Coroutine speedCoroutine;
+    public void OnSpeedDown(float _time, float _moveSpeed)
+    {
+        if (playerSpeed > _moveSpeed)
+        {
+            if (speedCoroutine != null)
+                StopCoroutine(speedCoroutine);
+
+            speedCoroutine = StartCoroutine(SpeedDown(_time, _moveSpeed));
+        }
+        else
+        {
+            if (speedCoroutine != null)
+                StopCoroutine(speedCoroutine);
+
+            speedCoroutine = StartCoroutine(SpeedDown(_time, playerSpeed));
+        }
+    }
+
+    IEnumerator SpeedDown(float _time, float _moveSpeed)
+    {
+        playerSpeed = _moveSpeed;
+        yield return new WaitForSeconds(_time);
+        playerSpeed = defaultSpped;
+    } // 이동속도 감소 이펙트 추가하기
+
+    private Coroutine stunCoroutine;
+    public void OnPlayerStun(float _time) 
+    {
+        if (stunCoroutine != null)
+            StopCoroutine(stunCoroutine);
+
+        stunCoroutine = StartCoroutine(PlayerStun(_time));
+    }
+
+    IEnumerator PlayerStun(float _time) // 기절 이펙트 추가하기
+    {
+        isStun = true;
+        yield return new WaitForSeconds(_time);
+        isStun = false;
     }
 }
