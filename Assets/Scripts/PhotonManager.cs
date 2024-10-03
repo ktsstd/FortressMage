@@ -3,73 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.UIElements.Experimental;
 
-public class PhotonManager : MonoBehaviourPunCallbacks //PUNÀÇ ´Ù¾çÇÑ Äİ¹é ÇÔ¼ö¸¦ ¿À¹ö¶óÀÌµåÇØ¼­ ÀÛ¼º
+public class PhotonManager : MonoBehaviourPunCallbacks // PUNì„ ì‚¬ìš©í•œ ë„¤íŠ¸ì›Œí¬ ë§¤ë‹ˆì € í´ë˜ìŠ¤
 {
-    //°ÔÀÓ ¹öÀü
+    // ë²„ì „ ë²ˆí˜¸
     private readonly string version = "1.0";
-    //À¯Àú ´Ğ³×ÀÓ
+    // ì‚¬ìš©ì ID
     private string userId = "Player";
 
     public bool isjoin = false;
+
     void Awake()
     {
-        //¸¶½ºÅÍ Å¬¶óÀÌ¾ğÆ®(·ëÀ»»ı¼ºÇÑÀ¯Àú)ÀÇ¾ÀÀÚµ¿µ¿±âÈ­¿É¼Ç
+        // Photon Networkì˜ ìë™ ë™ê¸°í™” ì„¤ì •
         PhotonNetwork.AutomaticallySyncScene = true;
-        //°ÔÀÓ ¹öÀü ¼³Á¤(µ¿ÀÏ¹öÀüÀÇÀ¯Àú³¢¸®ÄÁ³ØÆÃ)
+        // ê²Œì„ ë²„ì „ ì„¤ì •
         PhotonNetwork.GameVersion = version;
-        //°ÔÀÓ À¯ÀúÀÇ´Ğ³×ÀÓ¼³Á¤
+        // ì‚¬ìš©ì ì´ë¦„ ì„¤ì •
         PhotonNetwork.NickName = userId;
-        //Æ÷Åæ ¼­¹ö¿ÍÀÇµ¥ÀÌÅÍÀÇÃÊ´çÀü¼ÛÈ½¼ö(±âº»30È¸)
+        // ë„¤íŠ¸ì›Œí¬ ì „ì†¡ ì†ë„ í™•ì¸
         Debug.Log("PhotonNetwork.SendRate : " + PhotonNetwork.SendRate);
-        //Æ÷Åæ ¼­¹ö Á¢¼Ó
-        Debug.Log("1) Æ÷Åæ ¼­¹ö Á¢¼Ó");
+        // ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì‹œì‘
+        Debug.Log("1) ë„¤íŠ¸ì›Œí¬ ì—°ê²° ì‹œì‘");
         PhotonNetwork.ConnectUsingSettings();
     }
-    //Æ÷ÅÏ ¼­¹ö¿¡Á¢¼ÓÈÄÈ£ÃâµÇ´ÂÄİ¹éÇÔ¼ö
+
+    // ë§ˆìŠ¤í„° ì„œë²„ì— ì—°ê²° ì„±ê³µ
     public override void OnConnectedToMaster()
     {
-        Debug.Log("2) Æ÷ÅÏ ¼­¹ö Á¢¼Ó ÈÄ È£ÃâµÇ´Â Äİ¹é ÇÔ¼ö");
-        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}"); //ÀÚµ¿ ÀÔÀåÀÌ ¾Æ´Ï¹Ç·Î false
-        Debug.Log("3) ·Îºñ ÀÔÀå ¸í·É OnJoinedLobby È£Ãâ");
-        PhotonNetwork.JoinLobby(); //·Îºñ ÀÔÀå ¸í·É OnJoinedLobby È£Ãâ
+        Debug.Log("2) ë§ˆìŠ¤í„° ì„œë²„ì— ì—°ê²° ì„±ê³µ");
+        Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}"); // ë¡œë¹„ì— ìˆëŠ”ì§€ í™•ì¸ (false)
+        Debug.Log("3) ë¡œë¹„ì— ì°¸ê°€ ì‹œë„");
+        PhotonNetwork.JoinLobby(); // ë¡œë¹„ì— ì°¸ê°€
     }
-    //·Îºñ¿¡ Á¢¼ÓÈÄÈ£ÃâµÇ´ÂÄİ¹éÇÔ¼ö
+
+    // ë¡œë¹„ì— ì°¸ê°€ ì„±ê³µ
     public override void OnJoinedLobby()
     {
-        Debug.Log("4) ·Îºñ ÀÔÀå");
+        Debug.Log("4) ë¡œë¹„ì— ì°¸ê°€ ì„±ê³µ");
         Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
-        Debug.Log("5) ¹«ÀÛÀ§·Î ¼±ÅÃÇÑ ·ë¿¡ ÀÔÀå");
+        Debug.Log("5) ëœë¤ ë°©ì— ì°¸ê°€ ì‹œë„");
         PhotonNetwork.JoinRandomRoom();
     }
-    //·¥´ıÇÑ ·ë ÀÔÀåÀÌ½ÇÆĞÇßÀ»°æ¿ìÈ£ÃâµÇ´ÂÄİ¹éÇÔ¼ö
+
+    // ëœë¤ ë°© ì°¸ê°€ ì‹¤íŒ¨
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("·ë¿¡ ÀÔÀå ½ÇÆĞ");
+        Debug.Log("ëœë¤ ë°© ì°¸ê°€ ì‹¤íŒ¨");
         Debug.Log($"JoinRandom Failed = {returnCode}:{message}");
-        //·ëÀÇ ¼Ó¼ºÁ¤ÀÇ
+        
+        // ìƒˆë¡œìš´ ë°© ìƒì„±
         RoomOptions ro = new RoomOptions();
         ro.MaxPlayers = 4;
         ro.IsOpen = true;
         ro.IsVisible = true;
-        //·ë¿¡ ÀÔÀåÇÒ¼öÀÖ´ÂÃÖ´ëÁ¢¼ÓÀÚ¼ö
-        //·ëÀÇ ¿ÀÇÂ¿©ºÎ
-        //·Îºñ¿¡¼­ ·ë¸ñ·Ï¿¡³ëÃâ½ÃÅ³Áö¿©ºÎ
-        //·ë »ı¼º
-        Debug.Log("6) ·ë »ı¼º");
+
+        Debug.Log("6) ìƒˆë¡œìš´ ë°© ìƒì„± ì‹œë„");
         PhotonNetwork.CreateRoom("YS Room", ro);
     }
-    //·ë »ı¼º ¿Ï·áÈÄÈ£ÃâµÇ´ÂÄİ¹éÇÔ¼ö
+
+    // ë°© ìƒì„± ì„±ê³µ
     public override void OnCreatedRoom()
     {
-        Debug.Log("·ë »ı¼º ¿Ï·á ÈÄ È£ÃâµÇ´Â Äİ¹é ÇÔ¼ö");
+        Debug.Log("ë°© ìƒì„± ì„±ê³µ");
         Debug.Log($"Room Name = {PhotonNetwork.CurrentRoom.Name}");
     }
-    //·ë¿¡ ÀÔÀåÇÑÈÄÈ£ÃâµÇ´ÂÄİ¹éÇÔ¼ö
+
+    // ë°©ì— ì°¸ê°€ ì„±ê³µ
     public override void OnJoinedRoom()
     {
-        Debug.Log("·ë¿¡ ÀÔÀåÇÑ ÈÄ È£ÃâµÇ´Â Äİ¹é ÇÔ¼ö");
+        Debug.Log("ë°©ì— ì°¸ê°€ ì„±ê³µ");
         Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
         Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
         foreach (var player in PhotonNetwork.CurrentRoom.Players)
@@ -80,4 +83,3 @@ public class PhotonManager : MonoBehaviourPunCallbacks //PUNÀÇ ´Ù¾çÇÑ Äİ¹é ÇÔ¼ö¸
         isjoin = true;
     }
 }
-

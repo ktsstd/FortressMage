@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Quaternion receiveRot;
     public float damping = 10.0f;
 
-
     public float playerHp = 100;
     public float playerAtk = 10;
     private float defaultSpped = 3;
@@ -50,22 +49,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
-
             transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad0)) // ÀÌµ¿¼Óµµ °¨¼Ò Å×½ºÆ®¿ë
+        if (Input.GetKeyDown(KeyCode.Keypad0)) // ì´ë™ ì†ë„ ê°ì†Œ ì»¤ë§¨ë“œ
         {
             OnSpeedDown(3f, 1f);
         }
-        if (Input.GetKeyDown(KeyCode.Keypad1)) // ±âÀı Áö¼Ó½Ã°£ È®ÀÎ Å×½ºÆ®¿ë
+        if (Input.GetKeyDown(KeyCode.Keypad1)) // ìŠ¤í„´ ìƒíƒœë¡œ ì „í™˜ ì»¤ë§¨ë“œ
         {
             OnPlayerStun(2f);
         }
     }
 
     Vector3 targetPos;
-    void Move() // ¿òÁ÷ÀÌ´Â ¾Ö´Ï¸ŞÀÌ¼Ç Ãß°¡
+    void Move() // í”Œë ˆì´ì–´ ì´ë™ ì²˜ë¦¬
     {
         if (Input.GetMouseButtonDown(1))
         {
@@ -85,7 +83,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             Quaternion lookRotation = Quaternion.LookRotation(direction);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 0.1f);
-
             transform.position = Vector3.MoveTowards(transform.position, targetPos, playerSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, targetPos) < 0.1f)
@@ -97,7 +94,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // ÀÚ½ÅÀÇ ·ÎÄÃ Ä³¸¯ÅÍÀÎ°æ¿ìÀÚ½ÅÀÇµ¥ÀÌÅÍ¸¦´Ù¸¥³×Æ®¿öÅ©À¯Àú¿¡°Ô¼Û½Å
+        // ë™ê¸°í™” ì •ë³´ ì „ì†¡
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
@@ -110,11 +107,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    // Åõ»çÃ¼¿¡¼­ ÇÇ°İ´ë»ó == ÇÃ·¹ÀÌ¾î¸é PlayerControllder.OnHitPlayer(ÀÔÈú ´ë¹ÌÁö·Î ÇÇÇØ ÁÖ±â) - 
+    // í”Œë ˆì´ì–´ì—ê²Œ í”¼í•´ë¥¼ ì…í ë•Œ í˜¸ì¶œ
     public void OnHitPlayer(float _damage)
     {
         playerHp -= _damage;
-        // ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
+        // í”¼í•´ë¥¼ ì…íŒ í›„ ì²˜ë¦¬
     }
 
     private Coroutine speedCoroutine;
@@ -136,15 +133,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    IEnumerator SpeedDown(float _time, float _moveSpeed)
+    IEnumerator SpeedDown(float _time, float _moveSpeed) // ì´ë™ ì†ë„ ê°ì†Œ ì²˜ë¦¬
     {
         playerSpeed = _moveSpeed;
         yield return new WaitForSeconds(_time);
         playerSpeed = defaultSpped;
-    } // ÀÌµ¿¼Óµµ °¨¼Ò ÀÌÆåÆ® Ãß°¡ÇÏ±â
+    }
 
     private Coroutine stunCoroutine;
-    public void OnPlayerStun(float _time) 
+    public void OnPlayerStun(float _time)
     {
         if (stunCoroutine != null)
             StopCoroutine(stunCoroutine);
@@ -152,7 +149,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         stunCoroutine = StartCoroutine(PlayerStun(_time));
     }
 
-    IEnumerator PlayerStun(float _time) // ±âÀı ÀÌÆåÆ® Ãß°¡ÇÏ±â
+    IEnumerator PlayerStun(float _time) // ìŠ¤í„´ ìƒíƒœ ì²˜ë¦¬
     {
         isStun = true;
         yield return new WaitForSeconds(_time);

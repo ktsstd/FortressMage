@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
+  - Enemy
+  - IceSpirit
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Obstacle
   - 
   - 
   - 
