@@ -44,8 +44,10 @@ public class Turret : MonoBehaviour
     {
         // 모든 적 탐색
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, detectionRadius, targetLayer);
+        GameObject closestBossTarget = null;
         GameObject closestEliteTarget = null;
         GameObject closestRegularTarget = null;
+        float closestBossDistance = Mathf.Infinity;
         float closestEliteDistance = Mathf.Infinity;
         float closestRegularDistance = Mathf.Infinity;
 
@@ -53,8 +55,17 @@ public class Turret : MonoBehaviour
         {
             float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 
+            // 보스일 경우
+            if (target.CompareTag("Boss"))
+            {
+                if (distanceToTarget < closestBossDistance)
+                {
+                    closestBossDistance = distanceToTarget;
+                    closestBossTarget = target.gameObject;
+                }
+            }
             // 엘리트 적일 경우
-            if (target.CompareTag("Elite"))
+            else if (target.CompareTag("Elite"))
             {
                 if (distanceToTarget < closestEliteDistance)
                 {
@@ -63,7 +74,7 @@ public class Turret : MonoBehaviour
                 }
             }
             // 일반 적일 경우
-            else
+            else 
             {
                 if (distanceToTarget < closestRegularDistance)
                 {
@@ -73,16 +84,20 @@ public class Turret : MonoBehaviour
             }
         }
 
-        // 엘리트 적이 있으면 우선 공격, 없으면 가까운 일반 적 공격
-        if (closestEliteTarget != null)
+        // 보스가 있으면 우선 공격, 없으면 엘리트 공격, 없으면 가까운 일반 적 공격
+        if (closestBossTarget != null)
+        {
+            return closestBossTarget;
+        }
+        else if (closestEliteTarget != null)
         {
             return closestEliteTarget;
         }
         else
         {
             return closestRegularTarget;
-        }
-    }
+        }   
+    }   
 
     public void Fire(Transform target)
 {
