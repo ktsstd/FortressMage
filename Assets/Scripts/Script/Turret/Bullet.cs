@@ -6,26 +6,21 @@ public class Bullet : MonoBehaviour
 {
     public float damage;               // 발사체가 입힐 데미지
     public float explosionRadius = 3f; // 범위 공격 반경
-    private Turret turret;             // 터렛 데미지 및 범위 관리를 위한 참조
     public LayerMask enemyLayer;       // 적이 속한 레이어
 
-    private void Start()
+    // 발사체가 생성될 때 필요한 데미지와 폭발 반경을 설정하는 함수
+    public void Initialize(float bulletDamage, float bulletExplosionRadius)
     {
-        // 게임 내의 Turret를 찾아서 데미지와 폭발 반경을 받아옴
-        turret = FindObjectOfType<Turret>();
-
-        if (turret != null)
-        {
-            // Turret의 데미지와 범위 반경을 발사체로 설정
-            damage = turret.GetDamage();
-            explosionRadius = turret.GetExplosionRadius();  // 터렛에서 범위 반경 가져옴
-        }
+        damage = bulletDamage;  // Turret이나 다른 시스템에서 전달된 데미지 값
+        explosionRadius = bulletExplosionRadius;  // 폭발 반경 설정
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        // 충돌한 오브젝트가 "Ground" 태그를 가진 오브젝트인지 확인
-        if (collision.gameObject.CompareTag("Ground"))
+        // 충돌한 오브젝트가 "Enemy", "Elite" 또는 "Ground" 태그를 가진 오브젝트인지 확인
+        if (collision.gameObject.CompareTag("Enemy") || 
+            collision.gameObject.CompareTag("Elite") || 
+            collision.gameObject.CompareTag("Ground"))
         {
             // 범위 공격 실행
             Explode();
