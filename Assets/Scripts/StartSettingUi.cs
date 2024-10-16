@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class StartSettingUi : PhotonManager
 {
     public Transform[] spawnPoint;
-    public GameObject[] wizards;
 
     public TextMeshProUGUI[] loading;
     public TextMeshProUGUI mageSelect;
@@ -18,9 +17,9 @@ public class StartSettingUi : PhotonManager
     public void Update()
     {
         if (isjoin)
-        {
-            loading[0].text = "로딩 중"; // 로딩 중 상태 표시
-        }
+            loading[0].text = "로딩 완료";
+        else
+            loading[0].text = "로딩중";
     }
 
     public void ChooseFire()
@@ -41,7 +40,7 @@ public class StartSettingUi : PhotonManager
         }
         else
         {
-            loading[1].text = "선택한 마법사가 없습니다"; // 마법사 선택 오류 메시지
+            loading[1].text = "로딩중이거나 마법사를 선택하지 않음."; // 마법사 선택 오류 메시지
         }
     }
 }

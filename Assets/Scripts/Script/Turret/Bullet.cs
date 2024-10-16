@@ -39,11 +39,11 @@ public class Bullet : MonoBehaviour
         // 범위 내 모든 적에게 피해 적용
         foreach (Collider enemyCollider in enemiesInRange)
         {
-            Enemy enemy = enemyCollider.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(damage);  // 적에게 데미지를 입힘
-            }
+            //Enemy enemy = enemyCollider.GetComponent<Enemy>();
+            //if (enemy != null)
+            //{
+            //    enemy.TakeDamage(damage);  // 적에게 데미지를 입힘
+            //}
         }
     }
 

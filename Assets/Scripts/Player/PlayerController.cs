@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public float playerAtk = 10;
     private float defaultSpped = 3;
     public float playerSpeed = 3;
+
     private bool isMoving = false;
     private bool isStun = false;
 
@@ -52,18 +53,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
         }
 
-        if (Input.GetKeyDown(KeyCode.Keypad0)) // 이동 속도 감소 커맨드
+        if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             OnSpeedDown(3f, 1f);
         }
-        if (Input.GetKeyDown(KeyCode.Keypad1)) // 스턴 상태로 전환 커맨드
+        if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             OnPlayerStun(2f);
         }
     }
 
     Vector3 targetPos;
-    void Move() // 플레이어 이동 처리
+    void Move()
     {
         if (Input.GetMouseButtonDown(1))
         {
@@ -94,7 +95,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        // 동기화 정보 전송
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
