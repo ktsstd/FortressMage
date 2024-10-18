@@ -12,12 +12,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private new Transform transform;
     private new Camera camera;
+    private Animator animator;
+    private Rigidbody rigidbody;
 
     private Ray ray;
 
     private Vector3 receivePos;
     private Quaternion receiveRot;
     public float damping = 10.0f;
+
+    public GameObject Enemys;
 
     public float playerHp = 100;
     public float playerAtk = 10;
@@ -30,6 +34,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
         transform = GetComponent<Transform>();
+        rigidbody = GetComponent<Rigidbody>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
         camera = Camera.main;
         pv = GetComponent<PhotonView>();
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
@@ -38,12 +44,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
         }
+
+        Enemys = GameObject.Find("Cube");
     }
 
     void Update()
     {
         if (pv.IsMine)
         {
+            animator.SetBool("IsRun", isMoving); // 스턴시 움직이는 애니메이션 정지를 위해 임시로 빼놓음
             if (!isStun)
                 Move();
         }
@@ -60,6 +69,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             OnPlayerStun(2f);
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            OnPlayerKnockBack(Enemys.transform);
         }
     }
 
@@ -114,6 +127,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         // 피해를 입힌 후 처리
     }
 
+    #region Player Crowd Control
+
     private Coroutine speedCoroutine;
     public void OnSpeedDown(float _time, float _moveSpeed)
     {
@@ -151,8 +166,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     IEnumerator PlayerStun(float _time) // 스턴 상태 처리
     {
+        isMoving = false;
         isStun = true;
         yield return new WaitForSeconds(_time);
         isStun = false;
     }
+
+    public void OnPlayerKnockBack(Transform _transform)
+    {
+        Vector3 vec = transform.position - _transform.position;
+        vec.x = Mathf.Sign(vec.x) * 5;
+        vec.y = 3f;
+        vec.z = Mathf.Sign(vec.z) * 5;
+        rigidbody.AddForce(vec, ForceMode.Impulse);
+        OnPlayerStun(0.5f);
+    }
+
+    #endregion
 }
