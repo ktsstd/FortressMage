@@ -15,13 +15,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Animator animator;
     private Rigidbody rigidbody;
 
-    private Ray ray;
+    public Ray ray;
 
     private Vector3 receivePos;
     private Quaternion receiveRot;
     public float damping = 10.0f;
 
-    public GameObject Enemys;
+    public GameObject Enemys; // 임시 적 테스트용
 
     public float playerHp = 100;
     public float playerAtk = 10;
@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private bool isMoving = false;
     private bool isStun = false;
+    private bool isCasting = false;
 
     void Start()
     {
@@ -52,8 +53,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (pv.IsMine)
         {
+            ray = camera.ScreenPointToRay(Input.mousePosition);
             animator.SetBool("IsRun", isMoving); // 스턴시 움직이는 애니메이션 정지를 위해 임시로 빼놓음
-            if (!isStun)
+            if (!isStun || !isCasting)
                 Move();
         }
         else
@@ -81,9 +83,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (Input.GetMouseButtonDown(1))
         {
-            ray = camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-
             if (Physics.Raycast(ray, out hit, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
                 targetPos = hit.point;
