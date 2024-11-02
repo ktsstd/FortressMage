@@ -6,45 +6,44 @@ using UnityEngine.AI;
 public class MonsterAI : MonoBehaviour
 {
     // 플레이어의 위치를 참조하는 변수
-    public Transform player; 
+    public Transform player;
     public float attackRange = 2.0f;  // 몬스터의 공격 범위
     public float attackCooldown = 2f; // 공격 후 쿨타임
     public float attackTimer = 0f;    // 공격 대기 시간 타이머
-    public float MaxHp = 30f;         // 몬스터의 기본체력
-    public float CurHp;               // 몬스터의 현재체력
+    public float MaxHp = 30f;         // 몬스터의 최대 체력
+    public float CurHp;               // 몬스터의 현재 체력
     public bool hasHealed;            // 힐 여부 체크
 
     public int MonsterDmg = 10;        // 몬스터의 공격력
 
     // NavMeshAgent 컴포넌트 (네비메시를 통한 이동)
-    public NavMeshAgent agent;         
+    public NavMeshAgent agent;
     protected PlayerController playercontroller; // 플레이어 컨트롤러 참조
 
     // 장애물 감지용 레이어 마스크
-    public LayerMask obstacleMask;    
+    public LayerMask obstacleMask;
 
     // Start() 함수: 몬스터가 시작될 때 호출, 초기화 진행
     public virtual void Start()
     {
-        MaxHp = CurHp;
-        hasHealed = false;
+        CurHp = MaxHp; // 현재 체력을 최대 체력으로 초기화
+        hasHealed = false; // 힐 상태 초기화
         // "Player" 태그를 가진 게임 오브젝트를 찾아 플레이어 참조
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
-            player = playerObject.transform; // 플레이어의 위치
+            player = playerObject.transform; // 플레이어의 위치 설정
             // 플레이어의 체력을 컨트롤하기 위한 컴포넌트 참조
             playercontroller = player.GetComponent<PlayerController>();
         }
         else
         {
-            // 플레이어가 없을 경우 오류 출력
-            Debug.LogError("Player 태그를 가진 오브젝트를 찾을 수 없습니다."); 
+            return;
         }
 
         // NavMeshAgent 컴포넌트를 가져와 몬스터가 경로를 계산해 이동할 수 있도록 설정
         agent = GetComponent<NavMeshAgent>();
-        obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
+        obstacleMask = 1 << LayerMask.NameToLayer("Obstacle"); // 장애물 레이어 마스크 설정
     }
 
     // Update() 함수: 매 프레임마다 호출, 몬스터의 행동을 결정
@@ -64,7 +63,7 @@ public class MonsterAI : MonoBehaviour
         else
         {
             // 플레이어가 공격 범위 안에 있으면 이동 멈춤
-            agent.ResetPath(); 
+            agent.ResetPath();
 
             // 공격 대기 시간이 0 이하일 때 플레이어 공격
             if (attackTimer <= 0f)
@@ -80,7 +79,7 @@ public class MonsterAI : MonoBehaviour
             // 장애물이 없을 경우 공격
             if (!IsObstacleBetweenPlayer())
             {
-                AttackPlayer(MonsterDmg);
+                AttackPlayer(MonsterDmg); // 플레이어에게 다시 공격
             }
             else
             {
@@ -90,14 +89,14 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-        // AttackCooldown 프로퍼티: 공격 쿨타임을 관리
+    // AttackCooldown 프로퍼티: 공격 쿨타임을 관리
     public float AttackCooldown
     {
         get { return attackCooldown; }
         set
         {
             // 쿨타임이 음수일 경우 예외 처리
-            if (value < 0) 
+            if (value < 0)
             {
                 return;
             }
@@ -121,7 +120,7 @@ public class MonsterAI : MonoBehaviour
     // 플레이어와의 사이에 장애물이 있는지 확인
     private bool IsObstacleBetweenPlayer()
     {
-        Ray ray = new Ray(transform.position, player.position - transform.position);
+        Ray ray = new Ray(transform.position, player.position - transform.position); // 플레이어 방향으로 레이 생성
         RaycastHit hit;
 
         // 레이캐스트를 통해 장애물 감지
@@ -139,16 +138,16 @@ public class MonsterAI : MonoBehaviour
         // playercontroller.PlayerCurHealth(damage); // 플레이어의 체력을 감소시킴
     }
 
+    // 몬스터가 피해를 입었을 때 호출되는 함수
     public virtual void MonsterDmged(int playerdamage)
     {
-        if (CurHp <= 0)
+        if (CurHp <= 0) // 현재 체력이 0 이하일 때
         {
-            CurHp -= playerdamage;
+            CurHp -= playerdamage; // 체력 감소
         }
-
         else
         {
-            Destroy(this.gameObject);
+            Destroy(this.gameObject); // 몬스터 오브젝트 삭제
         }
     }
 }

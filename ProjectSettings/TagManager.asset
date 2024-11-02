@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - IceSpirit
   - Wall
+  - Castle
   layers:
   - Default
   - TransparentFX
