@@ -5,9 +5,9 @@ using UnityEngine;
 public class Quit : MonoBehaviour
 {
 
-    public void GameExit()
-    {
-        UnityEditor.EditorApplication.isPlaying = false;
-        Application.Quit();
-    }
+    //public void GameExit()
+    //{
+    //    UnityEditor.EditorApplication.isPlaying = false;
+    //    Application.Quit();
+    //}
 }
