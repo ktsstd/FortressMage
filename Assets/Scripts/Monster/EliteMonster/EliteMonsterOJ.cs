@@ -1,22 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class EliteMonsterOJ : MonsterAI
 {
-    public int MonsterShield = 60; // 몬스터의 쉴드 값
-    public int CurShield = 0;
+    private int MonsterShield = 60; // 몬스터의 쉴드 값
+    private int CurShield = 0;
 
     // 스킬 쿨타임 설정
-    public float skillCooldown = 5f; // 모든 스킬의 쿨타임
-    public float detectionRange = 10f; // 벽 감지 범위
-    public float skillTimer = 0f; // 스킬 타이머
+    private float skillCooldown = 5f; // 모든 스킬의 쿨타임
+    private float detectionRange = 10f; // 벽 감지 범위
+    private float skillTimer = 0f; // 스킬 타이머
 
-    public float MaxHp40Per;
+    private float MaxHp40Per;
 
-    public bool isShielded = false;
-    public bool isShield = false;
+    private bool isShielded = false;
+    private bool isShield = false;
 
     // Start() 함수: 몬스터가 시작될 때 호출, 초기화 진행
     public override void Start()
@@ -24,13 +23,13 @@ public class EliteMonsterOJ : MonsterAI
         base.Start(); // 부모 클래스의 Start() 호출
         MaxHp = 200f;
         CurHp = MaxHp;
-        MaxHp40Per = MaxHp * 0.4f; 
+        MaxHp40Per = MaxHp * 0.4f;
+        MonsterDmg = 10; // 몬스터 데미지 초기화
         GameObject playerObject = GameObject.FindWithTag("Player"); // "Player" 태그를 가진 오브젝트 찾기
         if (playerObject != null)
         {
             player = playerObject.transform; // 플레이어 변환 객체 가져오기
         }
-        MonsterDmg = 10; // 몬스터 데미지 초기화
     }
 
     // Update() 함수: 매 프레임마다 호출, 몬스터의 행동을 결정
