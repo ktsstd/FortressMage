@@ -10,12 +10,16 @@ public class FireMagic : PlayerController
     public GameObject skillRangeA;
     public GameObject skillRangeS;
 
+    float skillCooltime_A = 0;
+    float time_A = 5;
+    float skillCooltime_S = 0;
+    float time_S = 5;
+    float skillCooltime_D = 0;
+    float time_D = 5;
+
     void Update()
     {
-        if (Pv.IsMine)
-        {
-            PlayerSkillA();
-        }
+        PlayerSkillA();
     }
 
     void PlayerSkillA()

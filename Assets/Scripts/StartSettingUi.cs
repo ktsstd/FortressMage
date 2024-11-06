@@ -35,7 +35,7 @@ public class StartSettingUi : PhotonManager
             int idx = Random.Range(0, spawnPoint.Length);
 
             // 선택한 마법사를 랜덤한 스폰 지점에 인스턴스화
-            PhotonNetwork.Instantiate("Player/" + chooseMage, spawnPoint[idx].position, spawnPoint[idx].rotation, 0);
+            PhotonNetwork.Instantiate(chooseMage, spawnPoint[idx].position, spawnPoint[idx].rotation, 0);
             gameObject.SetActive(false); // UI 비활성화
         }
         else

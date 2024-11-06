@@ -8,19 +8,18 @@ using Cinemachine;
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     private PhotonView pv;
-    public PhotonView Pv { get { return pv; } }
-
     private CinemachineVirtualCamera virtualCamera;
 
-    private Rigidbody rigidbody;
+    private new Transform transform;
     private new Camera camera;
     private Animator animator;
-    public Animator Animator { get { return animator; } }
+    private Rigidbody rigidbody;
 
-    private Ray ray;
+    public Ray ray;
 
     private Vector3 receivePos;
     private Quaternion receiveRot;
+    public float damping = 10.0f;
 
     public GameObject Enemys; // 임시 적 테스트용
 
@@ -35,6 +34,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+        transform = GetComponent<Transform>();
         rigidbody = GetComponent<Rigidbody>();
         animator = transform.GetChild(0).GetComponent<Animator>();
         camera = Camera.main;
@@ -55,13 +55,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             ray = camera.ScreenPointToRay(Input.mousePosition);
             animator.SetBool("IsRun", isMoving); // 스턴시 움직이는 애니메이션 정지를 위해 임시로 빼놓음
-            if (!isStun)
+            if (!isStun || !isCasting)
                 Move();
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * 10);
-            transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * 10);
+            transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
+            transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
