@@ -5,42 +5,38 @@ using UnityEngine.AI;
 
 public class LightSpirit : MonoBehaviour
 {
-    private Animator animator;
+    Animator animator;
+
     private Transform castleTransform;
+
     private NavMeshAgent agent;
+
     private LayerMask obstacleMask;
 
     private float attackRange = 1.0f;
     private float MaxHp = 30f;
     private float CurHp;
     private float stopDistance = 15.0f;
-    // private float fadeDuration = 8.0f;
 
     private bool StartAttack = false;
-    // private MeshRenderer[] rendererObject;
 
     private void Start()
     {
         CurHp = MaxHp;
         StartAttack = false;
         animator = GetComponent<Animator>();
-        // rendererObject = GetComponentsInChildren<MeshRenderer>();
-        
-        // foreach (MeshRenderer renderer in rendererObject)
-        // {
-        //     renderer.material = new Material(renderer.material);
-        // }
-
+        //StartCoroutine(LightAttackStart());
         GameObject castleObject = GameObject.FindWithTag("Castle");
         if (castleObject != null)
         {
             castleTransform = castleObject.transform;
+            //agent.SetDestination(castleTransform.position);
         }
+
         else
         {
             return;
         }
-
         agent = GetComponent<NavMeshAgent>();
         obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
     }
@@ -55,14 +51,16 @@ public class LightSpirit : MonoBehaviour
 
         float distanceToCastle = Vector3.Distance(transform.position, castleTransform.position);
 
+        // º∫∫Æ∞˙¿« ∞≈∏Æ ∞ËªÍ »ƒ ∏ÿ√ﬂ¥¬ ∞≈∏ÆøÕ ∫Ò±≥
         if (distanceToCastle > attackRange + stopDistance)
         {
+            // º∫∫Æ¿∏∑Œ ¿Ãµø (¿Âæ÷π∞¿∫ ¿⁄µø¿∏∑Œ øÏ»∏)
             agent.speed = 10;
-            agent.SetDestination(castleTransform.position);
+            agent.SetDestination(castleTransform.position); // º∫∫Æ ¿ßƒ°∑Œ ¿Ãµø
         }
         else if (distanceToCastle <= attackRange + stopDistance && distanceToCastle > attackRange)
         {
-            agent.ResetPath();
+            agent.ResetPath(); // ∞Ê∑Œ √ ±‚»≠«œø© ∏ÿ√„
             if (!StartAttack)
             {
                 StartAttack = true;
@@ -71,49 +69,27 @@ public class LightSpirit : MonoBehaviour
         }
     }
 
+
+
     private IEnumerator LightAttackStart()
     {
         yield return new WaitForSeconds(3f);
         animator.SetTrigger("StartAttack");
         yield return new WaitForSeconds(5f);
+        // ¥Î√Ê º∫∫Æø° µ•πÃ¡ˆ¡÷¥¬∞≈
         Destroy(this.gameObject);
-    }
-
-    private IEnumerator StartDying()
-    {
-        // float elapsed = 0f;
-
-        // // Ï†êÏ†ê Ìà¨Î™ÖÌï¥ÏßÄÎäî Ìö®Í≥º
-        // while (elapsed < fadeDuration)
-        // {
-        //     elapsed += Time.deltaTime;
-        //     float alpha = Mathf.Lerp(1f, -0.8f, elapsed / fadeDuration);
-
-        //     foreach (MeshRenderer renderer in rendererObject)
-        //     {
-        //         renderer.material.SetFloat("_Tweak_transparency", alpha);
-        //     }
-
-        //     yield return null;
-        // }
-
-        // Destroy(gameObject);
         yield break;
     }
 
     public void MonsterDmged(int playerdamage)
     {
-        CurHp -= playerdamage;
-
-        if (CurHp <= 0)
+        if (CurHp <= 0) // «ˆ¿Á √º∑¬¿Ã 0 ¿Ã«œ¿œ ∂ß
         {
-            if (agent != null && agent.enabled)
-            {
-                agent.isStopped = true;
-            }
-            animator.speed = 0f;
-            StopCoroutine(LightAttackStart());
-            StartCoroutine(StartDying());
+            CurHp -= playerdamage; // √º∑¬ ∞®º“
+        }
+        else
+        {
+            Destroy(this.gameObject); // ∏ÛΩ∫≈Õ ø¿∫Í¡ß∆Æ ªË¡¶
         }
     }
 }
