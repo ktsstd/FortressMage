@@ -8,9 +8,9 @@ using Cinemachine;
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     private PhotonView pv;
+    public PhotonView Pv {  get { return pv; } }
     private CinemachineVirtualCamera virtualCamera;
 
-    private new Transform transform;
     private new Camera camera;
     private Animator animator;
     private Rigidbody rigidbody;
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public float playerHp = 100;
     public float playerAtk = 10;
     private float defaultSpped = 3;
-    public float playerSpeed = 3;
+    private float playerSpeed = 3;
 
     private bool isMoving = false;
     private bool isStun = false;
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
-        transform = GetComponent<Transform>();
         rigidbody = GetComponent<Rigidbody>();
         animator = transform.GetChild(0).GetComponent<Animator>();
         camera = Camera.main;
@@ -55,7 +54,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             ray = camera.ScreenPointToRay(Input.mousePosition);
             animator.SetBool("IsRun", isMoving); // 스턴시 움직이는 애니메이션 정지를 위해 임시로 빼놓음
-            if (!isStun || !isCasting)
+            if (!isStun)
                 Move();
         }
         else
@@ -66,7 +65,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            OnSpeedDown(3f, 1f);
+            OnPlayerSpeedDown(3f, 1f);
         }
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
@@ -130,25 +129,25 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     #region Player Crowd Control
 
     private Coroutine speedCoroutine;
-    public void OnSpeedDown(float _time, float _moveSpeed)
+    public void OnPlayerSpeedDown(float _time, float _moveSpeed)
     {
         if (playerSpeed > _moveSpeed)
         {
             if (speedCoroutine != null)
                 StopCoroutine(speedCoroutine);
 
-            speedCoroutine = StartCoroutine(SpeedDown(_time, _moveSpeed));
+            speedCoroutine = StartCoroutine(PlayerSpeedDown(_time, _moveSpeed));
         }
         else
         {
             if (speedCoroutine != null)
                 StopCoroutine(speedCoroutine);
 
-            speedCoroutine = StartCoroutine(SpeedDown(_time, playerSpeed));
+            speedCoroutine = StartCoroutine(PlayerSpeedDown(_time, playerSpeed));
         }
     }
 
-    IEnumerator SpeedDown(float _time, float _moveSpeed) // 이동 속도 감소 처리
+    IEnumerator PlayerSpeedDown(float _time, float _moveSpeed) // 이동 속도 감소 처리
     {
         playerSpeed = _moveSpeed;
         yield return new WaitForSeconds(_time);
