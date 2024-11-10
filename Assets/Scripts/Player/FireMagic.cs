@@ -10,9 +10,10 @@ public class FireMagic : PlayerController
     public GameObject skillRangeA;
     public GameObject skillRangeS;
 
-    void Update()
+    public override void Update()
     {
-        if ( Pv.IsMine)
+        base.Update();
+        if (pv.IsMine && !isCasting)
         {
             PlayerSkillA();
         }
@@ -30,13 +31,14 @@ public class FireMagic : PlayerController
             float distance = direction.magnitude;
             distance = Mathf.Min(distance, maxRange);
             skillRangeA.transform.position = transform.position + direction.normalized * (distance / 2);
-            skillRangeA.transform.localScale = new Vector3(1f, 0.1f, distance);
+            skillRangeA.transform.localScale = new Vector3(1f, 0.1f, distance) * 2;
 
             skillRangeA.transform.rotation = Quaternion.LookRotation(direction);
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
             skillRangeA.SetActive(false);
+            animator.SetTrigger("FireBall");
         }
     }
 
@@ -51,5 +53,14 @@ public class FireMagic : PlayerController
         {
             mousePosition = ray.GetPoint(distance);
         }
+    }
+
+    void StartCasting()
+    {
+
+    }
+    void EndCasting()
+    {
+
     }
 }

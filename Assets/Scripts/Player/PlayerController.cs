@@ -7,13 +7,12 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
-    private PhotonView pv;
-    public PhotonView Pv {  get { return pv; } }
+    public PhotonView pv;
     private CinemachineVirtualCamera virtualCamera;
 
     private new Camera camera;
-    private Animator animator;
-    private Rigidbody rigidbody;
+    public Animator animator;
+    public Rigidbody rigidbody;
 
     public Ray ray;
 
@@ -21,21 +20,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Quaternion receiveRot;
     public float damping = 10.0f;
 
-    public GameObject Enemys; // 임시 적 테스트용
-
     public float playerHp = 100;
     public float playerAtk = 10;
-    private float defaultSpped = 3;
-    private float playerSpeed = 3;
+    public float defaultSpped = 3;
+    public float playerSpeed = 3;
 
-    private bool isMoving = false;
-    private bool isStun = false;
-    private bool isCasting = false;
+    public bool isMoving = false;
+    public bool isStun = false;
+    public bool isCasting = false;
 
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        animator = transform.GetChild(0).GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         camera = Camera.main;
         pv = GetComponent<PhotonView>();
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
@@ -44,16 +41,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
         }
-
-        Enemys = GameObject.Find("Cube");
     }
 
-    void Update()
+    public virtual void Update()
     {
         if (pv.IsMine)
         {
             ray = camera.ScreenPointToRay(Input.mousePosition);
-            animator.SetBool("IsRun", isMoving); // 스턴시 움직이는 애니메이션 정지를 위해 임시로 빼놓음
+            animator.SetBool("IsRun", isMoving);
             if (!isStun)
                 Move();
         }
@@ -61,19 +56,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
             transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            OnPlayerSpeedDown(3f, 1f);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            OnPlayerStun(2f);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            OnPlayerKnockBack(Enemys.transform);
         }
     }
 
@@ -123,7 +105,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void OnHitPlayer(float _damage)
     {
         playerHp -= _damage;
-        // 피해를 입힌 후 처리
     }
 
     #region Player Crowd Control
