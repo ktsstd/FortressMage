@@ -36,26 +36,30 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     {
         float maxRange = 10f;
 
-        GetMousePosition();
-
-        Vector3 direction = mousePosition - transform.position;
-        float distance = direction.magnitude;
-        distance = Mathf.Min(distance, maxRange);
-        skillRangeA.transform.position = transform.position + direction.normalized * (distance / 2);
-        skillRangeA.transform.localScale = new Vector3(1f, 0.1f, distance) * 2;
-        skillRangeA.transform.rotation = Quaternion.LookRotation(direction);
-        skillAPos = transform.position + direction.normalized * distance;
 
         if (Input.GetKey(KeyCode.A))
         {
             if (pv.IsMine)
+            {
+                GetMousePosition();
+
+                Vector3 direction = mousePosition - transform.position;
+                float distance = direction.magnitude;
+                distance = Mathf.Min(distance, maxRange);
+                skillRangeA.transform.position = transform.position + direction.normalized * (distance / 2);
+                skillRangeA.transform.localScale = new Vector3(1f, 0.1f, distance) * 2;
+                skillRangeA.transform.rotation = Quaternion.LookRotation(direction);
+                skillAPos = transform.position + direction.normalized * distance;
+
                 skillRangeA.SetActive(true);
+            }
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
             if (pv.IsMine)
             {
                 skillRangeA.SetActive(false);
+                Vector3 direction = mousePosition - transform.position;
                 transform.rotation = Quaternion.LookRotation(direction);
                 animator.SetTrigger("FireBall");
             }
