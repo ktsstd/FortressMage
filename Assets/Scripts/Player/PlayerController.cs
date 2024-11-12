@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             ray = camera.ScreenPointToRay(Input.mousePosition);
             animator.SetBool("IsRun", isMoving);
-            if (!isStun)
+            if (!isStun && !isCasting)
                 Move();
         }
         else
@@ -57,6 +57,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
             transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+            OnPlayerStun(2f);
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+            OnPlayerKnockBack(transform);
     }
 
     Vector3 targetPos;

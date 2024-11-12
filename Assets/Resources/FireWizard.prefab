@@ -258,7 +258,7 @@ Transform:
   m_GameObject: {fileID: 5691103739755614802}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.419, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -363,6 +363,7 @@ MonoBehaviour:
   isCasting: 0
   skillRangeA: {fileID: 6446129034553884371}
   skillRangeS: {fileID: 6446129034553884371}
+  fireballPrefab: {fileID: 7675155042780501662, guid: 624e625f9cc46d549bff2a239bbcc86e, type: 3}
 --- !u!114 &7328209179890666473
 MonoBehaviour:
   m_ObjectHideFlags: 0

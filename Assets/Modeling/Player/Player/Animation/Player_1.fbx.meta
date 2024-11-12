@@ -57,17 +57,10 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
-        functionName: StartCasting
+      - time: 0.9200583
+        functionName: OnUseSkillA
         data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9979953
-        functionName: EndCasting
-        data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11500000, guid: ec063746c4df76d49b6d6b4b8fd78c95, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
