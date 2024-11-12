@@ -1,48 +1,74 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireMagic : PlayerController
+public class FireMagic : PlayerController, ISkillAnimationEvent
 {
     Vector3 mousePosition;
 
     public GameObject skillRangeA;
     public GameObject skillRangeS;
 
-    float skillCooltime_A = 0;
-    float time_A = 5;
-    float skillCooltime_S = 0;
-    float time_S = 5;
-    float skillCooltime_D = 0;
-    float time_D = 5;
+    public GameObject fireballPrefab;
 
-    void Update()
+    public override void Update()
     {
-        PlayerSkillA();
+        base.Update();
+        if (pv.IsMine)
+        {
+            AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (aniInfo.IsName("A") || aniInfo.IsName("B") || aniInfo.IsName("C"))
+                isCasting = true;
+            else
+                isCasting = false;
+        }
+        if (!isCasting)
+        {
+            PlayerSkillA();
+            // PlayerSkillS();
+            // PlayerSkillD();
+        }
     }
-
+    private Vector3 skillAPos;
     void PlayerSkillA()
     {
         float maxRange = 10f;
+
+        GetMousePosition();
+
+        Vector3 direction = mousePosition - transform.position;
+        float distance = direction.magnitude;
+        distance = Mathf.Min(distance, maxRange);
+        skillRangeA.transform.position = transform.position + direction.normalized * (distance / 2);
+        skillRangeA.transform.localScale = new Vector3(1f, 0.1f, distance) * 2;
+        skillRangeA.transform.rotation = Quaternion.LookRotation(direction);
+        skillAPos = transform.position + direction.normalized * distance;
+
         if (Input.GetKey(KeyCode.A))
         {
-            GetMousePosition();
-
-            skillRangeA.SetActive(true);
-            Vector3 direction = mousePosition - transform.position;
-            float distance = direction.magnitude;
-            distance = Mathf.Min(distance, maxRange);
-            skillRangeA.transform.position = transform.position + direction.normalized * (distance / 2);
-            skillRangeA.transform.localScale = new Vector3(1f, 0.1f, distance);
-
-            skillRangeA.transform.rotation = Quaternion.LookRotation(direction);
+            if (pv.IsMine)
+                skillRangeA.SetActive(true);
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
-            skillRangeA.SetActive(false);
+            if (pv.IsMine)
+            {
+                skillRangeA.SetActive(false);
+                transform.rotation = Quaternion.LookRotation(direction);
+                animator.SetTrigger("FireBall");
+            }
         }
     }
+
+    public void OnUseSkillA()
+    {
+        UseFireBall();
+
+        pv.RPC("UseFireBall", RpcTarget.Others, null);
+    }
+
 
     void GetMousePosition()
     {
@@ -55,5 +81,14 @@ public class FireMagic : PlayerController
         {
             mousePosition = ray.GetPoint(distance);
         }
+    }
+
+    [PunRPC]
+    void UseFireBall()
+    {
+        Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0,180,0));
+        GameObject fire = Instantiate(fireballPrefab, transform.position + Vector3.up / 2, fireRot);
+        skillAPos = new Vector3(skillAPos.x, transform.position.y + 0.5f, skillAPos.z);
+        fire.GetComponent<FireBall>().targetPos = skillAPos;
     }
 }
