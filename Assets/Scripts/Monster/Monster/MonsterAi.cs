@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
-public class MonsterAI : MonoBehaviour
+public class MonsterAI : MonoBehaviourPunCallbacks
 {
     // 플레이어의 위치를 참조하는 변수
     public Transform player;
@@ -36,11 +37,6 @@ public class MonsterAI : MonoBehaviour
             // 플레이어의 체력을 컨트롤하기 위한 컴포넌트 참조
             playercontroller = player.GetComponent<PlayerController>();
         }
-        else
-        {
-            return;
-        }
-
         // NavMeshAgent 컴포넌트를 가져와 몬스터가 경로를 계산해 이동할 수 있도록 설정
         agent = GetComponent<NavMeshAgent>();
         obstacleMask = 1 << LayerMask.NameToLayer("Obstacle"); // 장애물 레이어 마스크 설정
@@ -86,6 +82,24 @@ public class MonsterAI : MonoBehaviour
                 // 장애물이 있을 경우 다른 행동 (미정)
             }
             attackTimer -= Time.deltaTime; // 쿨타임 감소
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // 이 클라이언트에서 몬스터 위치와 회전을 전송
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(CurHp);
+        }
+        else
+        {
+            // 다른 클라이언트에서 몬스터 위치와 회전을 수신
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            CurHp = (float)stream.ReceiveNext();
         }
     }
 
@@ -141,11 +155,9 @@ public class MonsterAI : MonoBehaviour
     // 몬스터가 피해를 입었을 때 호출되는 함수
     public virtual void MonsterDmged(int playerdamage)
     {
+        if (!photonView.IsMine) return;
+        CurHp -= playerdamage; // 체력 감소
         if (CurHp <= 0) // 현재 체력이 0 이하일 때
-        {
-            CurHp -= playerdamage; // 체력 감소
-        }
-        else
         {
             Destroy(this.gameObject); // 몬스터 오브젝트 삭제
         }

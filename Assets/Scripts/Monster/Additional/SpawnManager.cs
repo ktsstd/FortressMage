@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : MonoBehaviourPun
 {
     public Transform[] monsterSpawnPoint;
 
@@ -24,7 +25,7 @@ public class SpawnManager : MonoBehaviour
             int normalMonsterRandom = Random.Range(0, normalMonster.Length);
             int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
 
-            Instantiate(normalMonster[normalMonsterRandom], monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+            PhotonNetwork.Instantiate(normalMonster[normalMonsterRandom].name, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
             yield return new WaitForSeconds(5f);
         }
     }
