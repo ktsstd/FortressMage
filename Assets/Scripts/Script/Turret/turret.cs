@@ -15,6 +15,7 @@ public class Turret : MonoBehaviour
     public float fireRateIncreaseAmount = 0.2f;
     public LayerMask targetLayer;
     public float detectionRadius = 10f;
+    public float health = 100f;
 
     // Damage 관련 변수
     public float damage = 20f;
@@ -138,5 +139,15 @@ public class Turret : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        if (health <= 0f)
+        {
+            
+        }
     }
 }
