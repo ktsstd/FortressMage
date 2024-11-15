@@ -15,7 +15,15 @@ public class SpawnManager : MonoBehaviourPun
 
     void Start()
     {
-        StartCoroutine(StartSpawnMonster());
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("마스터 클라이언트에서 몬스터 소환 중...");
+            StartCoroutine(StartSpawnMonster());
+        }
+        else
+        {
+            Debug.Log("마스터 클라이언트가 아닙니다.");
+        }
     }
 
     private IEnumerator StartSpawnMonster()
@@ -25,7 +33,7 @@ public class SpawnManager : MonoBehaviourPun
             int normalMonsterRandom = Random.Range(0, normalMonster.Length);
             int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
 
-            PhotonNetwork.Instantiate(normalMonster[normalMonsterRandom].name, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+            GameObject monster = PhotonNetwork.Instantiate(normalMonster[normalMonsterRandom].name, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
             yield return new WaitForSeconds(5f);
         }
     }

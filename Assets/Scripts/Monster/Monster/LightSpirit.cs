@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class LightSpirit : MonoBehaviour
 {
@@ -63,7 +64,23 @@ public class LightSpirit : MonoBehaviour
         }
     }
 
-
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // 이 클라이언트에서 몬스터 위치와 회전을 전송
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(CurHp);
+        }
+        else
+        {
+            // 다른 클라이언트에서 몬스터 위치와 회전을 수신
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            CurHp = (float)stream.ReceiveNext();
+        }
+    }
 
     private IEnumerator LightAttackStart()
     {
