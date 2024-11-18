@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-public class LightSpirit : MonoBehaviour
+public class LightSpirit : MonoBehaviourPun , IPunObservable
 {
     private Animator animator;
     private Transform castleTransform;
@@ -85,7 +85,7 @@ public class LightSpirit : MonoBehaviour
     private IEnumerator LightAttackStart()
     {
         yield return new WaitForSeconds(3f);
-        animator.SetTrigger("StartAttack");
+        animator.SetBool("StartAttack", true);
         yield return new WaitForSeconds(5f);
         Destroy(this.gameObject);
         yield break;

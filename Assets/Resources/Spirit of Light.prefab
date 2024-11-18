@@ -153,7 +153,7 @@ PrefabInstance:
       addedObject: {fileID: -1934583758096729800}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -1113802017763871717}
+      addedObject: {fileID: -732130297575567390}
   m_SourcePrefab: {fileID: 100100000, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
 --- !u!4 &7128754625041528229 stripped
 Transform:
@@ -261,6 +261,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 2905263321662662993}
   - {fileID: -1934583758096729800}
   sceneViewId: 0
   InstantiationId: 0
@@ -281,12 +282,12 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: StartAttack
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
---- !u!114 &-1113802017763871717
+--- !u!114 &-732130297575567390
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,17 +296,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7612697605095927583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: -1934583758096729800}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
