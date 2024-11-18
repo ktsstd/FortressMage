@@ -40,6 +40,8 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - UseFireBall
+  - LightSpiritDied
+  - MonsterDied
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

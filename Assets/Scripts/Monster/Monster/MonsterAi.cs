@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using Unity.VisualScripting;
 
-public class MonsterAI : MonoBehaviourPunCallbacks
+public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     // 플레이어의 위치를 참조하는 변수
     public Transform player;
@@ -42,16 +43,36 @@ public class MonsterAI : MonoBehaviourPunCallbacks
         obstacleMask = 1 << LayerMask.NameToLayer("Obstacle"); // 장애물 레이어 마스크 설정
     }
 
-    // Update() 함수: 매 프레임마다 호출, 몬스터의 행동을 결정
     public virtual void Update()
     {
         if (player == null) return; // 플레이어가 없으면 동작 중지
 
+        // 모든 플레이어를 찾아서 가장 가까운 플레이어를 선택
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+        Transform closestPlayer = null;
+
+        foreach (GameObject p in players)
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, p.transform.position);
+            if (distanceToPlayer < closestDistance)
+            {
+                closestDistance = distanceToPlayer;
+                closestPlayer = p.transform;
+            }
+        }
+
+        // 가장 가까운 플레이어를 목표로 설정
+        if (closestPlayer != null)
+        {
+            player = closestPlayer;
+        }
+
         // 플레이어와의 거리 계산
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToTarget = Vector3.Distance(transform.position, player.position);
 
         // 플레이어가 공격 범위 밖에 있을 때
-        if (distanceToPlayer > attackRange)
+        if (distanceToTarget > attackRange)
         {
             // 플레이어를 향해 이동 (장애물은 자동으로 우회)
             agent.SetDestination(player.position);
@@ -72,18 +93,10 @@ public class MonsterAI : MonoBehaviourPunCallbacks
         // 공격 타이머를 줄임 (쿨타임이 끝날 때까지 기다림)
         if (attackTimer > 0f)
         {
-            // 장애물이 없을 경우 공격
-            if (!IsObstacleBetweenPlayer())
-            {
-                AttackPlayer(MonsterDmg); // 플레이어에게 다시 공격
-            }
-            else
-            {
-                // 장애물이 있을 경우 다른 행동 (미정)
-            }
             attackTimer -= Time.deltaTime; // 쿨타임 감소
         }
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -156,10 +169,18 @@ public class MonsterAI : MonoBehaviourPunCallbacks
     public virtual void MonsterDmged(int playerdamage)
     {
         if (!photonView.IsMine) return;
+        
         CurHp -= playerdamage; // 체력 감소
+
         if (CurHp <= 0) // 현재 체력이 0 이하일 때
         {
-            Destroy(this.gameObject); // 몬스터 오브젝트 삭제
+            photonView.RPC("MonsterDied", RpcTarget.All);
         }
+    }
+    
+    [PunRPC]
+    public void MonsterDied()
+    {
+        Destroy(this.gameObject);
     }
 }

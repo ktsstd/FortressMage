@@ -123,5 +123,16 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
             animator.speed = 0f;
             StopCoroutine(LightAttackStart());
             StartCoroutine(StartDying());
+
+        if (CurHp <= 0) // 현재 체력이 0 이하일 때
+        {
+            photonView.RPC("MonsterDied", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    public void LightSpiritDied()
+    {
+
     }
 }
