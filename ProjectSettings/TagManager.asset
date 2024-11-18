@@ -9,6 +9,7 @@ TagManager:
   - IceSpirit
   - Wall
   - Castle
+  - skilltower
   layers:
   - Default
   - TransparentFX

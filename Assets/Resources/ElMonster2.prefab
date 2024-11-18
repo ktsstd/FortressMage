@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 818367595087955613}
   - component: {fileID: 2514038660588688657}
   - component: {fileID: 6021450241677514134}
+  - component: {fileID: -3779659824238732024}
   m_Layer: 0
   m_Name: ElMonster2
   m_TagString: Enemy
@@ -345,6 +346,8 @@ MonoBehaviour:
   attackCooldownReduction: 6
   moveSpeed: 10
   AllSkillCooldown: 10
+  MaxHp: 100
+  CurHp: 0
   skill1Cooldown: 10
   skill2Cooldown: 60
   skill3Cooldown: 90
@@ -355,3 +358,25 @@ MonoBehaviour:
   BuffRange: {fileID: 1934773732273880420, guid: d54ee3fd155dbb842aaa88a9d8afc076, type: 3}
   target: {fileID: 0}
   agent: {fileID: 0}
+--- !u!114 &-3779659824238732024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500793380464332319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

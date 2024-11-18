@@ -175,7 +175,7 @@ public class EliteMonsterLC : MonoBehaviour
 
     private IEnumerator EliteMonsterStun()
     {
-        Debug.Log("기절~");
+        Debug.Log("플레이어 기절");
         // 대충 기절 태성화이팅
         yield break;
     }

@@ -186,9 +186,10 @@ GameObject:
   - component: {fileID: 2408943576132999206}
   - component: {fileID: 5921100734397734708}
   - component: {fileID: 5044601229969561760}
+  - component: {fileID: -8075039902567523734}
   m_Layer: 7
   m_Name: ElMonster1
-  m_TagString: Wall
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -353,11 +354,25 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  MonsterShield: 60
-  CurShield: 0
-  skillCooldown: 5
-  detectionRange: 10
-  skillTimer: 0
-  MaxHp40Per: 0
-  isShielded: 0
-  isShield: 0
+--- !u!114 &-8075039902567523734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576776937114489191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

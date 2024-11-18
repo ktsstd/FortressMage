@@ -14,7 +14,7 @@ public class LightSpirit : MonoBehaviour
     private float attackRange = 1.0f;
     private float MaxHp = 30f;
     private float CurHp;
-    private float stopDistance = 15.0f;
+    private float stopDistance = 10.0f;
     // private float fadeDuration = 8.0f;
 
     private bool StartAttack = false;
