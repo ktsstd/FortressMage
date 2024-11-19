@@ -43,6 +43,7 @@ public class EliteMonsterOJ : MonsterAI
         // 장애물이 감지되면
         if (IsObstacleBetweenPlayer())
         {
+            agent.ResetPath(); // 이동 경로 리셋
             // 스킬 쿨타임이 끝났을 경우 벽 깨기 스킬 사용
             if (skillTimer <= 0f)
             {
@@ -90,17 +91,11 @@ public class EliteMonsterOJ : MonsterAI
                 StartCoroutine(EliteMonsterShield(MonsterShield));
                 isShielded = true;
             }
-
-            else
-            {
-                Debug.Log("보호막 이미 실행됨");
-            }
         }
 
         if (CurShield > 0)
         {
             isShield = true;
-            Debug.Log("쉴드생김");
         }
 
         else
@@ -130,8 +125,6 @@ public class EliteMonsterOJ : MonsterAI
     // 벽을 바라보는 함수
     private IEnumerator LookAtObstacle(Vector3 hitNormal, Vector3 hitPoint)
     {
-        agent.ResetPath(); // 이동 경로 리셋
-
         // 몬스터의 현재 위치에서 벽을 향하는 벡터 계산
         Vector3 directionToWall = (hitPoint - transform.position).normalized;
         directionToWall.y = 0; // y축 회전 방지 (바닥에 붙어서 회전)
@@ -179,10 +172,6 @@ public class EliteMonsterOJ : MonsterAI
                 StartCoroutine(EliteMonsterStamp(MonsterDmg));
             }
             skillTimer = skillCooldown; // 쿨타임 설정
-        }
-        else
-        {
-            Invoke("EliteMonsterOJPattern", 2f);
         }
     }
 

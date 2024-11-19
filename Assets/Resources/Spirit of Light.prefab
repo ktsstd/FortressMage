@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spirit of Light_P_1
       objectReference: {fileID: 0}
+    - target: {fileID: 4054305488138287833, guid: 30934f75d49369e4a98541ab3f55debd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4054305488138287833, guid: 30934f75d49369e4a98541ab3f55debd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8161296116073169671, guid: 30934f75d49369e4a98541ab3f55debd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -122,9 +130,85 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8677002796927938395, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8119790860928049990, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -5687424917938148093, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -4429656343482175895, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3767158134399696927, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3349429569746582239, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2677413184958740046, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2178643374376915657, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1532879311228502683, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1187698151304781792, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -411527954658400023, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -192135185773934735, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 533611936668933972, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
       propertyPath: m_Name
       value: Spirit of Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149106966689038695, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2686185771149668826, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5175584870367388805, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5449809169452811970, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492450364958298357, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -151,6 +235,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1934583758096729800}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4867228434180409911}
   m_SourcePrefab: {fileID: 100100000, guid: 40422ce2aed722a439b79c9fb59c15f0, type: 3}
 --- !u!4 &7128754625041528229 stripped
 Transform:
@@ -214,7 +301,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7612697605095927583}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.35
+  m_Radius: 0.1
   m_Speed: 3.07
   m_Acceleration: 8
   avoidancePriority: 50
@@ -284,3 +371,30 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!54 &4867228434180409911
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7612697605095927583}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0

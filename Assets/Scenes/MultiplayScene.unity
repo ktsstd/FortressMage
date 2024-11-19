@@ -2114,7 +2114,7 @@ MonoBehaviour:
   - {fileID: 1539575793}
   - {fileID: 1152434549}
   normalMonster:
-  - {fileID: 4291468626843613109, guid: af0e7c063deefe142b8252c42eaf8d1c, type: 3}
+  - {fileID: 8576776937114489191, guid: 31420df804a498b41a522e0e8d3585ee, type: 3}
   eliteMonster: []
   bossMonster: {fileID: 0}
 --- !u!4 &1294442218
@@ -2514,6 +2514,10 @@ PrefabInstance:
     - target: {fileID: 506021325611591674, guid: 647d08268ea8e0340ac1aa42d84b959c, type: 3}
       propertyPath: m_Name
       value: Cube (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 506021325611591674, guid: 647d08268ea8e0340ac1aa42d84b959c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4615853064105143775, guid: 647d08268ea8e0340ac1aa42d84b959c, type: 3}
       propertyPath: m_LocalPosition.x

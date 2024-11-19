@@ -10,6 +10,7 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
     private Transform castleTransform;
     private NavMeshAgent agent;
     private LayerMask obstacleMask;
+    private ParticleSystem particleSys;
 
     private float attackRange = 1.0f;
     private float MaxHp = 30f;
@@ -24,6 +25,7 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
         CurHp = MaxHp;
         StartAttack = false;
         animator = GetComponent<Animator>();
+        particleSys = GetComponentInChildren<ParticleSystem>();
         GameObject castleObject = GameObject.FindWithTag("Castle");
         if (castleObject != null)
         {
@@ -42,7 +44,7 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            MonsterDmged(30);
+            particleSys.Play();
         }
         if (castleTransform == null) return;
 
@@ -58,6 +60,7 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
             agent.ResetPath();
             if (!StartAttack)
             {
+                Debug.Log("212312312");
                 StartAttack = true;
                 StartCoroutine(LightAttackStart());
             }
@@ -85,9 +88,13 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
     private IEnumerator LightAttackStart()
     {
         yield return new WaitForSeconds(3f);
+        Debug.Log("2");
         animator.SetBool("StartAttack", true);
+        Debug.Log("3");
+        particleSys.Play();
+        Debug.Log("4");
         yield return new WaitForSeconds(5f);
-        Destroy(this.gameObject);
+        photonView.RPC("LightSpiritDie", RpcTarget.All);
         yield break;
     }
 
@@ -109,7 +116,7 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
         //     yield return null;
         // }
 
-        Destroy(gameObject);
+        photonView.RPC("LightSpiritDie", RpcTarget.All);
         yield break;
     }
 
@@ -126,13 +133,13 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
 
         if (CurHp <= 0) // 현재 체력이 0 이하일 때
         {
-            photonView.RPC("MonsterDied", RpcTarget.All);
+            photonView.RPC("LightSpiritDie", RpcTarget.All);
         }
     }
 
     [PunRPC]
     public void LightSpiritDied()
     {
-
+        Destroy(gameObject);
     }
 }

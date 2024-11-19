@@ -17,12 +17,12 @@ public class SpawnManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("마스터 클라이언트에서 몬스터 소환 중...");
+            Debug.Log("Spawning with MasterClient");
             StartCoroutine(StartSpawnMonster());
         }
         else
         {
-            Debug.Log("마스터 클라이언트가 아닙니다.");
+            Debug.Log("you are not MasterClient");
         }
     }
 
