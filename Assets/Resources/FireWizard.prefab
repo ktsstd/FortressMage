@@ -353,7 +353,7 @@ MonoBehaviour:
   pv: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
-  damping: 10
+  mousePosition: {x: 0, y: 0, z: 0}
   playerHp: 100
   playerAtk: 10
   defaultSpped: 3

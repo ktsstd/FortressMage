@@ -15,10 +15,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public Rigidbody rigidbody;
 
     public Ray ray;
+    public Vector3 mousePosition;
 
     private Vector3 receivePos;
     private Quaternion receiveRot;
-    public float damping = 10.0f;
+    private Vector3 receiveMousePos;
+    private bool receiveMoving;
 
     public float playerHp = 100;
     public float playerAtk = 10;
@@ -29,7 +31,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public bool isStun = false;
     public bool isCasting = false;
 
-    void Start()
+    public virtual void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -45,17 +47,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     public virtual void Update()
     {
+        animator.SetBool("IsRun", isMoving);
         if (pv.IsMine)
         {
-            ray = camera.ScreenPointToRay(Input.mousePosition);
-            animator.SetBool("IsRun", isMoving);
+            mousePosition = GetMousePosition();
             if (!isStun && !isCasting)
                 Move();
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * damping);
-            transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * damping);
+            transform.position = Vector3.Lerp(transform.position, receivePos, Time.deltaTime * 10);
+            transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * 10);
+            mousePosition = receiveMousePos;
+            isMoving = receiveMoving;
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -67,6 +71,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     Vector3 targetPos;
     void Move()
     {
+        ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
@@ -91,19 +96,36 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(mousePosition);
+            stream.SendNext(isMoving);
         }
         else
         {
             receivePos = (Vector3)stream.ReceiveNext();
             receiveRot = (Quaternion)stream.ReceiveNext();
+            receiveMousePos = (Vector3)stream.ReceiveNext();
+            receiveMoving = (bool)stream.ReceiveNext();
         }
+    }
+
+    public Vector3 GetMousePosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0));
+
+        float distance;
+
+        if (plane.Raycast(ray, out distance))
+        {
+            return ray.GetPoint(distance);
+        }
+        else { return Vector3.zero; }
     }
 
     // 플레이어에게 피해를 입힐 때 호출
