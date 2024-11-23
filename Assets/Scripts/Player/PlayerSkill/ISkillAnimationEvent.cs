@@ -6,8 +6,5 @@ public interface ISkillAnimationEvent
 {
     void OnUseSkillA();
 
-    public virtual void OnUseSkillS()
-    {
-        return;
-    }
+    void OnUseSkillS();
 }
