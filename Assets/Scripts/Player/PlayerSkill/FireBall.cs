@@ -53,7 +53,10 @@ public class FireBall : MonoBehaviour
             }
             else
             {
-                Debug.Log("몬스터 폭발대미지");
+                if (other.gameObject.TryGetComponent(out MonsterAI monster))
+                {
+                    monster.MonsterDmged(15);
+                }
             }
         }
     }

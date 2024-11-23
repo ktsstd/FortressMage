@@ -9,11 +9,18 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     float[] skillRanges = { 10f, 10f, 10f };
 
     public GameObject skillRangeA;
-    private Vector3 skillAPos;
-    private float skillACooltime;
+    private Vector3 skillPosA;
+    private float skillCooltimeA;
+
     public GameObject skillRangeS;
-    
+    private Vector3 skillPosS;
+    private float skillCooltimeS;
+
+    public GameObject skillEffectD;
+    private float skillCooltimeD;
+
     public GameObject fireballPrefab;
+    public GameObject firestormPrefab;
 
 
     public override void Start()
@@ -26,18 +33,20 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         if (pv.IsMine)
         {
             AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (aniInfo.IsName("A") || aniInfo.IsName("B") || aniInfo.IsName("C"))
+            if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
                 isCasting = true;
             else
                 isCasting = false;
 
-            if (skillACooltime >= 0) {skillACooltime -= Time.deltaTime;}
+            if (skillCooltimeA >= 0) {skillCooltimeA -= Time.deltaTime;}
+            if (skillCooltimeS >= 0) {skillCooltimeS -= Time.deltaTime;}
+            if (skillCooltimeD >= 0) {skillCooltimeD -= Time.deltaTime;}
         }
         if (!isCasting)
         {
             PlayerSkillA();
-            // PlayerSkillS();
-            // PlayerSkillD();
+            PlayerSkillS();
+            PlayerSkillD();
         }
     }
 
@@ -46,11 +55,13 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         base.OnPhotonSerializeView(stream, info);
         if (stream.IsWriting)
         {
-            stream.SendNext(skillAPos);
+            stream.SendNext(skillPosA);
+            stream.SendNext(skillPosS);
         }
         else
         {
-            skillAPos = (Vector3)stream.ReceiveNext();
+            skillPosA = (Vector3)stream.ReceiveNext();
+            skillPosS = (Vector3)stream.ReceiveNext();
         }
     }
 
@@ -58,7 +69,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     {
         if (pv.IsMine)
         {
-            if (skillACooltime <= 0)
+            if (skillCooltimeA <= 0)
             {
                 if (Input.GetKey(KeyCode.A))
                 {
@@ -71,12 +82,56 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                 {
                     skillRangeA.SetActive(false);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
-                    skillAPos = new Vector3(GetSkillRange(skillRanges[0]).x, transform.position.y + 0.5f, GetSkillRange(skillRanges[0]).z);
-                    skillACooltime = 3f;
-                    pv.RPC("FireBallAni", RpcTarget.All, "FireBall");
+                    skillPosA = new Vector3(GetSkillRange(skillRanges[0]).x, transform.position.y + 0.5f, GetSkillRange(skillRanges[0]).z);
+                    skillCooltimeA = 3f;
+                    pv.RPC("PlayAnimation", RpcTarget.All, "FireBall");
                 }
             }
         }
+    }
+
+    void PlayerSkillS()
+    {
+        if (pv.IsMine)
+        {
+            if (skillCooltimeS <= 0)
+            {
+                if (Input.GetKey(KeyCode.S))
+                {
+                    skillRangeS.SetActive(true);
+                    skillRangeS.transform.position = new Vector3(GetSkillRange(skillRanges[1]).x, 0f, GetSkillRange(skillRanges[1]).z);
+                }
+                if (Input.GetKeyUp(KeyCode.S))
+                {
+                    skillRangeS.SetActive(false);
+                    skillPosS = skillRangeS.transform.position;
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
+                    skillCooltimeS = 5f;
+                    pv.RPC("PlayAnimation", RpcTarget.All, "FireStorm");
+                }
+            }
+        }
+    }
+
+    void PlayerSkillD() // 지금은 이펙트만 실행시키고 공격력 동기화는 레벨 만들때 처리 동기화처리는 OnPhotonSerializeView에서 하면 될듯
+    {
+        if (pv.IsMine)
+        {
+            if (skillCooltimeD <= 0)
+            {
+                if (Input.GetKeyDown(KeyCode.D))
+                {
+                    pv.RPC("UsePhoenix", RpcTarget.All, null);
+                    pv.RPC("PlayAnimation", RpcTarget.All, "Phoenix");
+                }
+            }
+        }
+    }
+
+    void OffPhoenix()
+    {
+        // 공격력 정상화시키기
+        skillEffectD.SetActive(false);
     }
 
     Vector3 GetSkillRange(float _range)
@@ -100,9 +155,16 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
             pv.RPC("UseFireBall", RpcTarget.All, null);
         }
     }
+    public void OnUseSkillS()
+    {
+        if (pv.IsMine)
+        {
+            pv.RPC("UseFireStorm", RpcTarget.All, null);
+        }
+    }
 
     [PunRPC]
-    void FireBallAni(string _ani)
+    void PlayAnimation(string _ani)
     {
         animator.SetTrigger(_ani);
     }
@@ -112,6 +174,21 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0,180,0));
         GameObject fire = Instantiate(fireballPrefab, transform.position + Vector3.up / 2, fireRot);
-        fire.GetComponent<FireBall>().targetPos = skillAPos;
+        fire.GetComponent<FireBall>().targetPos = skillPosA;
+    }
+
+    [PunRPC]
+    void UseFireStorm()
+    {
+        GameObject fire = Instantiate(firestormPrefab, skillPosS, transform.rotation);
+    }
+
+    [PunRPC]
+    void UsePhoenix()
+    {
+        skillCooltimeD = 30f;
+        skillEffectD.SetActive(true);
+        // 공격력 증가 처리하기
+        Invoke("OffPhoenix", 15f);
     }
 }
