@@ -70,7 +70,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log("4) 로비에 참가 성공");
         //Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
         //Debug.Log("5) 랜덤 방에 참가 시도");
-        PhotonNetwork.JoinRandomRoom();
+        //PhotonNetwork.JoinRandomRoom();
     }
 
     // 랜덤 방 참가 실패
@@ -104,11 +104,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log("방에 참가 성공");
         //Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
         //Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
-         if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("Waitingroom");
+            PhotonNetwork.LoadLevel("MultiplayScene");
         }
-        isjoin = true;
+        
     }
 
     // 유저명을 설정하는로직

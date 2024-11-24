@@ -16,10 +16,10 @@ public class StartSettingUi : PhotonManager
 
     public void Update()
     {
-        if (isjoin)
-            loading[0].text = "로딩 완료";
-        else
-            loading[0].text = "로딩중";
+        //if (isjoin)
+            //loading[0].text = "로딩 완료";
+        //else
+            //loading[0].text = "로딩중";
     }
 
     public void ChooseFire()
@@ -35,7 +35,7 @@ public class StartSettingUi : PhotonManager
 
     public void CloseUiandPlay()
     {
-        if (isjoin && chooseMage != "")
+        if (chooseMage != "")
         {
             int idx = Random.Range(0, spawnPoint.Length);
 
