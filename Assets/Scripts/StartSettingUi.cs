@@ -27,6 +27,11 @@ public class StartSettingUi : PhotonManager
         chooseMage = "FireWizard"; // 선택한 마법사 설정
         mageSelect.text = "파이어 위자드 선택됨"; // 선택된 마법사 텍스트 표시
     }
+    public void ChooseIce()
+    {
+        chooseMage = "IceWizard"; // 선택한 마법사 설정
+        mageSelect.text = "아이스 위자드 선택됨"; // 선택된 마법사 텍스트 표시
+    }
 
     public void CloseUiandPlay()
     {
@@ -35,7 +40,7 @@ public class StartSettingUi : PhotonManager
             int idx = Random.Range(0, spawnPoint.Length);
 
             // 선택한 마법사를 랜덤한 스폰 지점에 인스턴스화
-            PhotonNetwork.Instantiate(chooseMage, spawnPoint[idx].position, spawnPoint[idx].rotation, 0);
+            PhotonNetwork.Instantiate("Player/" + chooseMage, spawnPoint[idx].position, spawnPoint[idx].rotation, 0);
             gameObject.SetActive(false); // UI 비활성화
         }
         else

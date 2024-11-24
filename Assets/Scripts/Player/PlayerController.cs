@@ -51,6 +51,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if (pv.IsMine)
         {
             mousePosition = GetMousePosition();
+
+            AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
+                isCasting = true;
+            else
+                isCasting = false;
+
             if (!isStun && !isCasting)
                 Move();
         }
@@ -128,6 +135,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         else { return Vector3.zero; }
     }
 
+    public Vector3 GetSkillRange(float _range)
+    {
+        Vector3 direction = mousePosition - transform.position;
+        float distance = direction.magnitude;
+
+        if (distance > _range)
+        {
+            direction = direction.normalized;
+            return transform.position + direction * _range;
+        }
+        else
+            return mousePosition;
+    }
+
     // 플레이어에게 피해를 입힐 때 호출
     public void OnHitPlayer(float _damage)
     {
@@ -190,4 +211,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     #endregion
+
+
+
+    [PunRPC]
+    public void PlayAnimation(string _ani)
+    {
+        animator.SetTrigger(_ani);
+    }
 }

@@ -32,12 +32,6 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         base.Update();
         if (pv.IsMine)
         {
-            AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
-                isCasting = true;
-            else
-                isCasting = false;
-
             if (skillCooltimeA >= 0) {skillCooltimeA -= Time.deltaTime;}
             if (skillCooltimeS >= 0) {skillCooltimeS -= Time.deltaTime;}
             if (skillCooltimeD >= 0) {skillCooltimeD -= Time.deltaTime;}
@@ -134,20 +128,6 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         skillEffectD.SetActive(false);
     }
 
-    Vector3 GetSkillRange(float _range)
-    {
-        Vector3 direction = mousePosition - transform.position;
-        float distance = direction.magnitude;
-
-        if (distance > _range)
-        {
-            direction = direction.normalized;
-            return transform.position + direction * _range;
-        }
-        else
-            return mousePosition;
-    }
-
     public void OnUseSkillA()
     {
         if (pv.IsMine)
@@ -161,12 +141,6 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         {
             pv.RPC("UseFireStorm", RpcTarget.All, null);
         }
-    }
-
-    [PunRPC]
-    void PlayAnimation(string _ani)
-    {
-        animator.SetTrigger(_ani);
     }
 
     [PunRPC]

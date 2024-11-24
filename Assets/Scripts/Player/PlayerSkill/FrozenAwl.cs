@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : MonoBehaviour
+public class FrozenAwl : MonoBehaviour
 {
-    public GameObject fireRoad;
+    public GameObject IceRoad;
     public Vector3 targetPos;
     public float damage;
 
@@ -20,18 +20,18 @@ public class FireBall : MonoBehaviour
             {
                 if (summonDelay >= 0)
                     summonDelay -= Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, targetPos, 6f * Time.deltaTime);
-                if (summonDelay <= 0 )
+                transform.position = Vector3.MoveTowards(transform.position, targetPos, 10f * Time.deltaTime);
+                if (summonDelay <= 0)
                 {
-                    GameObject fire = Instantiate(fireRoad, new Vector3(transform.position.x, 0f, transform.position.z), transform.rotation);
-                    summonDelay = 0.2f;
+                    GameObject fire = Instantiate(IceRoad, new Vector3(transform.position.x, 0f, transform.position.z), transform.rotation);
+                    summonDelay = 0.1f;
                 }
             }
             else
             {
                 transform.GetChild(0).gameObject.SetActive(false);
                 transform.GetChild(1).gameObject.SetActive(true);
-                Invoke("SelfDestroy", 1.5f);
+                Invoke("SelfDestroy", 1f);
                 isDestroy = true;
             }
         }
@@ -43,19 +43,19 @@ public class FireBall : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            if (!isExplosion) 
+            if (!isExplosion)
             {
                 isDestroy = true;
                 isExplosion = true;
                 transform.GetChild(0).gameObject.SetActive(false);
                 transform.GetChild(1).gameObject.SetActive(true);
-                Invoke("SelfDestroy", 1.5f);
+                Invoke("SelfDestroy", 1f);
             }
             else
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
-                    monster.MonsterDmged(15);
+                    monster.MonsterDmged(10);
                 }
             }
         }
