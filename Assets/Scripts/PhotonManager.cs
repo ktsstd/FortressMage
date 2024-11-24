@@ -70,7 +70,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log("4) 로비에 참가 성공");
         //Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
         //Debug.Log("5) 랜덤 방에 참가 시도");
-        //PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinRandomRoom();
     }
 
     // 랜덤 방 참가 실패
@@ -186,6 +186,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         ro.MaxPlayers = 4;     // 룸에 입장할 수 있는 최대 접속자 수
         ro.IsOpen = true;       // 룸의 오픈 여부
         ro.IsVisible = true;    // 로비에서 룸 목록에 노출시킬 여부
+
 
         // 룸 생성
         PhotonNetwork.CreateRoom(SetRoomName(), ro);
