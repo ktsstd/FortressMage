@@ -8,14 +8,14 @@ using TMPro;
 public class RoomData : MonoBehaviour
 {
      private RoomInfo _roomInfo;
-    // ÇÏÀ§¿¡ ÀÖ´Â TMP_Text¸¦ ÀúÀåÇÒ º¯¼ö
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ TMP_Textï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private TMP_Text roomNameText;
     [SerializeField] private TMP_Text roomPlayerCountText;
 
-    // PhotonManager Á¢±Ù º¯¼ö
+    // PhotonManager ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private PhotonManager photonManager;
 
-    // ÇÁ·ÎÆÛÆ¼ Á¤ÀÇ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½
     public RoomInfo RoomInfo
     {
         get
@@ -25,31 +25,31 @@ public class RoomData : MonoBehaviour
         set
         {
             _roomInfo = value;
-            // ·ë Á¤º¸ Ç¥½Ã
+            // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
            roomNameText.text = _roomInfo.Name;
            roomPlayerCountText.text = $"({_roomInfo.PlayerCount}/{_roomInfo.MaxPlayers})";
 
-           // ¹öÆ° Å¬¸¯ ÀÌº¥Æ®¿¡ ÇÔ¼ö ¿¬°á
+           // ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
            GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnEnterRoom(_roomInfo.Name));
         }
     }
     void Awake()
     {
-        // ÃÊ±âÈ­ ½Ã ÇÏÀ§ ÄÄÆ÷³ÍÆ® Ã£±â
+        // ï¿½Ê±ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Ã£ï¿½ï¿½
         if (roomNameText == null || roomPlayerCountText == null)
         {
             TMP_Text[] textComponents = GetComponentsInChildren<TMP_Text>();
-            roomNameText = textComponents[0]; // Ã¹ ¹øÂ° TMP_Text¸¦ ·ë ÀÌ¸§À¸·Î ¼³Á¤
-            roomPlayerCountText = textComponents[1]; // µÎ ¹øÂ° TMP_Text¸¦ ÀÎ¿ø¼ö·Î ¼³Á¤
+            roomNameText = textComponents[0]; // Ã¹ ï¿½ï¿½Â° TMP_Textï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            roomPlayerCountText = textComponents[1]; // ï¿½ï¿½ ï¿½ï¿½Â° TMP_Textï¿½ï¿½ ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         photonManager = GameObject.Find("PhotonManager").GetComponent<PhotonManager>();
     }
     void OnEnterRoom(string roomName)
     {
-        // À¯Àú¸í ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         photonManager.SetUserId();
-        // ·ë Á¢¼Ó
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         PhotonNetwork.JoinRoom(roomName);
     }
 }

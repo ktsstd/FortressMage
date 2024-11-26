@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class IceSpirit : MonsterAI
 {
@@ -15,7 +16,7 @@ public class IceSpirit : MonsterAI
         Speed = 3f; // 몬스터 이동 속도 설정
         AttackCooldown = 8.0f; // 공격 쿨타임 설정
         attackRange = 25.0f; // 공격 범위 설정
-        MaxHp = 40f;
+        MaxHp = 20f;
         CurHp = MaxHp;
     }
 
@@ -50,11 +51,10 @@ public class IceSpirit : MonsterAI
         }
     }
 
-    // 발사체를 발사하는 함수
     private void LaunchProjectile()
     {
-        // 발사체 생성 (현재 몬스터의 위치에서 생성)
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        // 발사체를 PhotonNetwork.Instantiate를 사용하여 생성
+        GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab.name, transform.position, Quaternion.identity);
 
         // 생성된 발사체에서 Projectile 스크립트를 가져옴
         Projectile projectileScript = projectile.GetComponent<Projectile>();

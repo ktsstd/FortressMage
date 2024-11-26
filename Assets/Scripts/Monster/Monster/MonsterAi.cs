@@ -12,7 +12,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public float attackRange = 2.0f;  // 몬스터의 공격 범위
     public float attackCooldown = 2f; // 공격 후 쿨타임
     public float attackTimer = 0f;    // 공격 대기 시간 타이머
-    public float MaxHp = 30f;         // 몬스터의 최대 체력
+    public float MaxHp = 20f;         // 몬스터의 최대 체력
     public float CurHp;               // 몬스터의 현재 체력
     public bool hasHealed;            // 힐 여부 체크
 
@@ -105,6 +105,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
             // 이 클라이언트에서 몬스터 위치와 회전을 전송
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(attackCooldown);
             stream.SendNext(CurHp);
         }
         else
@@ -113,6 +114,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
             transform.position = (Vector3)stream.ReceiveNext();
             transform.rotation = (Quaternion)stream.ReceiveNext();
             CurHp = (float)stream.ReceiveNext();
+            attackCooldown = (float)stream.ReceiveNext();
         }
     }
 

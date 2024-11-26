@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2933812568571607649}
   - component: {fileID: 8824023999314403882}
   - component: {fileID: 9220682483364042288}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 5921100734397734708}
   - component: {fileID: 5044601229969561760}
   - component: {fileID: -8075039902567523734}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: ElMonster1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -372,7 +372,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 5044601229969561760}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

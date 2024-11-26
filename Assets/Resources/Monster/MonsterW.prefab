@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2618016897039264257}
   - component: {fileID: 123045839252756245}
   - component: {fileID: -1315244261316685053}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MonsterW
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 6020076503114508669}
   - component: {fileID: 8925342834681567894}
   - component: {fileID: 584464243992093789}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 1966268126156964530}
   - component: {fileID: 5064735076133564080}
   - component: {fileID: 7010728113330328922}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

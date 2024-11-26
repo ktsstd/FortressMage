@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8458841560289046730}
   - component: {fileID: 2288657551765586146}
   - component: {fileID: 735349219956563220}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 2514038660588688657}
   - component: {fileID: 6021450241677514134}
   - component: {fileID: -3779659824238732024}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElMonster2
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -4,24 +4,21 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-public class LightSpirit : MonoBehaviourPun , IPunObservable
+public class LightSpirit : MonsterAI, IPunObservable
 {
     private Animator animator;
     private Transform castleTransform;
-    private NavMeshAgent agent;
-    private LayerMask obstacleMask;
     private ParticleSystem particleSys;
 
-    private float attackRange = 1.0f;
-    private float MaxHp = 30f;
-    private float CurHp;
     private float stopDistance = 10.0f;
     // private float fadeDuration = 8.0f;
 
     private bool StartAttack = false;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+        MaxHp = 20f;
         CurHp = MaxHp;
         StartAttack = false;
         animator = GetComponent<Animator>();
@@ -36,16 +33,10 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
         {
             return;
         }
-        agent = GetComponent<NavMeshAgent>();
-        obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
     }
 
-    private void Update()
+    public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            particleSys.Play();
-        }
         if (castleTransform == null) return;
 
         float distanceToCastle = Vector3.Distance(transform.position, castleTransform.position);
@@ -60,86 +51,19 @@ public class LightSpirit : MonoBehaviourPun , IPunObservable
             agent.ResetPath();
             if (!StartAttack)
             {
-                Debug.Log("212312312");
                 StartAttack = true;
                 StartCoroutine(LightAttackStart());
             }
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            // 이 클라이언트에서 몬스터 위치와 회전을 전송
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-            stream.SendNext(CurHp);
-        }
-        else
-        {
-            // 다른 클라이언트에서 몬스터 위치와 회전을 수신
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
-            CurHp = (float)stream.ReceiveNext();
-        }
-    }
-
     private IEnumerator LightAttackStart()
     {
         yield return new WaitForSeconds(3f);
-        Debug.Log("2");
-        animator.SetBool("StartAttack", true);
-        Debug.Log("3");
-        particleSys.Play();
-        Debug.Log("4");
-        yield return new WaitForSeconds(5f);
-        photonView.RPC("LightSpiritDie", RpcTarget.All);
-        yield break;
-    }
-
-    private IEnumerator StartDying()
-    {
-        // float elapsed = 0f;
-
-        // // 점점 투명해지는 효과
-        // while (elapsed < fadeDuration)
-        // {
-        //     elapsed += Time.deltaTime;
-        //     float alpha = Mathf.Lerp(1f, -0.8f, elapsed / fadeDuration);
-
-        //     foreach (MeshRenderer renderer in rendererObject)
-        //     {
-        //         renderer.material.SetFloat("_Tweak_transparency", alpha);
-        //     }
-
-        //     yield return null;
-        // }
-
-        photonView.RPC("LightSpiritDie", RpcTarget.All);
-        yield break;
-    }
-
-    public void MonsterDmged(int playerdamage)
-    {
-        CurHp -= playerdamage; 
-        if (agent != null && agent.enabled)
-            {
-                agent.isStopped = true;
-            }
-            animator.speed = 0f;
-            StopCoroutine(LightAttackStart());
-            StartCoroutine(StartDying());
-
-        if (CurHp <= 0) // 현재 체력이 0 이하일 때
-        {
-            photonView.RPC("LightSpiritDie", RpcTarget.All);
-        }
-    }
-
-    [PunRPC]
-    public void LightSpiritDied()
-    {
-        Destroy(gameObject);
+        // animator.SetBool("StartAttack", true);
+        // particleSys.Play();
+        // yield return new WaitForSeconds(5f);
+        // photonView.RPC("MonsterDied", RpcTarget.All);
+        // yield break; 
     }
 }
