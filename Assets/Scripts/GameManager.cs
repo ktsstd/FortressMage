@@ -14,6 +14,25 @@ public class GameManager : MonoBehaviour
     private int maxMonsterCount = 2;
     private float Wave = 1;
 
+    private static GameManager _instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManager>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("GameManager");
+                    _instance = go.AddComponent<GameManager>();
+                }
+            }
+            return _instance;
+        }
+    }
+
     void Start()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -28,7 +47,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Update()
+    public void CheckMonsters()
     {
         if (!isMonsterAlive())
         {
@@ -49,18 +68,6 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-
-    // private IEnumerator StartSpawnMonster()
-    // {
-    //     for (int i = 0; i < maxMonsterCount; i++)
-    //     {
-    //         int normalMonsterRandom = Random.Range(0, normalMonster.Length);
-    //         int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-
-    //         GameObject monster = PhotonNetwork.Instantiate("Monster/" + normalMonster[normalMonsterRandom].name, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-    //         yield return new WaitForSeconds(5f);
-    //     }
-    // }
 
     private IEnumerator StartTestWave()
     {

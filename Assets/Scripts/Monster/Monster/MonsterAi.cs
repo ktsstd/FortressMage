@@ -181,6 +181,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void MonsterDied()
     {
-        Destroy(this.gameObject);
+        PhotonNetwork.Destroy(this.gameObject);
+        GameManager.Instance.CheckMonsters();
     }
 }
