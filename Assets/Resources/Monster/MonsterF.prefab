@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 20064139662611543}
   - component: {fileID: 2428458286992649080}
   - component: {fileID: 3904748812090829862}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 2967815848262447539}
   - component: {fileID: 37647226082533091}
   - component: {fileID: 700524989755144839}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MonsterF
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using Photon.Pun;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
 {
     private Vector3 targetPosition; // 목표 위치
     private float launchHeight = 5f; // 포물선의 최대 높이
@@ -9,12 +10,6 @@ public class Projectile : MonoBehaviour
     private int monsterDamage;
 
     private IceSpirit iceSpirit;
-
-    void Start()
-    {
-        GameObject iceSpiritObj = GameObject.FindWithTag("IceSpirit");
-        iceSpirit = iceSpiritObj.GetComponent<IceSpirit>();
-    }
 
     // 초기화 메서드: 목표 위치와 투사체 속도를 설정
     public void Initialize(Vector3 target, float projectileSpeed, int damage)
@@ -60,14 +55,37 @@ public class Projectile : MonoBehaviour
         // 목표 위치에 도달했을 때 투사체 위치 업데이트
         transform.position = targetPosition;
 
-        Destroy(gameObject); // 목표에 도달 후 투사체 삭제
+        photonView.RPC("DestroyObj", RpcTarget.All);
+    }
+    
+    [PunRPC]
+    public void DestroyObj()
+    {
+        PhotonNetwork.Destroy(gameObject);
+        GameManager.Instance.CheckMonsters();
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // 이 클라이언트에서 몬스터 위치와 회전을 전송
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else
+        {
+            // 다른 클라이언트에서 몬스터 위치와 회전을 수신
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+        }
     }
 
     void OnTriggerEnter(Collider other) 
     {
-        if (other.gameObject.tag == "Player")
-        {
-            iceSpirit.AttackPlayer(monsterDamage);
-        }
+        // if (other.gameObject.tag == "Player")
+        // {
+        //     iceSpirit.AttackPlayer(monsterDamage);
+        // }
     }
 }

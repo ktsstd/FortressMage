@@ -91,11 +91,37 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < maxMonsterCount; i++)
             {
-                foreach (var SecondWave in SecondWaves)
+                foreach (var FirstWave in FirstWaves)
                 {
                     int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(SecondWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(SecondWave == "Monster/EliteMonsetr2" ? 2f : 0.1f);
+                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
+                }
+            }
+        }
+
+        else if (Wave == 3)
+        {
+            for (int i = 0; i < maxMonsterCount; i++)
+            {
+                foreach (var FirstWave in FirstWaves)
+                {
+                    int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
+                }
+            }
+        }
+
+        else if (Wave == 4)
+        {
+            for (int i = 0; i < maxMonsterCount; i++)
+            {
+                foreach (var FirstWave in FirstWaves)
+                {
+                    int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
                 }
             }
         }

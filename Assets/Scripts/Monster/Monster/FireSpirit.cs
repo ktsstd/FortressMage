@@ -10,7 +10,7 @@ public class FireSpirit : MonsterAI
         attackRange = 2.0f; 
         attackCooldown = 1.5f;
         MonsterDmg = 20;
-        MaxHp = 60f;
+        MaxHp = 20f;
         CurHp = MaxHp;
     }
 
