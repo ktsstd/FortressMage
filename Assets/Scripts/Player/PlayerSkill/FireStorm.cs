@@ -21,7 +21,7 @@ public class FireStorm : MonoBehaviour
 
         timeElapsed += Time.deltaTime;
         float lerpFactor = timeElapsed / 2f;
-        transform.GetChild(0).localScale = Vector3.Lerp(oriScale * 0.5f, oriScale * 2.5f, lerpFactor);
+        transform.GetChild(0).localScale = Vector3.Lerp(oriScale * 0.5f, oriScale * 1.5f, lerpFactor);
     }
 
     private void OnTriggerStay(Collider other)

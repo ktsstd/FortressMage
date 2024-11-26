@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &163638502166798393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6354254833643393707}
+  - component: {fileID: 8291331517359585062}
+  - component: {fileID: 4755526139195350413}
+  m_Layer: 0
+  m_Name: D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6354254833643393707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163638502166798393}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 24, y: 0.1, z: 24}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3778937549989159828}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8291331517359585062
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163638502166798393}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4755526139195350413
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163638502166798393}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ce36ab66ff7b0f64e89d84bc8214f5da, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &381442439362798692
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +588,7 @@ Transform:
   m_Children:
   - {fileID: 5022563728351573395}
   - {fileID: 6824591215271579015}
+  - {fileID: 6354254833643393707}
   - {fileID: 2773105548181305909}
   - {fileID: 6591256268317233104}
   m_Father: {fileID: 0}
@@ -534,8 +618,17 @@ MonoBehaviour:
   isCasting: 0
   skillRangeA: {fileID: 8787561120764067900}
   skillRangeS: {fileID: 4741379218481990174}
+  skillRangeD: {fileID: 163638502166798393}
+  blizzardPrefab: {fileID: 8852427959976814246, guid: eab186d1682939e4f95cd345c6ea8fd6, type: 3}
   frozenawlPrefab: {fileID: 4670809554959079328, guid: 15118b3764070db448f171b56611ad43, type: 3}
   frostShacklesPrefab: {fileID: 7511575791165034733, guid: 0f46604808742584eb123afef7007daf, type: 3}
+  iceBulletPrefab:
+  - {fileID: 8610177321016064822, guid: d2a550c90d3fd4a4b8fd450c9990c3d7, type: 3}
+  - {fileID: 201377725383776024, guid: c5abe48ac6e496747ac19de9a6899b87, type: 3}
+  - {fileID: 251919389987212981, guid: 3f5ce674e3cc9284989caa2da4c605cb, type: 3}
+  - {fileID: 4326816910946480947, guid: 883c635d0ead12547873259aff0b22f4, type: 3}
+  - {fileID: 2392458153071845097, guid: 8c627ae7d54b79c4eba6635afcba6abb, type: 3}
+  - {fileID: 5685412101350608505, guid: 9db64f1a54ccc4746b72bdf2ade57c54, type: 3}
 --- !u!136 &6239952159459716009
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -655,6 +748,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: FrostShackles
+  - Type: 9
+    SynchronizeType: 0
+    Name: Blizzard
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
