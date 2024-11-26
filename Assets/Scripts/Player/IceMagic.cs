@@ -11,7 +11,12 @@ public class IceMagic : PlayerController
     private Vector3 skillPosA;
     private float skillCooltimeA;
 
+    public GameObject skillRangeS;
+    private Vector3 skillPosS;
+    private float skillCooltimeS;
+
     public GameObject frozenawlPrefab;
+    public GameObject frostShacklesPrefab;
 
     public override void Start()
     {
@@ -24,13 +29,13 @@ public class IceMagic : PlayerController
         if (pv.IsMine)
         {
             if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
-            // if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
+            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
             // if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
         }
         if (!isCasting)
         {
             PlayerSkillA();
-            // PlayerSkillS();
+            PlayerSkillS();
             // PlayerSkillD();
         }
     }
@@ -41,13 +46,13 @@ public class IceMagic : PlayerController
         if (stream.IsWriting)
         {
             stream.SendNext(skillPosA);
-            // stream.SendNext(skillPosS);
+            stream.SendNext(skillPosS);
             // stream.SendNext(skillPosD);
         }
         else
         {
             skillPosA = (Vector3)stream.ReceiveNext();
-            // skillPosS = (Vector3)stream.ReceiveNext();
+            skillPosS = (Vector3)stream.ReceiveNext();
             // skillPosD = (Vector3)stream.ReceiveNext();
         }
     }
@@ -77,6 +82,26 @@ public class IceMagic : PlayerController
         }
     }
 
+    void PlayerSkillS()
+    {
+        if (skillCooltimeS <= 0)
+        {
+            if (Input.GetKey(KeyCode.S))
+            {
+                skillRangeS.SetActive(true);
+                skillRangeS.transform.position = new Vector3(GetSkillRange(skillRanges[1]).x, 0.1f, GetSkillRange(skillRanges[1]).z);
+            }
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                skillRangeS.SetActive(false);
+                transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
+                skillPosS = new Vector3(GetSkillRange(skillRanges[0]).x, 0.1f, GetSkillRange(skillRanges[0]).z);
+                skillCooltimeS = 5f;
+                pv.RPC("PlayAnimation", RpcTarget.All, "FrostShackles");
+            }
+        }
+    }
+
     public void OnUseSkillA()
     {
         if (pv.IsMine)
@@ -85,11 +110,25 @@ public class IceMagic : PlayerController
         }
     }
 
+    public void OnUseSkillS()
+    {
+        if (pv.IsMine)
+        {
+            pv.RPC("UseFrostShackles", RpcTarget.All, null);
+        }
+    }
+
     [PunRPC]
     void UseFrozenAwl()
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0));
-        GameObject fire = Instantiate(frozenawlPrefab, transform.position + Vector3.up / 2, fireRot);
-        fire.GetComponent<FrozenAwl>().targetPos = skillPosA;
+        GameObject ice = Instantiate(frozenawlPrefab, transform.position + Vector3.up / 2, fireRot);
+        ice.GetComponent<FrozenAwl>().targetPos = skillPosA;
+    }
+
+    [PunRPC]
+    void UseFrostShackles()
+    {
+        GameObject frostShackles = Instantiate(frostShacklesPrefab, skillPosS, transform.rotation);
     }
 }

@@ -93,7 +93,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                 if (Input.GetKey(KeyCode.S))
                 {
                     skillRangeS.SetActive(true);
-                    skillRangeS.transform.position = new Vector3(GetSkillRange(skillRanges[1]).x, 0f, GetSkillRange(skillRanges[1]).z);
+                    skillRangeS.transform.position = new Vector3(GetSkillRange(skillRanges[1]).x, 0.1f, GetSkillRange(skillRanges[1]).z);
                 }
                 if (Input.GetKeyUp(KeyCode.S))
                 {
