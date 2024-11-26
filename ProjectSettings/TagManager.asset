@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Castle
   - skilltower
+  - Obstacle
   layers:
   - Default
   - TransparentFX
