@@ -11,6 +11,7 @@ public class LightSpirit : MonsterAI, IPunObservable
     private ParticleSystem particleSys;
 
     private float stopDistance = 10.0f;
+    private float LightMonsterSpeed = 5.0f;
     // private float fadeDuration = 8.0f;
 
     private bool StartAttack = false;
@@ -19,6 +20,7 @@ public class LightSpirit : MonsterAI, IPunObservable
     {
         base.Start();
         MaxHp = 20f;
+        agent.speed = LightMonsterSpeed;
         CurHp = MaxHp;
         StartAttack = false;
         animator = GetComponent<Animator>();
@@ -43,7 +45,6 @@ public class LightSpirit : MonsterAI, IPunObservable
 
         if (distanceToCastle > attackRange + stopDistance)
         {
-            agent.speed = 10;
             agent.SetDestination(castleTransform.position);
         }
         else if (distanceToCastle <= attackRange + stopDistance && distanceToCastle > attackRange)
@@ -60,10 +61,12 @@ public class LightSpirit : MonsterAI, IPunObservable
     private IEnumerator LightAttackStart()
     {
         yield return new WaitForSeconds(3f);
-        // animator.SetBool("StartAttack", true);
-        // particleSys.Play();
-        // yield return new WaitForSeconds(5f);
-        // photonView.RPC("MonsterDied", RpcTarget.All);
-        // yield break; 
+        animator.SetBool("StartAttack", true);
+        particleSys.Play();
+        yield return new WaitForSeconds(3f);
+        // photonView.RPC("성벽 데미지 주는거", RpcTarget.All);
+        yield return new WaitForSeconds(2f);
+        photonView.RPC("MonsterDied", RpcTarget.All);
+        yield break;
     }
 }
