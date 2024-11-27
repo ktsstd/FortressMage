@@ -166,15 +166,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2428716595181184330, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.3
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 2428716595181184330, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.3
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 2428716595181184330, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.3
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 2428716595181184330, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -188,17 +188,29 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6649260186758029198, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7499994433929546210, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7499994433929546210, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8560298839196282388, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8560298839196282388, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8560298839196282388, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8560298839196282388, guid: 9fae096a1aeac0b46871baa95f670a3d, type: 3}
       propertyPath: m_LocalPosition.x

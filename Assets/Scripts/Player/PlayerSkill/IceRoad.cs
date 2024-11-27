@@ -5,10 +5,15 @@ using UnityEngine;
 public class IceRoad : MonoBehaviour
 {
     float damageDelay;
-
+    float summonTime;
     private void Start()
     {
-        Invoke("SelfDestroy", 3.1f);
+        if (gameObject.name == "IceRoad")
+            summonTime = 3.1f;
+        else
+            summonTime = 5.1f;
+
+        Invoke("SelfDestroy", summonTime);
     }
     private void OnTriggerStay(Collider other)
     {
