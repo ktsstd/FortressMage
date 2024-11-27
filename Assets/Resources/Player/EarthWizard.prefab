@@ -616,7 +616,9 @@ MonoBehaviour:
   isStun: 0
   isCasting: 0
   skillRangeA: {fileID: 2390296628994692440}
-  stone: {fileID: 5259541723441669545, guid: 9f7dd48e9f958764c9d575fc6eb6b207, type: 3}
+  skillRangeS: {fileID: 852522701287007955}
+  stonePrefab: {fileID: 5259541723441669545, guid: 9f7dd48e9f958764c9d575fc6eb6b207, type: 3}
+  earthquakePrefab: {fileID: 7565956224638505201, guid: 4faa16e8107a0784f9dfcc80a57dfdb1, type: 3}
 --- !u!136 &8565425117088960542
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -730,6 +732,12 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 0
     Name: IsRun
+  - Type: 9
+    SynchronizeType: 0
+    Name: StoneShoot
+  - Type: 9
+    SynchronizeType: 0
+    Name: Earthquake
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

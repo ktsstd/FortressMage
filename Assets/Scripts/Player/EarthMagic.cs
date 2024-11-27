@@ -12,8 +12,13 @@ public class EarthMagic : PlayerController
     private Vector3 skillPosA;
     private float skillCooltimeA;
 
+    public GameObject skillRangeS;
+    private Vector3 skillPosS;
+    private float skillCooltimeS;
 
-    public GameObject stone;
+
+    public GameObject stonePrefab;
+    public GameObject earthquakePrefab;
 
     public override void Start()
     {
@@ -26,13 +31,13 @@ public class EarthMagic : PlayerController
         if (pv.IsMine)
         {
             if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
-            // if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
+            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
             // if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
         }
         if (!isCasting)
         {
             PlayerSkillA();
-            // PlayerSkillS();
+            PlayerSkillS();
             // PlayerSkillD();
         }
     }
@@ -43,12 +48,12 @@ public class EarthMagic : PlayerController
         if (stream.IsWriting)
         {
             stream.SendNext(skillPosA);
-            // stream.SendNext(skillPosS);
+            stream.SendNext(skillPosS);
         }
         else
         {
             skillPosA = (Vector3)stream.ReceiveNext();
-            // skillPosS = (Vector3)stream.ReceiveNext();
+            skillPosS = (Vector3)stream.ReceiveNext();
         }
     }
 
@@ -77,6 +82,30 @@ public class EarthMagic : PlayerController
         }
     }
 
+    void PlayerSkillS()
+    {
+        if (pv.IsMine)
+        {
+            if (skillCooltimeS <= 0)
+            {
+                if (Input.GetKey(KeyCode.S))
+                {
+                    skillRangeS.SetActive(true);
+                    skillRangeS.transform.position = Vector3.Lerp(transform.position, GetSkillRange(skillRanges[0]), 0.5f);
+                    skillRangeS.transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
+                }
+                if (Input.GetKeyUp(KeyCode.S))
+                {
+                    skillRangeS.SetActive(false);
+                    skillPosS = skillRangeS.transform.position;
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
+                    skillCooltimeS = 3f;
+                    pv.RPC("PlayAnimation", RpcTarget.All, "Earthquake");
+                }
+            }
+        }
+    }
+
     public void OnUseSkillA()
     {
         if (pv.IsMine)
@@ -84,12 +113,26 @@ public class EarthMagic : PlayerController
             pv.RPC("UseStoneShoot", RpcTarget.All, null);
         }
     }
+    public void OnUseSkillS()
+    {
+        if (pv.IsMine)
+        {
+            pv.RPC("UseEarthquake", RpcTarget.All, null);
+        }
+    }
 
     [PunRPC]
     void UseStoneShoot()
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(90, 0, 0));
-        GameObject fire = Instantiate(stone, transform.position + Vector3.up / 2, fireRot);
+        GameObject fire = Instantiate(stonePrefab, transform.position + Vector3.up / 2, fireRot);
         fire.GetComponent<Stone>().targetPos = skillPosA;
+    }
+
+    [PunRPC]
+    void UseEarthquake()
+    {
+        Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0));
+        GameObject fire = Instantiate(earthquakePrefab, skillPosS, fireRot);
     }
 }
