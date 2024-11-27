@@ -33,7 +33,7 @@ public class Turret : MonoBehaviourPun
     private void Update()
     {
         // 스페이스바 입력 감지
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             TakeDamage(damage); // 데미지를 입힘
         }
