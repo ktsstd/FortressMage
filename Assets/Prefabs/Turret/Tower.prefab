@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 1667264539384336550}
   - component: {fileID: 3688334165049518762}
   - component: {fileID: 2709573470391544898}
+  - component: {fileID: -2141714069814804266}
   m_Layer: 0
-  m_Name: Turret1
+  m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 3694044429401997535}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -129.5, y: 10.4, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: 14.6, y: 3.98, z: 0}
+  m_LocalScale: {x: 2, y: 4, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 470361682079732571}
@@ -106,7 +107,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 2.5
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &2709573470391544898
@@ -124,27 +125,40 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5442349312387205695, guid: b22d88d6c08166d43a878b209c2a1a2c, type: 3}
   firePoint: {fileID: 470361682079732571}
   minLaunchPower: 50
-  maxLaunchPower: 200
+  maxLaunchPower: 100
   fireRate: 1
   maxFireRate: 0.2
   explosionRadius: 3
   fireRateIncreaseAmount: 0.2
   targetLayer:
     serializedVersion: 2
-    m_Bits: 128
-  detectionRadius: 100
+    m_Bits: 256
+  detectionRadius: 30
+  health: 100
   damage: 20
   increaseAmount: 5
-  goldManager: {fileID: 0}
-  turretUpgradeCost: 50
-  turretMaxUpgrades: 3
-  turretCostIncreaseRate: 1.5
-  damageUpgradeCost: 50
-  damageMaxUpgrades: 3
-  damageCostIncreaseRate: 1.5
-  explosionRadiusUpgradeAmount: 1
-  explosionRadiusUpgradeCost: 50
-  explosionRadiusMaxUpgrades: 3
+--- !u!114 &-2141714069814804266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3694044429401997535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7827771565379932167
 GameObject:
   m_ObjectHideFlags: 0

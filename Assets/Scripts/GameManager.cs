@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     private int maxMonsterCount = 2;
     private float Wave = 1;
+    private bool isTurretDestroyedAtWave1 = false; // 웨이브 1에서 파괴된 포탑 추적
+    private bool isTurretDestroyedAtWave2 = false; // 웨이브 2에서 파괴된 포탑 추적
 
     private static GameManager _instance;
 
@@ -31,6 +33,11 @@ public class GameManager : MonoBehaviour
             }
             return _instance;
         }
+    }
+
+    public float GetWave()
+    {
+        return Wave;
     }
 
     void Start()
@@ -102,6 +109,10 @@ public class GameManager : MonoBehaviour
 
         else if (Wave == 3)
         {
+            if (Wave == 3 && isTurretDestroyedAtWave1) // 웨이브 1에서 파괴된 경우
+            {
+                ResetTurretHealthOnWave(3);
+            }
             for (int i = 0; i < maxMonsterCount; i++)
             {
                 foreach (var FirstWave in FirstWaves)
@@ -115,6 +126,10 @@ public class GameManager : MonoBehaviour
 
         else if (Wave == 4)
         {
+            if (Wave == 4 && isTurretDestroyedAtWave2) // 웨이브 2에서 파괴된 경우
+            {
+                ResetTurretHealthOnWave(4);
+            }
             for (int i = 0; i < maxMonsterCount; i++)
             {
                 foreach (var FirstWave in FirstWaves)
@@ -127,5 +142,50 @@ public class GameManager : MonoBehaviour
         }
         Wave += 1;
         Debug.Log(Wave);
+    }
+
+    private void ResetTurretHealthOnWave(float wave)
+    {
+        Turret turret = FindObjectOfType<Turret>(); // 유일한 Turret 객체 찾기
+        if (turret != null && turret.health == 0)
+        {
+            turret.ResetHealth(); // 포탑 체력 리셋
+            Debug.Log("Turret health reset on Wave " + wave);
+        }
+
+        Skilltower skilltower = FindObjectOfType<Skilltower>();
+        if (skilltower != null && skilltower.health == 0)
+        {
+            skilltower.ResetHealth();
+            Debug.Log("Skilltower health reset on Wave " + wave);
+        }
+    }
+
+    public void CheckTurretDestroyedOnWave(float wave)
+    {
+        Turret turret = FindObjectOfType<Turret>(); // 유일한 Turret 객체 찾기
+        if (turret != null && turret.health == 0)
+        {
+            if (wave == 1)
+            {
+                isTurretDestroyedAtWave1 = true; // 웨이브 1에서 포탑이 파괴되었음을 추적
+            }
+            else if (wave == 2)
+            {
+                isTurretDestroyedAtWave2 = true; // 웨이브 2에서 포탑이 파괴되었음을 추적
+            }
+        }
+        Skilltower skilltower = FindObjectOfType<Skilltower>();
+        if (skilltower != null && skilltower.health == 0)
+        {
+            if (wave == 1)
+            {
+                isTurretDestroyedAtWave1 = true; // 웨이브 1에서 포탑이 파괴되었음을 추적
+            }
+            else if (wave == 2)
+            {
+                isTurretDestroyedAtWave2 = true; // 웨이브 2에서 포탑이 파괴되었음을 추적
+            }
+        }
     }
 }

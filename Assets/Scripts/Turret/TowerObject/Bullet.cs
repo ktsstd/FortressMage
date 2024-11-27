@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviourPun
 {
     public float damage;               // 발사체가 입힐 데미지
     public float explosionRadius = 3f; // 범위 공격 반경
@@ -15,35 +16,38 @@ public class Bullet : MonoBehaviour
         explosionRadius = bulletExplosionRadius;  // 폭발 반경 설정
     }
 
-    private void OnTriggerEnter(Collider collision)
+     private void OnTriggerEnter(Collider collision)
     {
-        // 충돌한 오브젝트가 "Enemy", "Elite" 또는 "Ground" 태그를 가진 오브젝트인지 확인
+        // 적 또는 바닥에 충돌 시 폭발 처리
         if (collision.gameObject.CompareTag("Enemy") || 
             collision.gameObject.CompareTag("Elite") || 
             collision.gameObject.CompareTag("Ground"))
         {
-            // 범위 공격 실행
-            Explode();
+            // 폭발 동기화 실행 (마스터 클라이언트에서만)
+            if (PhotonNetwork.IsMasterClient)
+            {
+                photonView.RPC("Explode", RpcTarget.AllBuffered); // 폭발 처리 동기화
+            }
 
             // 발사체 제거
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 
-    // 범위 공격을 수행하는 함수
+[PunRPC]
     void Explode()
     {
-        // 폭발 범위 내의 적 탐색
+        // 폭발 반경 내의 적 탐색
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
 
-        // 범위 내 모든 적에게 피해 적용
         foreach (Collider enemyCollider in enemiesInRange)
         {
-            //Enemy enemy = enemyCollider.GetComponent<Enemy>();
-            //if (enemy != null)
-            //{
-            //    enemy.TakeDamage(damage);  // 적에게 데미지를 입힘
-            //}
+            MonsterAI monster = enemyCollider.GetComponent<MonsterAI>();
+            if (monster != null)
+            {
+                // 몬스터에게 폭발 데미지 적용
+                monster.MonsterDmged((int)damage);
+            }
         }
     }
 
