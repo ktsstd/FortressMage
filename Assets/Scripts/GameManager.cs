@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
 
     private int maxMonsterCount = 2;
     private float Wave = 1;
-    private bool isTurretDestroyedAtWave1 = false; // 웨이브 1에서 파괴된 포탑 추적
-    private bool isTurretDestroyedAtWave2 = false; // 웨이브 2에서 파괴된 포탑 추적
+    
+    private Dictionary<int, bool> isTurretDestroyedAtWave = new Dictionary<int, bool>();
 
     private static GameManager _instance;
 
@@ -82,6 +82,12 @@ public class GameManager : MonoBehaviour
         string[] FirstWaves = { "Monster/MonsterF", "Monster/MonsterI", "Monster/Spirit of Light" };
         string[] SecondWaves = { "Monster/Spirit of Dark", "Monster/Spirit of Wind", "Monster/EliteMonster1", "Monster/EliteMonsetr2" };
 
+        if (isTurretDestroyedAtWave.ContainsKey((int)Wave - 2) && isTurretDestroyedAtWave[(int)Wave - 2])
+        {
+            ResetTurretHealthOnWave(Wave);
+            isTurretDestroyedAtWave[(int)Wave - 2] = false; // 재생성 후 상태 초기화
+        }
+
         if (Wave == 1)
         {
             for (int i = 0; i < maxMonsterCount; i++)
@@ -109,10 +115,6 @@ public class GameManager : MonoBehaviour
 
         else if (Wave == 3)
         {
-            if (Wave == 3 && isTurretDestroyedAtWave1) // 웨이브 1에서 파괴된 경우
-            {
-                ResetTurretHealthOnWave(3);
-            }
             for (int i = 0; i < maxMonsterCount; i++)
             {
                 foreach (var FirstWave in FirstWaves)
@@ -126,10 +128,6 @@ public class GameManager : MonoBehaviour
 
         else if (Wave == 4)
         {
-            if (Wave == 4 && isTurretDestroyedAtWave2) // 웨이브 2에서 파괴된 경우
-            {
-                ResetTurretHealthOnWave(4);
-            }
             for (int i = 0; i < maxMonsterCount; i++)
             {
                 foreach (var FirstWave in FirstWaves)
@@ -146,45 +144,40 @@ public class GameManager : MonoBehaviour
 
     private void ResetTurretHealthOnWave(float wave)
     {
-        Turret turret = FindObjectOfType<Turret>(); // 유일한 Turret 객체 찾기
+        Turret turret = FindObjectOfType<Turret>();
         if (turret != null && turret.health == 0)
         {
-            turret.ResetHealth(); // 포탑 체력 리셋
-            Debug.Log("Turret health reset on Wave " + wave);
+            turret.ResetHealth();
+            Debug.Log($"Turret health reset on Wave {wave}");
         }
 
         Skilltower skilltower = FindObjectOfType<Skilltower>();
         if (skilltower != null && skilltower.health == 0)
         {
             skilltower.ResetHealth();
-            Debug.Log("Skilltower health reset on Wave " + wave);
+            Debug.Log($"Skilltower health reset on Wave {wave}");
         }
     }
 
-    public void CheckTurretDestroyedOnWave(float wave)
+   public void CheckTurretDestroyedOnWave(float wave)
     {
-        Turret turret = FindObjectOfType<Turret>(); // 유일한 Turret 객체 찾기
+        Turret turret = FindObjectOfType<Turret>();
         if (turret != null && turret.health == 0)
         {
-            if (wave == 1)
+            if (!isTurretDestroyedAtWave.ContainsKey((int)wave))
             {
-                isTurretDestroyedAtWave1 = true; // 웨이브 1에서 포탑이 파괴되었음을 추적
-            }
-            else if (wave == 2)
-            {
-                isTurretDestroyedAtWave2 = true; // 웨이브 2에서 포탑이 파괴되었음을 추적
+                isTurretDestroyedAtWave[(int)wave] = true; // 웨이브에서 포탑 파괴 기록
+                Debug.Log($"Turret destroyed at Wave {wave}");
             }
         }
+
         Skilltower skilltower = FindObjectOfType<Skilltower>();
         if (skilltower != null && skilltower.health == 0)
         {
-            if (wave == 1)
+            if (!isTurretDestroyedAtWave.ContainsKey((int)wave))
             {
-                isTurretDestroyedAtWave1 = true; // 웨이브 1에서 포탑이 파괴되었음을 추적
-            }
-            else if (wave == 2)
-            {
-                isTurretDestroyedAtWave2 = true; // 웨이브 2에서 포탑이 파괴되었음을 추적
+                isTurretDestroyedAtWave[(int)wave] = true; // 웨이브에서 스킬타워 파괴 기록
+                Debug.Log($"Skilltower destroyed at Wave {wave}");
             }
         }
     }

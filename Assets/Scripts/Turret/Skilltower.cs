@@ -10,12 +10,18 @@ public class Skilltower : MonoBehaviourPun
     public GameObject objectToSpawn;
     public Transform spawnPoint;
     public float destroyDelay = 3f;
+    public float damage;
     
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             SpawnObject();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            TakeDamage(damage);
         }
     }
 
