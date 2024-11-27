@@ -25,12 +25,17 @@ public class StartSettingUi : PhotonManager
     public void ChooseFire()
     {
         chooseMage = "FireWizard"; // 선택한 마법사 설정
-        mageSelect.text = "파이어 위자드 선택됨"; // 선택된 마법사 텍스트 표시
+        mageSelect.text = "불마법사 선택됨"; // 선택된 마법사 텍스트 표시
     }
     public void ChooseIce()
     {
-        chooseMage = "IceWizard"; // 선택한 마법사 설정
-        mageSelect.text = "아이스 위자드 선택됨"; // 선택된 마법사 텍스트 표시
+        chooseMage = "IceWizard";
+        mageSelect.text = "얼음마법사 선택됨";
+    }
+    public void ChooseEarth()
+    {
+        chooseMage = "EarthWizard";
+        mageSelect.text = "땅마법사 선택됨";
     }
 
     public void CloseUiandPlay()
@@ -45,7 +50,7 @@ public class StartSettingUi : PhotonManager
         }
         else
         {
-            loading[1].text = "로딩중이거나 마법사를 선택하지 않음."; // 마법사 선택 오류 메시지
+            loading[1].text = "마법사를 선택하세요"; // 마법사 선택 오류 메시지
         }
     }
 }

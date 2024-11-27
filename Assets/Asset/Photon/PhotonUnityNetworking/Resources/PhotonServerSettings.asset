@@ -54,6 +54,8 @@ MonoBehaviour:
   - ApplyForceToProjectile
   - Explode
   - PlayExplosionEffect
+  - UseBlizzard
+  - UseStoneShoot
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
