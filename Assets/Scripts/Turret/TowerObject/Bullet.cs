@@ -20,7 +20,6 @@ public class Bullet : MonoBehaviourPun
     {
         // 적 또는 바닥에 충돌 시 폭발 처리
         if (collision.gameObject.CompareTag("Enemy") || 
-            collision.gameObject.CompareTag("Elite") || 
             collision.gameObject.CompareTag("Ground"))
         {
             // 폭발 동기화 실행 (마스터 클라이언트에서만)
