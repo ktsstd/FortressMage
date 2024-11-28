@@ -62,7 +62,6 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
     public void DestroyObj()
     {
         PhotonNetwork.Destroy(gameObject);
-        GameManager.Instance.CheckMonsters();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

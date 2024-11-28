@@ -7,11 +7,11 @@ TagManager:
   - Bullet
   - Enemy
   - IceSpirit
-  - Wall
   - Castle
   - skilltower
   - Obstacle
   - Ground
+  - turret
   layers:
   - Default
   - TransparentFX

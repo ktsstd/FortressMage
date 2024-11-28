@@ -20,11 +20,11 @@ public class Turret : MonoBehaviourPun
     public float damage = 20f;
     public float increaseAmount = 5f;
     
-    private bool canAttack = true; // °ø°Ý ¿©ºÎ¸¦ Ã¼Å©ÇÏ´Â º¯¼ö
+    private bool canAttack = true; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ Ã¼Å©ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private void Start()
     {
-        if (PhotonNetwork.IsMasterClient) // È£½ºÆ®¸¸ ÀÚµ¿ °ø°Ý ½ÇÇà
+        if (PhotonNetwork.IsMasterClient) // È£ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             StartCoroutine(FireContinuously());
         }
@@ -32,10 +32,10 @@ public class Turret : MonoBehaviourPun
 
     private void Update()
     {
-        // ½ºÆäÀÌ½º¹Ù ÀÔ·Â °¨Áö
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (Input.GetKeyDown(KeyCode.W))
         {
-            TakeDamage(damage); // µ¥¹ÌÁö¸¦ ÀÔÈû
+            TakeDamage(damage); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -74,10 +74,10 @@ public class Turret : MonoBehaviourPun
     [PunRPC]
     public void Fire(Transform target)
     {
-        // ³×Æ®¿öÅ©¸¦ ÅëÇØ ¹ß»çÃ¼ »ý¼º
+        // ï¿½ï¿½Æ®ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
         GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab.name, firePoint.position, Quaternion.identity);
         
-        // ¹ß»çÃ¼¿¡ PhotonView¸¦ Ãß°¡ÇÏ¿© ¹°¸® µ¿ÀÛÀ» µ¿±âÈ­
+        // ï¿½ß»ï¿½Ã¼ï¿½ï¿½ PhotonViewï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
         PhotonView projectilePhotonView = projectile.GetComponent<PhotonView>();
 
         if (projectilePhotonView != null)
@@ -91,7 +91,7 @@ public class Turret : MonoBehaviourPun
                 float launchPower = CalculateLaunchPowerByDistance(distance);
                 Vector3 force = direction * launchPower;
 
-                // ¹°¸®ÀûÀ¸·Î ¹ß»çÃ¼¸¦ ³¯¸®´Â RPC È£Ãâ
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RPC È£ï¿½ï¿½
                 photonView.RPC("ApplyForceToProjectile", RpcTarget.AllBuffered, projectilePhotonView.ViewID, force);
             }
 
@@ -131,17 +131,17 @@ public class Turret : MonoBehaviourPun
             health = 0f;
             canAttack = false;
             
-            // GameManagerÀÇ Wave °ªÀ» °¡Á®¿Í¼­ ºñ±³
+            // GameManagerï¿½ï¿½ Wave ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½ï¿½
             float currentWave = GameManager.Instance.GetWave();
-            GameManager.Instance.CheckTurretDestroyedOnWave(currentWave); // ÇöÀç ¿þÀÌºê Àü´Þ
+            GameManager.Instance.CheckTurretDestroyedOnWave(currentWave); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
         }
     }
 
     public void ResetHealth()
     {
-        health = 100f; // Ã¼·ÂÀ» 100À¸·Î ¸®¼Â
-        canAttack = true; // °ø°Ý °¡´ÉÇÏ°Ô ¼³Á¤
-        StartCoroutine(FireContinuously()); // °ø°Ý ÄÚ·çÆ¾ ´Ù½Ã ½ÃÀÛ
+        health = 100f; // Ã¼ï¿½ï¿½ï¿½ï¿½ 100ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        canAttack = true; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
+        StartCoroutine(FireContinuously()); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     private void OnDrawGizmos()

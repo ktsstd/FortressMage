@@ -11,6 +11,7 @@ public class FireSpirit : MonsterAI
         attackCooldown = 1.5f;
         MonsterDmg = 20;
         MaxHp = 20f;
+        Speed = 1f;
         CurHp = MaxHp;
     }
 

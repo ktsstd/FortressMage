@@ -5,8 +5,8 @@ using Photon.Pun;
 
 public class IceSpirit : MonsterAI
 {
-    public float projectileSpeed = 3; // 발사체 속도 설정
-    public GameObject projectilePrefab; // 발사체 프리팹 참조
+    private float projectileSpeed = 3; // 발사체 속도 설정
+    private string projectilePrefab = "Projectile/Ice"; // 발사체 프리팹 참조
 
     // Start() 함수: 몬스터 초기 설정
     public override void Start()
@@ -54,7 +54,7 @@ public class IceSpirit : MonsterAI
     private void LaunchProjectile()
     {
         // 발사체를 PhotonNetwork.Instantiate를 사용하여 생성
-        GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab.name, transform.position, Quaternion.identity);
+        GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
         // 생성된 발사체에서 Projectile 스크립트를 가져옴
         Projectile projectileScript = projectile.GetComponent<Projectile>();

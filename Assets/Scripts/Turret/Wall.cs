@@ -20,19 +20,19 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void TowerTest()
     {
-        PhotonNetwork.Destroy(this.gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // ÀÌ Å¬¶óÀÌ¾ðÆ®¿¡¼­ ¸ó½ºÅÍ À§Ä¡¿Í È¸ÀüÀ» Àü¼Û
+            // ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             stream.SendNext(health);
         }
         else
         {
-            // ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡¼­ ¸ó½ºÅÍ À§Ä¡¿Í È¸ÀüÀ» ¼ö½Å
+            // ï¿½Ù¸ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             health = (float)stream.ReceiveNext();
         }
     }

@@ -10,9 +10,12 @@ public class GameManager : MonoBehaviour
     // public GameObject[] normalMonster;
     // public GameObject[] eliteMonster;
     // public GameObject bossMonster;
+    public GameObject TestSpawnObj;
 
     private int maxMonsterCount = 2;
     private float Wave = 1;
+
+    private bool isStartWave = false;
     
     private Dictionary<int, bool> isTurretDestroyedAtWave = new Dictionary<int, bool>();
 
@@ -40,13 +43,14 @@ public class GameManager : MonoBehaviour
         return Wave;
     }
 
-    void Start()
+    public void StartWave()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("Spawning with MasterClient");
             // StartCoroutine(StartSpawnMonster());
             StartCoroutine(StartTestWave());
+            isStartWave = true;
         }
         else
         {
@@ -58,6 +62,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isMonsterAlive())
         {
+            if (!isStartWave) return;
             StartCoroutine(StartTestWave());
         }
     }
@@ -180,5 +185,39 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Skilltower destroyed at Wave {wave}");
             }
         }
+    }
+
+    public void TestButtonOn()
+    {
+        TestSpawnObj.SetActive(true);
+    }
+
+    public void TestButtonOff()
+    {
+        TestSpawnObj.SetActive(false);
+    }
+
+    public void TestSpawnFire()
+    {
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string FireMonster = "Monster/MonsterF";
+
+        PhotonNetwork.Instantiate(FireMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
+    public void TestSpawnIce()
+    {
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string IceMonster = "Monster/MonsterI";
+
+        PhotonNetwork.Instantiate(IceMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
+    public void TestSpawnLight()
+    {
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string LightMonster = "Monster/Spirit of Light";
+
+        PhotonNetwork.Instantiate(LightMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }
 }
