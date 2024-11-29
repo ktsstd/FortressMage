@@ -3861,6 +3861,10 @@ PrefabInstance:
       value: Normal_Turret
       objectReference: {fileID: 0}
     - target: {fileID: 5709505279839119893, guid: a2fda614828119b4f9300c04ebab5df9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5709505279839119893, guid: a2fda614828119b4f9300c04ebab5df9, type: 3}
       propertyPath: m_TagString
       value: turret
       objectReference: {fileID: 0}

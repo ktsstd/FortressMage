@@ -131,7 +131,7 @@ public class EarthMagic : PlayerController
                     skillRangeD.SetActive(false);
                     skillPosD = skillRangeD.transform.position;
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
-                    skillCooltimeD = 2f;
+                    skillCooltimeD = 20f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "StoneWall");
                 }
             }
@@ -156,7 +156,8 @@ public class EarthMagic : PlayerController
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseStoneWall", RpcTarget.All, null);
+            Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
+            pv.RPC("UseStoneWall", RpcTarget.All, skillPosD, fireRot);
         }
     }
 
@@ -175,11 +176,10 @@ public class EarthMagic : PlayerController
         GameObject fire = Instantiate(earthquakePrefab, skillPosS, fireRot);
     }
     [PunRPC]
-    void UseStoneWall()
+    void UseStoneWall(Vector3 _position, Quaternion _rotation)
     {
-        Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
-        GameObject fire = Instantiate(stonewallPrefab, skillPosD, fireRot);
-        fire.GetComponent<StoneWall>().oriPos = skillPosD;
-        fire.GetComponent<StoneWall>().oriRot = fireRot;
+        GameObject fire = Instantiate(stonewallPrefab, _position, _rotation);
+        fire.GetComponent<StoneWall>().oriPos = _position;
+        fire.GetComponent<StoneWall>().oriRot = _rotation;
     }
 }
