@@ -116,7 +116,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                 playerScript.OnHitPlayer(MonsterDmg);
             }
         }
-        else if (target.CompareTag("skilltower"))
+        if (target.CompareTag("skilltower"))
         {
             Skilltower skillTowerScript = target.GetComponent<Skilltower>(); 
             if (skillTowerScript != null)
@@ -124,7 +124,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                 skillTowerScript.TakeDamage(MonsterDmg);
             }
         }
-        else if (target.CompareTag("Castle"))
+        if (target.CompareTag("Castle"))
         {
             Wall castleScript = target.GetComponent<Wall>();
             if (castleScript != null)
@@ -132,7 +132,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                 castleScript.TakeDamage(MonsterDmg);
             }
         }
-        else if (target.CompareTag("turret"))
+        if (target.CompareTag("turret"))
         {
             Turret towerScript = target.GetComponent<Turret>();
             if (towerScript != null)

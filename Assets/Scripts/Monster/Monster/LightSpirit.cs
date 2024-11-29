@@ -108,7 +108,7 @@ public class LightSpirit : MonsterAI, IPunObservable
             }
         }
 
-        else if (CurTarget.CompareTag("Castle"))
+        if (CurTarget.CompareTag("Castle"))
         {
             Wall castleScript = CurTarget.GetComponent<Wall>();
             if (castleScript != null)
@@ -116,7 +116,8 @@ public class LightSpirit : MonsterAI, IPunObservable
                 castleScript.TakeDamage(MonsterDmg);
             }
         }
-        else if (CurTarget.CompareTag("turret"))
+        
+        if (CurTarget.CompareTag("turret"))
         {
             Turret towerScript = CurTarget.GetComponent<Turret>();
             if (towerScript != null)

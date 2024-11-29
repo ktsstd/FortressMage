@@ -7,16 +7,14 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
     private Vector3 targetPosition; // 목표 위치
     private float launchHeight = 5f; // 포물선의 최대 높이
     private float flightDuration = 2; // 비행에 걸리는 총 시간
-    private int monsterDamage;
-
-    private IceSpirit iceSpirit;
+    private int MonsterDmg;
 
     // 초기화 메서드: 목표 위치와 투사체 속도를 설정
     public void Initialize(Vector3 target, float projectileSpeed, int damage)
     {
         targetPosition = target; // 목표 위치 설정
         flightDuration = projectileSpeed; // 입력받은 속도로 초기화
-        monsterDamage = damage;
+        MonsterDmg = damage;
         StartCoroutine(Fly()); // 비행 코루틴 시작
     }
 
@@ -82,9 +80,37 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
 
     void OnTriggerEnter(Collider other) 
     {
-        // if (other.gameObject.tag == "Player")
-        // {
-        //     iceSpirit.AttackPlayer(monsterDamage);
-        // }
+        if (other.CompareTag("Player"))
+        {
+            PlayerController playerScript = other.GetComponent<PlayerController>();
+            if (playerScript != null)
+            {
+                playerScript.OnHitPlayer(MonsterDmg);
+            }
+        }
+        if (other.CompareTag("skilltower"))
+        {
+            Skilltower skillTowerScript = other.GetComponent<Skilltower>(); 
+            if (skillTowerScript != null)
+            {
+                skillTowerScript.TakeDamage(MonsterDmg);
+            }
+        }
+        if (other.CompareTag("Castle"))
+        {
+            Wall castleScript = other.GetComponent<Wall>();
+            if (castleScript != null)
+            {
+                castleScript.TakeDamage(MonsterDmg);
+            }
+        }
+        if (other.CompareTag("turret"))
+        {
+            Turret towerScript = other.GetComponent<Turret>();
+            if (towerScript != null)
+            {
+                towerScript.TakeDamage(MonsterDmg);
+            }
+        }
     }
 }

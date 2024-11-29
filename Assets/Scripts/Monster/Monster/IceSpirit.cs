@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class IceSpirit : MonsterAI
 {
+    private Transform closestTarget;
     private float projectileSpeed = 3; // 발사체 속도 설정
     private string projectilePrefab = "Projectile/Ice"; // 발사체 프리팹 참조
 
@@ -23,14 +24,14 @@ public class IceSpirit : MonsterAI
     // Update() 함수: 매 프레임마다 호출되는 함수
     public override void Update()
     {
-        if (player == null) return; // 플레이어가 없으면 동작하지 않음
+        closestTarget = GetClosestTarget();
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position); // 플레이어와의 거리 계산
+        float distanceToTarget = Vector3.Distance(transform.position, closestTarget.position); // 플레이어와의 거리 계산
 
         // 공격 범위 밖에 있으면 플레이어를 추적
-        if (distanceToPlayer > attackRange)
+        if (distanceToTarget > attackRange)
         {
-            agent.SetDestination(player.position); // 플레이어 위치로 이동
+            agent.SetDestination(closestTarget.position); // 플레이어 위치로 이동
         }
         else
         {
@@ -51,6 +52,28 @@ public class IceSpirit : MonsterAI
         }
     }
 
+    private Transform GetClosestTarget()
+    {
+        float closestSqrDistance = Mathf.Infinity;
+        Transform closestTarget = null;
+
+        Transform[] targets = { skillTower, turret, castle };
+
+        foreach (Transform target in targets)
+        {
+            if (target == null) continue;
+
+            float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+            if (sqrDistanceToTarget < closestSqrDistance)
+            {
+                closestSqrDistance = sqrDistanceToTarget;
+                closestTarget = target;
+            }
+        }
+
+        return closestTarget;
+    }
+
     private void LaunchProjectile()
     {
         // 발사체를 PhotonNetwork.Instantiate를 사용하여 생성
@@ -63,7 +86,7 @@ public class IceSpirit : MonsterAI
         if (projectileScript != null)
         {
             // 플레이어 위치, 발사체 속도, 몬스터 데미지를 설정하여 발사체 초기화
-            projectileScript.Initialize(player.position, projectileSpeed, MonsterDmg);
+            projectileScript.Initialize(closestTarget.position, projectileSpeed, MonsterDmg);
         }
     }
 }
