@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e692aee4436699446ab1dcaab9013dfe
+guid: 55e4f5322024f15418264f1d66ccb358
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -59,13 +59,6 @@ ModelImporter:
       events:
       - time: 0.32888874
         functionName: OnUseStoneWall
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: ec063746c4df76d49b6d6b4b8fd78c95, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.8005319
-        functionName: OnUseSkillS
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: ec063746c4df76d49b6d6b4b8fd78c95, type: 3}
         floatParameter: 0
