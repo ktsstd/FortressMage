@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class StoneWall : MonoBehaviour
 {
-    Quaternion oriRot;
-    Vector3 oriPos;
+    public Quaternion oriRot;
+    public Vector3 oriPos;
     void Start()
     {
-        oriRot = transform.rotation;
-        oriPos = transform.position;
         Invoke("SelfDestroy", 10f);
     }
 

@@ -131,7 +131,7 @@ public class EarthMagic : PlayerController
                     skillRangeD.SetActive(false);
                     skillPosD = skillRangeD.transform.position;
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
-                    skillCooltimeD = 10f;
+                    skillCooltimeD = 2f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "StoneWall");
                 }
             }
@@ -179,5 +179,7 @@ public class EarthMagic : PlayerController
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
         GameObject fire = Instantiate(stonewallPrefab, skillPosD, fireRot);
+        fire.GetComponent<StoneWall>().oriPos = skillPosD;
+        fire.GetComponent<StoneWall>().oriRot = fireRot;
     }
 }
