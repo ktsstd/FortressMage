@@ -7,4 +7,5 @@ public interface ISkillAnimationEvent
     void OnUseSkillA();
 
     void OnUseSkillS();
+    public virtual void OnUseStoneWall() { }
 }

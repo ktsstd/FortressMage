@@ -17,8 +17,14 @@ public class EarthMagic : PlayerController
     private float skillCooltimeS;
 
 
+    public GameObject skillRangeD;
+    private Vector3 skillPosD;
+    private float skillCooltimeD;
+
+
     public GameObject stonePrefab;
     public GameObject earthquakePrefab;
+    public GameObject stonewallPrefab;
 
     public override void Start()
     {
@@ -32,13 +38,13 @@ public class EarthMagic : PlayerController
         {
             if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
             if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
-            // if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
+            if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
         }
         if (!isCasting)
         {
             PlayerSkillA();
             PlayerSkillS();
-            // PlayerSkillD();
+            PlayerSkillD();
         }
     }
 
@@ -49,11 +55,13 @@ public class EarthMagic : PlayerController
         {
             stream.SendNext(skillPosA);
             stream.SendNext(skillPosS);
+            stream.SendNext(skillPosD);
         }
         else
         {
             skillPosA = (Vector3)stream.ReceiveNext();
             skillPosS = (Vector3)stream.ReceiveNext();
+            skillPosD = (Vector3)stream.ReceiveNext();
         }
     }
 
@@ -91,16 +99,40 @@ public class EarthMagic : PlayerController
                 if (Input.GetKey(KeyCode.S))
                 {
                     skillRangeS.SetActive(true);
-                    skillRangeS.transform.position = Vector3.Lerp(transform.position, GetSkillRange(skillRanges[0]), 0.5f);
-                    skillRangeS.transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
+                    skillRangeS.transform.position = Vector3.Lerp(transform.position, GetSkillRange(skillRanges[1]), 0.5f);
+                    skillRangeS.transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
                 }
                 if (Input.GetKeyUp(KeyCode.S))
                 {
                     skillRangeS.SetActive(false);
                     skillPosS = skillRangeS.transform.position;
-                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
                     skillCooltimeS = 3f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "Earthquake");
+                }
+            }
+        }
+    }
+
+    void PlayerSkillD()
+    {
+        if (pv.IsMine)
+        {
+            if (skillCooltimeD <= 0)
+            {
+                if (Input.GetKey(KeyCode.D))
+                {
+                    skillRangeD.SetActive(true);
+                    skillRangeD.transform.position = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
+                    skillRangeD.transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
+                }
+                if (Input.GetKeyUp(KeyCode.D))
+                {
+                    skillRangeD.SetActive(false);
+                    skillPosD = skillRangeD.transform.position;
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
+                    skillCooltimeD = 10f;
+                    pv.RPC("PlayAnimation", RpcTarget.All, "StoneWall");
                 }
             }
         }
@@ -120,6 +152,13 @@ public class EarthMagic : PlayerController
             pv.RPC("UseEarthquake", RpcTarget.All, null);
         }
     }
+    public void OnUseStoneWall()
+    {
+        if (pv.IsMine)
+        {
+            pv.RPC("UseStoneWall", RpcTarget.All, null);
+        }
+    }
 
     [PunRPC]
     void UseStoneShoot()
@@ -134,5 +173,11 @@ public class EarthMagic : PlayerController
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0));
         GameObject fire = Instantiate(earthquakePrefab, skillPosS, fireRot);
+    }
+    [PunRPC]
+    void UseStoneWall()
+    {
+        Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 90, 0));
+        GameObject fire = Instantiate(stonewallPrefab, skillPosD, fireRot);
     }
 }
