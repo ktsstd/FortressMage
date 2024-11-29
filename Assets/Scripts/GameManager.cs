@@ -222,6 +222,14 @@ public class GameManager : MonoBehaviour
         PhotonNetwork.Instantiate(LightMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }
 
+    public void TestSpawnDark()
+    {
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string DarkMonster = "Monster/Spirit of Dark";
+
+        PhotonNetwork.Instantiate(DarkMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
     public void StartScene()
     {
         SceneManager.LoadScene("New Scene");
