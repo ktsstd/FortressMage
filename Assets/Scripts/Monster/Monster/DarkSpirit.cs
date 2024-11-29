@@ -6,138 +6,136 @@ using Photon.Pun;
 
 public class DarkSpirit : MonsterAI, IPunObservable
 {
-    // private Animator animator;
-    // // private Transform castleTransform;
-    // private ParticleSystem particleSys;
+    private Animator animator;
+    // private Transform castleTransform;
+    private ParticleSystem particleSys;
     
-    // private Transform closestTarget;
+    private Transform closestTarget;
+    public Transform CurTransform;
 
-    // private float stopDistance = 2.0f;
-    // private float LightMonsterSpeed = 5.0f;
-    // // private float fadeDuration = 8.0f;
+    private float stopDistance = 2.0f;
+    private float LightMonsterSpeed = 5.0f;
+    // private float fadeDuration = 8.0f;
 
-    // private bool StartAttack = false;
+    private bool StartAttack = false;
 
-    // public override void Start()
-    // {
-    //     base.Start();
-    //     MaxHp = 400f;
-    //     Speed = 5f;
-    //     CurHp = MaxHp;
-    //     animator = GetComponent<Animator>();
-    //     particleSys = GetComponentInChildren<ParticleSystem>();
-    //     MonsterDmg = 50;
-    //     // GameObject castleObject = GameObject.FindWithTag("Castle");
-    //     // if (castleObject != null)
-    //     // {
-    //     //     castleTransform = castleObject.transform;
-    //     // }
+    public override void Start()
+    {
+        base.Start();
+        MaxHp = 400f;
+        Speed = 15f;
+        CurHp = MaxHp;
+        animator = GetComponent<Animator>();
+        particleSys = GetComponentInChildren<ParticleSystem>();
+        CurTransform = this.transform;
+        MonsterDmg = 50;
+        // GameObject castleObject = GameObject.FindWithTag("Castle");
+        // if (castleObject != null)
+        // {
+        //     castleTransform = castleObject.transform;
+        // }
 
-    //     // else
-    //     // {
-    //     //     return;
-    //     // }
-    // }
+        // else
+        // {
+        //     return;
+        // }
+    }
 
-    // public override void Update()
-    // {
-    //     // if (castleTransform == null) return;
-    //     if (StartAttack) return;
-    //     closestTarget = GetClosestTarget();
+    public override void Update()
+    {
+        // if (castleTransform == null) return;
+        if (StartAttack) return;
+        closestTarget = GetClosestTarget();
         
-    //     float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
+        float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
 
-    //     if (distanceTotarget > attackRange + stopDistance)
-    //     {
-    //         agent.SetDestination(closestTarget.position);
-    //     }
-    //     else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
-    //     {
-    //         agent.ResetPath();
-    //         if (!StartAttack)
-    //         {
-    //             StartAttack = true;
-    //             StartCoroutine(LightAttackStart());
-    //         }
-    //     }
-    // }
+        if (distanceTotarget > attackRange + stopDistance)
+        {
+            agent.SetDestination(closestTarget.position);
+        }
+        else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
+        {
+            agent.ResetPath();
+            if (!StartAttack)
+            {
+                // StartCoroutine(DarkAttackStart());
+                agent.SetDestination(CurTransform.position);
+            }
+        }
+    }
 
-    // private Transform GetClosestTarget()
-    // {
-    //     float closestSqrDistance = Mathf.Infinity;
-    //     Transform closestTarget = null;
+    private Transform GetClosestTarget()
+    {
+        float closestSqrDistance = Mathf.Infinity;
+        Transform closestTarget = null;
 
-    //     // "Turret", "Castle", "SkillTower"와 같은 태그를 사용해 각 대상을 찾음
-    //     string[] tags = { "skilltower", "turret", "Castle" };
+        // "Turret", "Castle", "SkillTower"와 같은 태그를 사용해 각 대상을 찾음
+        string[] tags = { "skilltower", "turret", "Castle" };
 
-    //     foreach (string tag in tags)
-    //     {
-    //         // 해당 태그를 가진 모든 객체를 찾음
-    //         GameObject[] targetsWithTag = GameObject.FindGameObjectsWithTag(tag);
+        foreach (string tag in tags)
+        {
+            // 해당 태그를 가진 모든 객체를 찾음
+            GameObject[] targetsWithTag = GameObject.FindGameObjectsWithTag(tag);
 
-    //         foreach (GameObject targetObj in targetsWithTag)
-    //         {
-    //             // 각 타겟의 Transform을 가져옴
-    //             Transform target = targetObj.transform;
+            foreach (GameObject targetObj in targetsWithTag)
+            {
+                // 각 타겟의 Transform을 가져옴
+                Transform target = targetObj.transform;
 
-    //             // 타겟이 null이 아닌지 확인
-    //             if (target == null) continue;
+                // 타겟이 null이 아닌지 확인
+                if (target == null) continue;
 
-    //             // 현재 객체와 타겟의 거리 계산 (제곱 거리 사용)
-    //             float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                // 현재 객체와 타겟의 거리 계산 (제곱 거리 사용)
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
 
-    //             // 가장 가까운 타겟을 선택
-    //             if (sqrDistanceToTarget < closestSqrDistance)
-    //             {
-    //                 closestSqrDistance = sqrDistanceToTarget;
-    //                 closestTarget = target;
-    //             }
-    //         }
-    //     }
+                // 가장 가까운 타겟을 선택
+                if (sqrDistanceToTarget < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistanceToTarget;
+                    closestTarget = target;
+                }
+            }
+        }
 
-    //     return closestTarget;
-    // }
+        return closestTarget;
+    }
 
 
-    // private IEnumerator LightAttackStart()
-    // {
-    //     yield return new WaitForSeconds(3f);
-    //     animator.SetBool("StartAttack", true);
-    //     particleSys.Play();
-    //     yield return new WaitForSeconds(2f);
-    //     LightDamageTarget(closestTarget);
-    //     yield return new WaitForSeconds(2f);
-    //     photonView.RPC("MonsterDied", RpcTarget.All);
-    //     yield break;
-    // }
+    private IEnumerator DarkAttackStart()
+    {
+        LightDamageTarget(closestTarget);
+        yield return new WaitForSeconds(2f);
+        photonView.RPC("MonsterDied", RpcTarget.All);
+        yield break;
+    }
 
-    // private void LightDamageTarget(Transform CurTarget)
-    // {
-    //     if (CurTarget.CompareTag("skilltower"))
-    //     {
-    //         Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>(); 
-    //         if (skillTowerScript != null)
-    //         {
-    //             skillTowerScript.TakeDamage(MonsterDmg);
-    //         }
-    //     }
+    private void LightDamageTarget(Transform CurTarget)
+    {
+        if (CurTarget.CompareTag("skilltower"))
+        {
+            Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>(); 
+            if (skillTowerScript != null)
+            {
+                skillTowerScript.TakeDamage(MonsterDmg);
+            }
+        }
 
-    //     if (CurTarget.CompareTag("Castle"))
-    //     {
-    //         Wall castleScript = CurTarget.GetComponent<Wall>();
-    //         if (castleScript != null)
-    //         {
-    //             castleScript.TakeDamage(MonsterDmg);
-    //         }
-    //     }
+        if (CurTarget.CompareTag("Castle"))
+        {
+            Wall castleScript = CurTarget.GetComponent<Wall>();
+            if (castleScript != null)
+            {
+                castleScript.TakeDamage(MonsterDmg);
+            }
+        }
         
-    //     if (CurTarget.CompareTag("turret"))
-    //     {
-    //         Turret towerScript = CurTarget.GetComponent<Turret>();
-    //         if (towerScript != null)
-    //         {
-    //             towerScript.TakeDamage(MonsterDmg);
-    //         }
-    //     }
-    // }
+        if (CurTarget.CompareTag("turret"))
+        {
+            Turret towerScript = CurTarget.GetComponent<Turret>();
+            if (towerScript != null)
+            {
+                towerScript.TakeDamage(MonsterDmg);
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 public class GameManager : MonoBehaviour
@@ -219,5 +220,10 @@ public class GameManager : MonoBehaviour
         string LightMonster = "Monster/Spirit of Light";
 
         PhotonNetwork.Instantiate(LightMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
+    public void StartScene()
+    {
+        SceneManager.LoadScene("New Scene");
     }
 }
