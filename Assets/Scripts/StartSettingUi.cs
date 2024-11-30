@@ -37,6 +37,11 @@ public class StartSettingUi : PhotonManager
         chooseMage = "EarthWizard";
         mageSelect.text = "땅마법사 선택됨";
     }
+    public void ChooseElectro()
+    {
+        chooseMage = "ElectroWizard";
+        mageSelect.text = "번개마법사 선택됨";
+    }
 
     public void CloseUiandPlay()
     {

@@ -129,8 +129,8 @@ public class EarthMagic : PlayerController
                 if (Input.GetKeyUp(KeyCode.D))
                 {
                     skillRangeD.SetActive(false);
-                    skillPosD = skillRangeD.transform.position;
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
+                    skillPosD = skillRangeD.transform.position;
                     skillCooltimeD = 20f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "StoneWall");
                 }
