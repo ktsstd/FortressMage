@@ -11,7 +11,17 @@ public class ElectroMagic : PlayerController
     private Vector3 skillPosA;
     private float skillCooltimeA;
 
+    public GameObject skillRangeS;
+    private Vector3 skillPosS;
+    private float skillCooltimeS;
+
+    public GameObject skillRangeD;
+    private Vector3 skillPosD;
+    private float skillCooltimeD;
+
     public GameObject electricshotPrefab;
+    public GameObject shockwavePrefab;
+    public GameObject tempestfuryPrefab;
 
     public override void Start()
     {
@@ -24,14 +34,17 @@ public class ElectroMagic : PlayerController
         if (pv.IsMine)
         {
             if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
-            // if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
-            // if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
+            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
+            if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
         }
-        if (!isCasting)
+        if (!isCasting && !isStun)
         {
-            PlayerSkillA();
-            // PlayerSkillS();
-            // PlayerSkillD();
+            if (!skillRangeS.activeSelf && !skillRangeD.activeSelf)
+                PlayerSkillA();
+            if (!skillRangeA.activeSelf && !skillRangeD.activeSelf)
+                PlayerSkillS();
+            if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
+                PlayerSkillD();
         }
     }
 
@@ -41,14 +54,14 @@ public class ElectroMagic : PlayerController
         if (stream.IsWriting)
         {
             stream.SendNext(skillPosA);
-            // stream.SendNext(skillPosS);
-            // stream.SendNext(skillPosD);
+            stream.SendNext(skillPosS);
+            stream.SendNext(skillPosD);
         }
         else
         {
             skillPosA = (Vector3)stream.ReceiveNext();
-            // skillPosS = (Vector3)stream.ReceiveNext();
-            // skillPosD = (Vector3)stream.ReceiveNext();
+            skillPosS = (Vector3)stream.ReceiveNext();
+            skillPosD = (Vector3)stream.ReceiveNext();
         }
     }
 
@@ -80,6 +93,53 @@ public class ElectroMagic : PlayerController
         }
     }
 
+    void PlayerSkillS()
+    {
+        if (pv.IsMine)
+        {
+            if (skillCooltimeS <= 0)
+            {
+                if (Input.GetKey(KeyCode.S))
+                {
+                    skillRangeS.SetActive(true);
+                }
+                if (Input.GetKeyUp(KeyCode.S))
+                {
+                    skillRangeS.SetActive(false);
+                    skillPosS = skillRangeS.transform.position;
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
+                    skillCooltimeS = 5f;
+                    pv.RPC("PlayAnimation", RpcTarget.All, "ShockWave");
+                    pv.RPC("UseShockWave", RpcTarget.All, skillPosS);
+                }
+            }
+        }
+    }
+
+    void PlayerSkillD()
+    {
+        if (pv.IsMine)
+        {
+            if (skillCooltimeD <= 0)
+            {
+                if (Input.GetKey(KeyCode.D))
+                {
+                    skillRangeD.SetActive(true);
+                    skillRangeD.transform.position = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
+                }
+                if (Input.GetKeyUp(KeyCode.D))
+                {
+                    skillRangeD.SetActive(false);
+                    skillCooltimeD = 1f;
+                    skillPosD = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
+                    pv.RPC("PlayAnimation", RpcTarget.All, "TempestFury");
+                    pv.RPC("UseTempestFury", RpcTarget.All, skillPosD);
+                }
+            }
+        }
+    }
+
     public void OnUseSkillA()
     {
         if (pv.IsMine)
@@ -92,5 +152,17 @@ public class ElectroMagic : PlayerController
     void UseElectricShot()
     {
         GameObject fire = Instantiate(electricshotPrefab, skillPosA, transform.rotation);
+    }
+
+    [PunRPC]
+    void UseShockWave(Vector3 _skillPos)
+    {
+        GameObject fire = Instantiate(shockwavePrefab, _skillPos, transform.rotation);
+    }
+
+    [PunRPC]
+    void UseTempestFury(Vector3 _skillPos)
+    {
+        GameObject fire = Instantiate(tempestfuryPrefab, _skillPos, transform.rotation);
     }
 }

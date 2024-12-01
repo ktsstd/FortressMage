@@ -320,6 +320,89 @@ Transform:
   - {fileID: 3423912493271551900}
   m_Father: {fileID: 3239477009800645825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3602622516729896125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1935641481213467283}
+  - component: {fileID: 4412302425711927555}
+  - component: {fileID: 4195674743724911589}
+  m_Layer: 0
+  m_Name: D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1935641481213467283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3602622516729896125}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 24, y: 0.1, z: 24}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2084437782600295261}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &4412302425711927555
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3602622516729896125}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4195674743724911589
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3602622516729896125}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ce36ab66ff7b0f64e89d84bc8214f5da, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4787632521570839538
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,6 +618,7 @@ Transform:
   m_Children:
   - {fileID: 5325829776159929916}
   - {fileID: 1005902972937848876}
+  - {fileID: 1935641481213467283}
   - {fileID: 3239477009800645825}
   - {fileID: 2821387905948534802}
   m_Father: {fileID: 0}
@@ -563,7 +647,11 @@ MonoBehaviour:
   isStun: 0
   isCasting: 0
   skillRangeA: {fileID: 4801669921178496134}
+  skillRangeS: {fileID: 4787632521570839538}
+  skillRangeD: {fileID: 3602622516729896125}
   electricshotPrefab: {fileID: 7373016024145722217, guid: 69d23a0f8f8a3fb4ab16248a69723862, type: 3}
+  shockwavePrefab: {fileID: 8586132544713924872, guid: 676ce79f951780949b486573001d03db, type: 3}
+  tempestfuryPrefab: {fileID: 1699053963796116057, guid: 695e3dcc10549be47aeb0d5fb092eaa6, type: 3}
 --- !u!136 &1087541969502806748
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -680,6 +768,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: ElectricShot
+  - Type: 9
+    SynchronizeType: 0
+    Name: ShockWave
+  - Type: 9
+    SynchronizeType: 0
+    Name: TempestFury
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

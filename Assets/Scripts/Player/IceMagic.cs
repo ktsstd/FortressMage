@@ -39,11 +39,14 @@ public class IceMagic : PlayerController
             if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
             if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
         }
-        if (!isCasting)
+        if (!isCasting && !isStun)
         {
-            PlayerSkillA();
-            PlayerSkillS();
-            PlayerSkillD();
+            if (!skillRangeS.activeSelf && !skillRangeD.activeSelf)
+                PlayerSkillA();
+            if (!skillRangeA.activeSelf && !skillRangeD.activeSelf)
+                PlayerSkillS();
+            if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
+                PlayerSkillD();
         }
     }
 
@@ -106,7 +109,7 @@ public class IceMagic : PlayerController
                 {
                     skillRangeS.SetActive(false);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
-                    skillPosS = new Vector3(GetSkillRange(skillRanges[1]).x, 0.1f, GetSkillRange(skillRanges[0]).z);
+                    skillPosS = new Vector3(GetSkillRange(skillRanges[1]).x, 0.1f, GetSkillRange(skillRanges[1]).z);
                     skillCooltimeS = 5f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "FrostShackles");
                 }
@@ -128,11 +131,11 @@ public class IceMagic : PlayerController
                 if (Input.GetKeyUp(KeyCode.D))
                 {
                     skillRangeD.SetActive(false);
-                    skillCooltimeD = 1f;
+                    skillCooltimeD = 10f;
                     skillTargetPosD = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
+                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
                     pv.RPC("PlayAnimation", RpcTarget.All, "Blizzard");
                     pv.RPC("UseBlizzard", RpcTarget.All, null);
-                    transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
                 }
             }
         }
