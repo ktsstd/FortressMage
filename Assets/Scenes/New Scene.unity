@@ -772,7 +772,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &89070547
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2717,10 +2717,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 525508783}
-        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
-        m_MethodName: set_text
-        m_Mode: 5
+      - m_Target: {fileID: 1294188838}
+        m_TargetAssemblyTypeName: Systemkey, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8636,7 +8636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1236619370
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9258,6 +9258,7 @@ GameObject:
   - component: {fileID: 1294188842}
   - component: {fileID: 1294188841}
   - component: {fileID: 1294188840}
+  - component: {fileID: 1294188843}
   m_Layer: 5
   m_Name: System
   m_TagString: Untagged
@@ -9379,6 +9380,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294188838}
   m_CullTransparentMesh: 1
+--- !u!114 &1294188843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294188838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb6232429010a489de00a0476c8bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToToggle: {fileID: 89070546}
 --- !u!1 &1333974258
 GameObject:
   m_ObjectHideFlags: 0
