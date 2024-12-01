@@ -16,7 +16,6 @@ public class EarthMagic : PlayerController
     private Vector3 skillPosS;
     private float skillCooltimeS;
 
-
     public GameObject skillRangeD;
     private Vector3 skillPosD;
     private float skillCooltimeD;
@@ -40,11 +39,14 @@ public class EarthMagic : PlayerController
             if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
             if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
         }
-        if (!isCasting)
+        if (!isCasting && !isStun)
         {
-            PlayerSkillA();
-            PlayerSkillS();
-            PlayerSkillD();
+            if (!skillRangeS.activeSelf && !skillRangeD.activeSelf)
+                PlayerSkillA();
+            if (!skillRangeA.activeSelf && !skillRangeD.activeSelf)
+                PlayerSkillS();
+            if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
+                PlayerSkillD();
         }
     }
 
@@ -105,7 +107,7 @@ public class EarthMagic : PlayerController
                 if (Input.GetKeyUp(KeyCode.S))
                 {
                     skillRangeS.SetActive(false);
-                    skillPosS = skillRangeS.transform.position;
+                    skillPosS = Vector3.Lerp(transform.position, GetSkillRange(skillRanges[1]), 0.5f);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
                     skillCooltimeS = 3f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "Earthquake");
@@ -129,8 +131,8 @@ public class EarthMagic : PlayerController
                 if (Input.GetKeyUp(KeyCode.D))
                 {
                     skillRangeD.SetActive(false);
+                    skillPosD = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
-                    skillPosD = skillRangeD.transform.position;
                     skillCooltimeD = 20f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "StoneWall");
                 }

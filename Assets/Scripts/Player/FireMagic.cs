@@ -36,11 +36,14 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
             if (skillCooltimeS >= 0) {skillCooltimeS -= Time.deltaTime;}
             if (skillCooltimeD >= 0) {skillCooltimeD -= Time.deltaTime;}
         }
-        if (!isCasting)
+        if (!isCasting && !isStun)
         {
-            PlayerSkillA();
-            PlayerSkillS();
-            PlayerSkillD();
+            if (!skillRangeS.activeSelf)
+                PlayerSkillA();
+            if (!skillRangeA.activeSelf)
+                PlayerSkillS();
+            if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
+                PlayerSkillD();
         }
     }
 
@@ -98,7 +101,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                 if (Input.GetKeyUp(KeyCode.S))
                 {
                     skillRangeS.SetActive(false);
-                    skillPosS = skillRangeS.transform.position;
+                    skillPosS = new Vector3(GetSkillRange(skillRanges[1]).x, 0.1f, GetSkillRange(skillRanges[1]).z);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
                     skillCooltimeS = 5f;
                     pv.RPC("PlayAnimation", RpcTarget.All, "FireStorm");
