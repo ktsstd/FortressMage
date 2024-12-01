@@ -21,6 +21,10 @@ public class Turret : MonoBehaviourPun
     public float increaseAmount = 5f;
     
     private bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
+    private Animator animator; // Animator 컴포넌트 참조
+    public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
+
+    private bool hasExploded = false;
 
     private void Start()
     {
@@ -28,6 +32,8 @@ public class Turret : MonoBehaviourPun
         {
             StartCoroutine(FireContinuously());
         }
+
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -130,10 +136,44 @@ public class Turret : MonoBehaviourPun
         {
             health = 0f;
             canAttack = false;
+
+            photonView.RPC("HandleDestruction", RpcTarget.AllBuffered);
             
             // GameManager�� Wave ���� �����ͼ� ��
             float currentWave = GameManager.Instance.GetWave();
             GameManager.Instance.CheckTurretDestroyedOnWave(currentWave); // ���� ���̺� ����
+        }
+    }
+
+    [PunRPC]
+    private void HandleDestruction()
+    {
+        // 애니메이션 실행
+        if (animator != null)
+        {
+            animator.SetTrigger("DestroyTrigger");
+        }
+
+        if (!hasExploded)
+        {
+            CreateExplosionEffect();
+            hasExploded = true;  // 폭발 이펙트를 실행했음을 기록
+        };
+    }
+
+    private void CreateExplosionEffect()
+    {
+        if (explosionEffectPrefab != null)
+        {
+            // 폭발 이펙트 생성
+            GameObject explosion = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+
+            // 폭발 반경에 맞게 크기 조정
+            float scale = explosionRadius * 1;
+            explosion.transform.localScale = new Vector3(scale, scale, scale);
+
+            // 1초 후 이펙트 제거
+            Destroy(explosion, 1f);
         }
     }
 

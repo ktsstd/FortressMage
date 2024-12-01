@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviourPun
     public float damage;               // 발사체가 입힐 데미지
     public float explosionRadius = 3f; // 범위 공격 반경
     public LayerMask enemyLayer;       // 적이 속한 레이어
+    public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
 
     // 발사체가 생성될 때 필요한 데미지와 폭발 반경을 설정하는 함수
     public void Initialize(float bulletDamage, float bulletExplosionRadius)
@@ -33,9 +34,14 @@ public class Bullet : MonoBehaviourPun
         }
     }
 
-[PunRPC]
+    [PunRPC]
     void Explode()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreateExplosionEffect();
+        }
+
         // 폭발 반경 내의 적 탐색
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, explosionRadius, enemyLayer);
 
@@ -47,6 +53,20 @@ public class Bullet : MonoBehaviourPun
                 // 몬스터에게 폭발 데미지 적용
                 monster.MonsterDmged((int)damage);
             }
+        }
+    }
+
+    void CreateExplosionEffect()
+    {
+        if (explosionEffectPrefab != null)
+        {
+            // 이펙트를 로컬로 생성
+            GameObject effect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+
+            float scale = explosionRadius * 2; // 반지름 -> 직경으로 변환
+            effect.transform.localScale = new Vector3(scale, scale, scale);
+
+            Destroy(effect, 1.0f);
         }
     }
 
