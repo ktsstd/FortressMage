@@ -284,7 +284,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  Attacked: 0
+  closestTarget: {fileID: 0}
 --- !u!114 &1087470616976199706
 MonoBehaviour:
   m_ObjectHideFlags: 0

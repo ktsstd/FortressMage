@@ -756,79 +756,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147203832}
   m_CullTransparentMesh: 1
---- !u!1001 &177384389
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1087470616976199706, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: sceneViewId
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1087470616976199706, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: ObservedComponents.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1087470616976199706, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: ObservedComponents.Array.data[0]
-      value: 
-      objectReference: {fileID: 1051031894}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -36.540104
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.3911688
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.667568
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.036611147
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.9993296
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -184.196
-      objectReference: {fileID: 0}
-    - target: {fileID: 4686836613450001981, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5350608126129943687, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_Name
-      value: Spirit of dark
-      objectReference: {fileID: 0}
-    - target: {fileID: 5350608126129943687, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
 --- !u!1 &187631287
 GameObject:
   m_ObjectHideFlags: 0
@@ -3106,17 +3033,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1003639407}
   m_CullTransparentMesh: 1
---- !u!114 &1051031894 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8458839765132093966, guid: 1c6c5383968060847b406296cd6c8542, type: 3}
-  m_PrefabInstance: {fileID: 177384389}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 558f00a3e8a26f648aaa21e4385b63e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1059693698
 GameObject:
   m_ObjectHideFlags: 0
@@ -3551,7 +3467,6 @@ MonoBehaviour:
   health: 100
   damage: 20
   increaseAmount: 5
-  explosionEffectPrefab: {fileID: 5020226054300427539, guid: a23e8b6015ef90d49b568c02e0df0dba, type: 3}
 --- !u!136 &1088316142
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4999,7 +4914,6 @@ MonoBehaviour:
   health: 100
   damage: 20
   increaseAmount: 5
-  explosionEffectPrefab: {fileID: 5020226054300427539, guid: a23e8b6015ef90d49b568c02e0df0dba, type: 3}
 --- !u!65 &1700045940
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6501,7 +6415,6 @@ SceneRoots:
   - {fileID: 957337575}
   - {fileID: 1942554388}
   - {fileID: 3435089481489993800}
-  - {fileID: 177384389}
   - {fileID: 1770064730}
   - {fileID: 1088316137}
   - {fileID: 1700045932}

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 public class DarkSpirit : MonsterAI, IPunObservable
 {
     private Animator animator;
-    private ParticleSystem particleSys;
+    // private ParticleSystem particleSys;
 
-    private Transform closestTarget;
+    public Transform closestTarget;
 
     private float stopDistance = 8.0f;
 
-    public bool Attacked = false;
+    private bool Attacked = false;
+    private bool isMoveToStart = false;
 
     private Vector3 StartPosition;  // 몬스터의 초기 위치
 
@@ -24,8 +26,10 @@ public class DarkSpirit : MonsterAI, IPunObservable
         Speed = 10f;
         attackRange = 3f;
         CurHp = MaxHp;
+        Attacked = false;
+        isMoveToStart = false;
         animator = GetComponent<Animator>();
-        particleSys = GetComponentInChildren<ParticleSystem>();
+        // particleSys = GetComponentInChildren<ParticleSystem>();
         MonsterDmg = 50;
 
         StartPosition = transform.position;  // 몬스터의 초기 위치를 저장
@@ -37,22 +41,27 @@ public class DarkSpirit : MonsterAI, IPunObservable
         {
             closestTarget = GetClosestTarget();
         }
-
         float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
 
         if (distanceTotarget > attackRange + stopDistance)
         {
-            if (!Attacked)
+            if (!Attacked) // 타겟으로 이동
             {
-                animator.SetBool("StartMove", true);
-                agent.SetDestination(closestTarget.position);
+                if (!isMoveToStart)
+                {
+                    animator.SetBool("StartMove", true);
+                    agent.SetDestination(closestTarget.position);
+                }
             }
         }
         else
         {
-            if (!Attacked)
+            bool isStartAttack = animator.GetBool("StartAttack");
+            if (!isStartAttack && !isMoveToStart) // 공격시작
             {
+                animator.SetBool("StartAttack", true);
                 animator.SetBool("StartMove", false);
+                Attacked = true;
                 agent.ResetPath();
                 StartCoroutine(DarkAttackStart());
             }
@@ -60,8 +69,28 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
         if (Vector3.Distance(transform.position, StartPosition) <= stopDistance && !agent.pathPending)
         {
-            Attacked = false;
+            isMoveToStart = false;
         }
+
+        else
+        {
+            if (isMoveToStart)
+            {
+                agent.SetDestination(StartPosition);
+            }
+        }
+
+        // bool isStartMove = animator.GetBool("StartMove");
+        // if (Attacked && isStartMove)
+        // {
+        //     agent.SetDestination(StartPosition);
+        // }
+
+        // if (Vector3.Distance(transform.position, StartPosition) <= stopDistance && !agent.pathPending) // 시작지점에 있는가
+        // {
+        //     agent.SetDestination(closestTarget.position);
+        //     Attacked = false;
+        // }
     }
 
     private Transform GetClosestTarget()
@@ -96,17 +125,29 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
     private IEnumerator DarkAttackStart()
     {
-        Attacked = true;
-        animator.SetTrigger("StartAttack");
-        yield return new WaitForSeconds(1.5f);
-        DarkDamageTarget(closestTarget);
-        animator.SetBool("StartMove", true);
-        agent.SetDestination(StartPosition);
-        yield break;
+        while(Attacked)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Spirit of dark_Idle"))
+            {
+                DarkDamageTarget(closestTarget);
+                Attacked = false;
+                animator.SetBool("StartMove", true);
+                animator.SetBool("StartAttack", false);
+                isMoveToStart = true;
+                yield break;
+            }
+
+            else
+            {
+                yield return null;
+            }
+        }
     }
 
     private void DarkDamageTarget(Transform CurTarget)
     {
+        Debug.Log("2");
         if (CurTarget.CompareTag("skilltower"))
         {
             Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>();
@@ -127,6 +168,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
         if (CurTarget.CompareTag("turret"))
         {
+            Debug.Log("3");
             Turret towerScript = CurTarget.GetComponent<Turret>();
             if (towerScript != null)
             {
