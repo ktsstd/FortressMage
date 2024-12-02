@@ -20,6 +20,7 @@ public class Buff : MonoBehaviour
         {
             Debug.Log("No MonsterAI found on: " + other.name);  // MonsterAI를 찾을 수 없는 경우
         }
+        Debug.Log(other.name);  
     }
 
     private void ApplyBuff(MonsterAI monsterObj)

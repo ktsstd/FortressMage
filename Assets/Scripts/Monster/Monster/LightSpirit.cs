@@ -20,7 +20,7 @@ public class LightSpirit : MonsterAI, IPunObservable
     public override void Start()
     {
         base.Start();
-        MaxHp = 400f;
+        MaxHp = 60f;
         Speed = 5f;
         CurHp = MaxHp;
         StartAttack = false;
@@ -44,10 +44,19 @@ public class LightSpirit : MonsterAI, IPunObservable
         // if (castleTransform == null) return;
         // if (StartAttack) return;
         bool isAtking = animator.GetBool("StartAttack");
-        
         if (!isAtking && !StartAttack)
         {
-            closestTarget = GetClosestTarget();
+            if (!NoTarget)
+            {
+                closestTarget = GetClosestTarget();
+            }
+
+            else
+            {
+                NoTarget = true;
+                GameObject castleObj = GameObject.FindWithTag("Castle");
+                closestTarget = castleObj.transform;
+            }
             float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
 
             if (distanceTotarget > attackRange + stopDistance)
@@ -73,7 +82,7 @@ public class LightSpirit : MonsterAI, IPunObservable
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        string[] tags = { "skilltower", "turret", "Castle" };
+        string[] tags = { "skilltower", "turret" };
 
         foreach (string tag in tags)
         {
@@ -82,76 +91,47 @@ public class LightSpirit : MonsterAI, IPunObservable
             foreach (GameObject targetObj in targetsWithTag)
             {
                 Transform target = targetObj.transform;
-                
                 if (target == null) continue;
 
-                if (target.CompareTag("skilltower"))
-                {
-                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    if (sqrDistanceToTarget < closestSqrDistance)
-                    {
-                        closestSqrDistance = sqrDistanceToTarget;
-                        closestTarget = target;
-                    }
-                    // Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>();
-                    // if (skillTowerScript.canAttack == true)
-                    // {
-                    //     float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    //     if (sqrDistanceToTarget < closestSqrDistance)
-                    //     {
-                    //         closestSqrDistance = sqrDistanceToTarget;
-                    //         closestTarget = target;
-                    //     }
-                    // }
-                }
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
 
-                if (target.CompareTag("turret"))
+                // 조건을 확인하여 가장 가까운 대상을 찾음
+                if (tag == "turret")
                 {
                     Turret towerScript = target.GetComponent<Turret>();
-                    if (towerScript.canAttack == true)
+                    if (towerScript != null)
                     {
-                        float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                        if (sqrDistanceToTarget < closestSqrDistance)
+                        if (!towerScript.canAttack) continue;
+                        else
                         {
-                            closestSqrDistance = sqrDistanceToTarget;
-                            closestTarget = target;
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
                         }
                     }
                 }
-
-                if (target.CompareTag("Castle"))
+                if (tag == "skilltower")
                 {
-                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    if (sqrDistanceToTarget < closestSqrDistance)
+                    Skilltower skilltowerScript = target.GetComponent<Skilltower>();
+                    if (skilltowerScript != null)
                     {
-                        closestSqrDistance = sqrDistanceToTarget;
-                        closestTarget = target;
+                        if (!skilltowerScript.canAttack) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
                     }
-                    // Wall castleScript = CurTarget.GetComponent<Wall>();
-                    // if (castleScript.canAttack == true)
-                    // {
-                    //     float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    //     if (sqrDistanceToTarget < closestSqrDistance)
-                    //     {
-                    //         closestSqrDistance = sqrDistanceToTarget;
-                    //         closestTarget = target;
-                    //     }
-                    // }
                 }
-
-                // float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-
-                // if (sqrDistanceToTarget < closestSqrDistance)
-                // {
-                //     closestSqrDistance = sqrDistanceToTarget;
-                //     closestTarget = target;
-                // }
             }
         }
-
         return closestTarget;
     }
-
 
     private IEnumerator LightAttackStart()
     {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
 
@@ -13,9 +14,9 @@ public class FireSpirit : MonsterAI
     {
         base.Start();
         attackRange = 8.0f; 
-        attackCooldown = 5f;
+        attackCooldown = 8f;
         MonsterDmg = 20;
-        MaxHp = 20f;
+        MaxHp = 60f;
         Speed = 5f;
         StartAtking = false;
         animator = GetComponent<Animator>();
@@ -24,7 +25,7 @@ public class FireSpirit : MonsterAI
 
     public override void Update()
     {
-        if (!StartAtking)
+        if (!StartAtking && !NoTarget)
         {
             closestTarget = GetClosestTarget();
         }
@@ -35,7 +36,10 @@ public class FireSpirit : MonsterAI
 
             if (sqrDistanceToTarget > attackRange * attackRange)
             {
-                agent.SetDestination(closestTarget.position);
+                if (!StartAtking)
+                {
+                    agent.SetDestination(closestTarget.position);
+                }
             }
             else
             {
@@ -49,6 +53,13 @@ public class FireSpirit : MonsterAI
                 }
             }
         }
+        else
+        {
+            // closestTarget = GetClosestTarget();
+            NoTarget = true;
+            GameObject castleObj = GameObject.FindWithTag("Castle");
+            closestTarget = castleObj.transform;
+        }
 
         if (attackTimer > 0f)
         {
@@ -61,7 +72,7 @@ public class FireSpirit : MonsterAI
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        string[] tags = { "skilltower", "turret", "Castle", "Player" };
+        string[] tags = { "skilltower", "turret", "Player" };
 
         foreach (string tag in tags)
         {
@@ -78,34 +89,50 @@ public class FireSpirit : MonsterAI
                 if (tag == "turret")
                 {
                     Turret towerScript = target.GetComponent<Turret>();
-                    if (towerScript != null && towerScript.canAttack)
+                    if (towerScript != null)
                     {
-                        if (sqrDistanceToTarget < closestSqrDistance)
+                        if (!towerScript.canAttack) continue;
+                        else
                         {
-                            closestSqrDistance = sqrDistanceToTarget;
-                            closestTarget = target;
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
                         }
                     }
                 }
 
-                if (tag == "player")
+                if (tag == "Player")
                 {
                     PlayerController playerScript = target.GetComponent<PlayerController>();
-                    if (playerScript != null && !playerScript.isDie)
+                    if (playerScript != null)
                     {
-                        if (sqrDistanceToTarget < closestSqrDistance)
+                        if (playerScript.isDie) continue;
+                        else
                         {
-                            closestSqrDistance = sqrDistanceToTarget;
-                            closestTarget = target;
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
                         }
                     }
                 }
-                else if (tag == "Castle" || tag == "skilltower")
+                if (tag == "skilltower")
                 {
-                    if (sqrDistanceToTarget < closestSqrDistance)
+                    Skilltower skilltowerScript = target.GetComponent<Skilltower>();
+                    if (skilltowerScript != null)
                     {
-                        closestSqrDistance = sqrDistanceToTarget;
-                        closestTarget = target;
+                        if (!skilltowerScript.canAttack) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
                     }
                 }
             }

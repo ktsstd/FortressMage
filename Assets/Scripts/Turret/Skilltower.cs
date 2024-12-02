@@ -13,7 +13,7 @@ public class Skilltower : MonoBehaviourPun
     private float lastSkillTime = -Mathf.Infinity;
 
     public float destroyDelay = 4.5f;
-    private bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
+    public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
     private Animator animator; // Animator 컴포넌트 참조
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
     private bool hasExploded = false;

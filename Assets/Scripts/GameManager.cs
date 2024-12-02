@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     // public GameObject bossMonster;
     public GameObject TestSpawnObj;
 
-    private int maxMonsterCount = 2;
+    private int[] maxMonsterCount = { 5, 5, 5, 6, 7 };
     private float Wave = 1;
 
     private bool isStartWave = false;
@@ -95,9 +95,12 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartTestWave()
     {
-        yield return new WaitForSeconds(10f);
-        string[] FirstWaves = { "Monster/Spirit of Fire", "Monster/MonsterI", "Monster/Spirit of Light" };
-        string[] SecondWaves = { "Monster/Spirit of Dark", "Monster/Spirit of Wind", "Monster/EliteMonster1", "Monster/EliteMonsetr2" };
+        // { "Monster/Spirit of Fire", "Monster/MonsterI", "Monster/Spirit of Light", "Monster/Spirit of Dark",
+        // "Monster/Spirit of Wind", "Monster/EliteMonster1", "Monster/EliteMonsetr2" }
+        yield return new WaitForSeconds(15f);
+        string[] FirstWaves = { "Monster/Spirit of Fire"};
+        string[] SecondWaves = { "Monster/Spirit of Fire", "Monster/Spirit of Light" };
+        string[] ThirdWaves = { "Monster/Spirit of Fire", "Monster/Spirit of Light", "Monster/Spirit of Dark" };
 
         if (isTurretDestroyedAtWave.ContainsKey((int)Wave - 2) && isTurretDestroyedAtWave[(int)Wave - 2])
         {
@@ -107,45 +110,45 @@ public class GameManager : MonoBehaviour
 
         if (Wave == 1)
         {
-            for (int i = 0; i < maxMonsterCount; i++)
+            for (int i = 0; i < maxMonsterCount[0]; i++)
             {
                 foreach (var FirstWave in FirstWaves)
                 {
                     int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
                     PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
+                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Fire" ? 2f : 0.3f);
                 }
             }
         }
         else if (Wave == 2)
         {
-            for (int i = 0; i < maxMonsterCount; i++)
+            for (int i = 0; i < maxMonsterCount[1]; i++)
             {
-                foreach (var FirstWave in FirstWaves)
+                foreach (var SecondWave in SecondWaves)
                 {
                     int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
+                    PhotonNetwork.Instantiate(SecondWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+                    yield return new WaitForSeconds(SecondWave == "Monster/Spirit of Light" ? 2f : 0.3f);
                 }
             }
         }
 
         else if (Wave == 3)
         {
-            for (int i = 0; i < maxMonsterCount; i++)
+            for (int i = 0; i < maxMonsterCount[2]; i++)
             {
-                foreach (var FirstWave in FirstWaves)
+                foreach (var ThirdWave in ThirdWaves)
                 {
                     int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
+                    PhotonNetwork.Instantiate(ThirdWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+                    yield return new WaitForSeconds(ThirdWave == "Monster/Spirit of Dark" ? 2f : 0.3f);
                 }
             }
         }
 
         else if (Wave == 4)
         {
-            for (int i = 0; i < maxMonsterCount; i++)
+            for (int i = 0; i < maxMonsterCount[3]; i++)
             {
                 foreach (var FirstWave in FirstWaves)
                 {

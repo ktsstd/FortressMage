@@ -17,7 +17,7 @@ public class Turret : MonoBehaviourPun
     public float detectionRadius = 10f;
     public float health = 100f;
 
-    public float damage = 20f;
+    public float damage = 2f;
     public float increaseAmount = 5f;
     
     public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����

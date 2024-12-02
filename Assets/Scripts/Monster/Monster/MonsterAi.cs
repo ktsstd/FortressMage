@@ -21,6 +21,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public bool hasHealed = false; // 힐 상태 초기화
     public bool hasBuffed = false; 
+    public bool NoTarget = false;
 
     public NavMeshAgent agent;
     protected PlayerController playerController;
@@ -39,6 +40,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         castle = GameObject.FindWithTag("Castle")?.transform;
         player = GameObject.FindWithTag("Player")?.transform;
 
+        NoTarget = false;
         hasBuffed = false;
         hasHealed = false;
 
@@ -88,7 +90,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        string[] tags = { "skilltower", "turret", "Castle", "Player" };
+        string[] tags = { "skilltower", "turret", "Player" };
 
         foreach (string tag in tags)
         {
@@ -114,7 +116,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                         }
                     }
                 }
-                else if (tag == "Castle" || tag == "skilltower" || tag == "Player")
+                else if (tag == "skilltower" || tag == "Player")
                 {
                     if (sqrDistanceToTarget < closestSqrDistance)
                     {

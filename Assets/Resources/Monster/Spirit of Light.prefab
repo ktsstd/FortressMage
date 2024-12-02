@@ -334,16 +334,16 @@ NavMeshAgent:
   m_Radius: 0.1
   m_Speed: 3.07
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 0.8
   m_BaseOffset: 0.4
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &2905263321662662993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,6 +368,7 @@ MonoBehaviour:
   MonsterDmg: 10
   hasHealed: 0
   hasBuffed: 0
+  NoTarget: 0
   agent: {fileID: 0}
   obstacleMask:
     serializedVersion: 2

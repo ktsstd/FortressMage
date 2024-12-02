@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1962657670376063109}
   - component: {fileID: 3206718765871218712}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spirit of Wind
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 7302257850141968208}
+  - {fileID: 8988488549849964302}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -361,6 +362,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a2c1b9892f09e5545af2ba4c50ec48e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7302257850141968208}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a2c1b9892f09e5545af2ba4c50ec48e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 121269681147340264}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a2c1b9892f09e5545af2ba4c50ec48e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8988488549849964302}
   m_SourcePrefab: {fileID: 100100000, guid: a2c1b9892f09e5545af2ba4c50ec48e6, type: 3}
 --- !u!1 &7285593103901632303 stripped
 GameObject:
@@ -400,16 +407,16 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 0.86
   m_BaseOffset: 0.12
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!95 &6390452555441966412
 Animator:
   serializedVersion: 5
@@ -455,11 +462,61 @@ MonoBehaviour:
   MonsterDmg: 10
   hasHealed: 0
   hasBuffed: 0
+  NoTarget: 0
   agent: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+  particleSys: {fileID: 0}
   skillCooltime: 0
+--- !u!54 &121269681147340264
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285593103901632303}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!114 &8988488549849964302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7285593103901632303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 0
+    Name: StartAttack
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!4 &7948977584214637973 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a2c1b9892f09e5545af2ba4c50ec48e6, type: 3}

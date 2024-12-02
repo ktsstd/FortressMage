@@ -84,7 +84,7 @@ public class IceSpirit : MonsterAI
                     }
                 }
 
-                if (tag == "player")
+                if (tag == "Player")
                 {
                     PlayerController playerScript = target.GetComponent<PlayerController>();
                     if (playerScript != null && !playerScript.isDie)

@@ -5,51 +5,101 @@ using UnityEngine.AI;
 
 public class Boss : MonsterAI
 {
-    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f, 30f, 30f, 30f };
-    public float[] BossMonsterSkillTimers = new float[6];  // °¢ ½ºÅ³ÀÇ ³²Àº ÄğÅ¸ÀÓÀ» °ü¸®ÇÏ´Â ¹è¿­
+    private Transform closestTarget;
+    private Animator animator;
+    // private ParticleSystem
 
-    private float AllSkillCooldown = 5f;  // ÀüÃ¼ ½ºÅ³ ÄğÅ¸ÀÓ
-    public float AllSkillCooldownTimer;  // ÀüÃ¼ ½ºÅ³ ÄğÅ¸ÀÓ Å¸ÀÌ¸Ó
+    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f, 30f };
+    public float[] BossMonsterSkillTimers = new float[4];  // ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½è¿­
 
-    private bool isBossPatern = false;  // º¸½º ÆĞÅÏ È°¼ºÈ­ ¿©ºÎ
+    private float AllSkillCooldown = 5f;  // ï¿½ï¿½Ã¼ ï¿½ï¿½Å³ ï¿½ï¿½Å¸ï¿½ï¿½
+    public float AllSkillCooldownTimer;  // ï¿½ï¿½Ã¼ ï¿½ï¿½Å³ ï¿½ï¿½Å¸ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½
+
+    private float S1Speed = 0f;
+
+    private bool isBossPatern = false;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+
+    public GameObject BossSkill1Obj; 
 
     public override void Start()
     {
-        base.Start();  // ºÎ¸ğ Å¬·¡½ºÀÇ Start() È£Ãâ
-        MaxHp = 200f;  // Ã¼·Â ÃÊ±âÈ­
-        MonsterDmg = 10;  // ¸ó½ºÅÍ µ¥¹ÌÁö ÃÊ±âÈ­
-        CurHp = MaxHp;  // Ã¼·Â ¼³Á¤
+        base.Start();  // ï¿½Î¸ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Start() È£ï¿½ï¿½
+        MaxHp = 200f;  // Ã¼ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        MonsterDmg = 10;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        attackRange = 78.0f; 
+        CurHp = MaxHp;  // Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isBossPatern = false;
-        GameObject playerObject = GameObject.FindWithTag("Player");  // "Player" ÅÂ±×¸¦ °¡Áø ¿ÀºêÁ§Æ® Ã£±â
-        if (playerObject != null)
-        {
-            player = playerObject.transform;  // ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡ Á¤º¸
-        }
+        animator = GetComponent<Animator>();
+        StartCoroutine(StartRotate());
     }
+
+    private IEnumerator StartRotate()
+    {
+        Transform BossSkilObjT = BossSkill1Obj.transform;
+        while(S1Speed == 300f)
+        {
+            S1Speed *= Time.deltaTime;
+            BossSkilObjT.transform.Rotate(0, S1Speed, 0);
+        }
+        yield break;
+    }
+
+    // public override void Update()
+    // {
+    //     StartCoroutine(BossPaternStart());
+
+    //     // ï¿½ï¿½ ï¿½ï¿½Å³ Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //     for (int i = 0; i < BossMonsterSkillTimers.Length; i++)
+    //     {
+    //         if (BossMonsterSkillTimers[i] > 0f)
+    //         {
+    //             BossMonsterSkillTimers[i] -= Time.deltaTime;
+    //         }
+    //     }
+
+    //     if (AllSkillCooldownTimer > 0f)
+    //     {
+    //         AllSkillCooldownTimer -= Time.deltaTime;
+    //     }
+    // }
 
     public override void Update()
     {
-        base.Update();
-        //float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        //if (distanceToPlayer > attackRange)
-        //{
-        //    if (!isBossPatern)
-        //    {
-        //        agent.SetDestination(player.position);
-        //    }
+        if (!isBossPatern && !NoTarget)
+        {
+            closestTarget = GetClosestTarget();
+        }
+        
+        if (closestTarget != null)
+        {
+            float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
 
-        //    else
-        //    {
-        //        return;
-        //    }
-        //}
-        //else
-        //{
-        //    StartCoroutine(BossPaternStart());
-        //}
-        StartCoroutine(BossPaternStart());
+            if (sqrDistanceToTarget > attackRange * attackRange)
+            {
+                if (!isBossPatern)
+                {
+                    agent.SetDestination(closestTarget.position);
+                }
+            }
+            else
+            {
+                agent.ResetPath();
 
-        // °¢ ½ºÅ³ Å¸ÀÌ¸Ó °»½Å
+                if (attackTimer <= 0f && !isBossPatern)
+                {
+                    isBossPatern = true;
+                    StartCoroutine(BossPaternStart());
+                }
+            }
+        }
+        else
+        {
+            // closestTarget = GetClosestTarget();
+            NoTarget = true;
+            GameObject castleObj = GameObject.FindWithTag("Castle");
+            closestTarget = castleObj.transform;
+        }
+
         for (int i = 0; i < BossMonsterSkillTimers.Length; i++)
         {
             if (BossMonsterSkillTimers[i] > 0f)
@@ -64,25 +114,99 @@ public class Boss : MonsterAI
         }
     }
 
+    private Transform GetClosestTarget()
+    {
+        float closestSqrDistance = Mathf.Infinity;
+        Transform closestTarget = null;
+
+        string[] tags = { "skilltower", "turret", "Player" };
+
+        foreach (string tag in tags)
+        {
+            GameObject[] targetsWithTag = GameObject.FindGameObjectsWithTag(tag);
+
+            foreach (GameObject targetObj in targetsWithTag)
+            {
+                Transform target = targetObj.transform;
+                if (target == null) continue;
+
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+
+                // ì¡°ê±´ì„ í™•ì¸í•˜ì—¬ ê°€ì¥ ê°€ê¹Œìš´ ëŒ€ìƒì„ ì°¾ìŒ
+                if (tag == "turret")
+                {
+                    Turret towerScript = target.GetComponent<Turret>();
+                    if (towerScript != null)
+                    {
+                        if (!towerScript.canAttack) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
+                    }
+                }
+
+                if (tag == "Player")
+                {
+                    PlayerController playerScript = target.GetComponent<PlayerController>();
+                    if (playerScript != null)
+                    {
+                        if (playerScript.isDie) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
+                    }
+                }
+                if (tag == "skilltower")
+                {
+                    Skilltower skilltowerScript = target.GetComponent<Skilltower>();
+                    if (skilltowerScript != null)
+                    {
+                        if (!skilltowerScript.canAttack) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return closestTarget;
+    }
+
     private int GetRandomSkill()
     {
         List<int> availableSkills = new List<int>();
 
-        // ¸ğµç ½ºÅ³¿¡ ´ëÇØ ÄğÅ¸ÀÓÀÌ ³¡³µÀ¸¸é »ç¿ëÇÒ ¼ö ÀÖ´Â ½ºÅ³ ¸ñ·Ï¿¡ Ãß°¡
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½Ï¿ï¿½ ï¿½ß°ï¿½
         for (int i = 0; i < BossMonsterSkillTimers.Length; i++)
         {
-            if (BossMonsterSkillTimers[i] <= 0f)  // ÄğÅ¸ÀÓÀÌ ³¡³­ ½ºÅ³¸¸
+            if (BossMonsterSkillTimers[i] <= 0f)  // ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½
             {
                 availableSkills.Add(i);
             }
         }
 
-        // »ç¿ë °¡´ÉÇÑ ½ºÅ³ÀÌ ÀÖ´Ù¸é ·£´ıÀ¸·Î ¼±ÅÃ
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (availableSkills.Count > 0)
         {
             return availableSkills[Random.Range(0, availableSkills.Count)];
         }
-        return -1;  // »ç¿ëÇÒ ¼ö ÀÖ´Â ½ºÅ³ÀÌ ¾ø´Ù¸é -1 ¹İÈ¯
+        return -1;  // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ -1 ï¿½ï¿½È¯
     }
 
     private void UseSkill(int skillIndex)
@@ -101,12 +225,6 @@ public class Boss : MonsterAI
             case 3:
                 StartCoroutine(BossSkill4());
                 break;
-            case 4:
-                StartCoroutine(BossSkill5());
-                break;
-            case 5:
-                StartCoroutine(BossSkill6());
-                break;
             default:
                 Debug.LogWarning("Invalid skill index.");
                 break;
@@ -115,57 +233,27 @@ public class Boss : MonsterAI
 
     private IEnumerator BossSkill1()
     {
-        Debug.Log("´ëÃæ ¼Õ°¡¶ô Æ¨±â´Â ¸ğ¼Ç");
-        // °ËÀº´Ù¸® ¼ÒÈ¯ÇÏ´Â ÄÚµå ½ÃÀÛ
         isBossPatern = false;
         yield break;
     }
 
     private IEnumerator BossSkill2()
     {
-        Debug.Log("´ëÃæ ÇØ°ñÅõ»çÃ¼ ¹ß»çÇÏ´Â ¾Ö´Ï¸ŞÀÌ¼Ç");
-        Debug.Log("´ëÃæ ÇØ°ñ¹ß»ç");
-        Debug.Log("ÇÃ·¹ÀÌ¾î ±âÀı ºÎ¸£±â");
         isBossPatern = false;
         yield break;
     }
 
     private IEnumerator BossSkill3()
     {
-        Debug.Log("´ëÃæ ´«¿¡¼­ ºû³ª´Â ¾Ö´Ï¸ŞÀÌ¼Ç");
-        Debug.Log("´ëÃæ ¾îµÎ¿î ¿¬±â ÆÛÁ®³ª°¡¼­ ÇÊµå µ¤´Â ÀÌÆåÆ®");
-        Debug.Log("´ëÃæ Ä«¸Ş¶ó ¾îµÎ¿öÁü"); // ¹Ù·Î ¾îµÎ¿öÁü (Ä«¸àÀÌ¾Æ´Ï¶ó ³ìÅÏ°°Àº´À³¦)
         isBossPatern = false;
         yield break;
     }
 
     private IEnumerator BossSkill4()
     {
-        Debug.Log("´ëÃæ ¼Õ°¡¶ôÀ¸·Î ÇÏ´Ã °¡¸£Å°´Â ¾Ö´Ï¸ŞÀÌ¼Ç");
-        Debug.Log("´ëÃæ ¾îµÒÀÇÃ¢ ¶³¾îÁö´Â ÀÌÆåÆ®");
-        // ¾îµÒÀÇÃ¢ ÄÚµå ½ÃÀÛ
         isBossPatern = false;
         yield break;
     }
-
-    private IEnumerator BossSkill5()
-    {
-        Debug.Log("´ëÃæ ¼Õ¹Ù´Ú ºÎ‹HÈ÷´Â ¾Ö´Ï¸ŞÀÌ¼Ç");
-        // ÇÃ·¹ÀÌ¾î ÇÑ°÷À¸·Î ¸ğÀ¸´Â ÄÚµå ½ÃÀÛ
-        Debug.Log("ÇÃ·¹ÀÌ¾î ¼Ó¹Ú ºÎ¸£±â");
-        // ±× ÀÚ¸®·Î ¾îµÒ±¸Ã¼ ¶³¾îÆ®¸®´Â ÄÚµå ½ÃÀÛ
-        isBossPatern = false;
-        yield break;
-    }
-
-    private IEnumerator BossSkill6()
-    {
-        Debug.Log("´ëÃæ ÀÏ¾î³ª¶ó ´ë»ç");
-        // Á×¾ú´ø ¸ó½ºÅÍ µÇ»ì¸®´Â ÄÚµå << ÇöÇ¥ÇÑÅ× Ãß°¡·Î ¹°¾îº¸±â
-        isBossPatern = false;
-        yield break;
-    }
-
     private IEnumerator BossPaternStart()
     {
         if (isBossPatern) yield break;

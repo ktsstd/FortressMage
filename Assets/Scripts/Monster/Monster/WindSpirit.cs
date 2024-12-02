@@ -5,7 +5,7 @@ using UnityEngine;
 public class WindSpirit : MonsterAI
 {
     private Animator animator;
-    private ParticleSystem particleSys;
+    public ParticleSystem particleSys;
     private Transform closestTarget;
 
     private float stopDistance = 20.0f;
@@ -15,7 +15,7 @@ public class WindSpirit : MonsterAI
     public override void Start()
     {
         base.Start();
-        MaxHp = 400f;
+        MaxHp = 60f;
         Speed = 5f;
         CurHp = MaxHp;
         animator = GetComponent<Animator>();
@@ -24,8 +24,18 @@ public class WindSpirit : MonsterAI
     }
 
     public override void Update()
-    {        
-        closestTarget = GetClosestTarget();
+    {
+        if (!NoTarget)
+        {
+            closestTarget = GetClosestTarget();
+        }
+        if (closestTarget == null)
+        {
+            NoTarget = true;
+            GameObject castleObj = GameObject.FindWithTag("Castle");
+            closestTarget = castleObj.transform;
+        }
+        
         float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
 
         if (distanceTotarget > attackRange + stopDistance)
@@ -37,9 +47,9 @@ public class WindSpirit : MonsterAI
             agent.ResetPath();
             if (skillCooltime <= 0)
             {
-                particleSys.Play();
                 animator.SetTrigger("StartAttack");
                 skillCooltime = skillCooldown;
+                particleSys.Play();
             }
         }
 
@@ -61,35 +71,16 @@ public class WindSpirit : MonsterAI
             foreach (GameObject targetObj in targetsWithTag)
             {
                 Transform target = targetObj.transform;
-                
                 if (target == null) continue;
 
-                if (target.CompareTag("skilltower"))
-                {
-                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    if (sqrDistanceToTarget < closestSqrDistance)
-                    {
-                        closestSqrDistance = sqrDistanceToTarget;
-                        closestTarget = target;
-                    }
-                    // Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>();
-                    // if (skillTowerScript.canAttack == true)
-                    // {
-                    //     float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    //     if (sqrDistanceToTarget < closestSqrDistance)
-                    //     {
-                    //         closestSqrDistance = sqrDistanceToTarget;
-                    //         closestTarget = target;
-                    //     }
-                    // }
-                }
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
 
-                if (target.CompareTag("turret"))
+                // 조건을 확인하여 가장 가까운 대상을 찾음
+                if (tag == "turret")
                 {
                     Turret towerScript = target.GetComponent<Turret>();
-                    if (towerScript.canAttack == true)
+                    if (towerScript != null && towerScript.canAttack)
                     {
-                        float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
                         if (sqrDistanceToTarget < closestSqrDistance)
                         {
                             closestSqrDistance = sqrDistanceToTarget;
@@ -98,33 +89,14 @@ public class WindSpirit : MonsterAI
                     }
                 }
 
-                if (target.CompareTag("Castle"))
+                else if (tag == "Castle" || tag == "skilltower")
                 {
-                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
                     if (sqrDistanceToTarget < closestSqrDistance)
                     {
                         closestSqrDistance = sqrDistanceToTarget;
                         closestTarget = target;
                     }
-                    // Wall castleScript = CurTarget.GetComponent<Wall>();
-                    // if (castleScript.canAttack == true)
-                    // {
-                    //     float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                    //     if (sqrDistanceToTarget < closestSqrDistance)
-                    //     {
-                    //         closestSqrDistance = sqrDistanceToTarget;
-                    //         closestTarget = target;
-                    //     }
-                    // }
                 }
-
-                // float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-
-                // if (sqrDistanceToTarget < closestSqrDistance)
-                // {
-                //     closestSqrDistance = sqrDistanceToTarget;
-                //     closestTarget = target;
-                // }
             }
         }
 
