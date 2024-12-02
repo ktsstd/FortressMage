@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public bool isMoving = false;
     public bool isStun = false;
     public bool isCasting = false;
+    public bool isDie = false;
 
     public virtual void Start()
     {
@@ -50,16 +51,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         animator.SetBool("IsRun", isMoving);
         if (pv.IsMine)
         {
-            mousePosition = GetMousePosition();
+            if (!isDie)
+            {
+                mousePosition = GetMousePosition();
 
-            AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
-                isCasting = true;
-            else
-                isCasting = false;
+                AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
+                    isCasting = true;
+                else
+                    isCasting = false;
 
-            if (!isStun && !isCasting)
-                Move();
+                if (!isStun && !isCasting)
+                    Move();
+            }
         }
         else
         {
@@ -85,7 +89,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             if (Physics.Raycast(ray, out hit, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
                 targetPos = hit.point;
-                targetPos.y = transform.position.y;
+                targetPos.y = 0.25f;
                 isMoving = true;
             }
         }
@@ -154,6 +158,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void OnHitPlayer(float _damage)
     {
         playerHp -= _damage;
+        if (playerHp < 0)
+        {
+            isDie = true;
+            pv.RPC("PlayAnimation", RpcTarget.All, "Die");
+        }
     }
 
     #region Player Crowd Control

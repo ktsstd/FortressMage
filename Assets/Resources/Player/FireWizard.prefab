@@ -396,6 +396,7 @@ MonoBehaviour:
   isMoving: 0
   isStun: 0
   isCasting: 0
+  isDie: 0
   skillRangeA: {fileID: 6446129034553884371}
   skillRangeS: {fileID: 5979410305141900690}
   skillEffectD: {fileID: 5585016107503173546}

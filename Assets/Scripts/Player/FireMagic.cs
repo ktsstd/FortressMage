@@ -32,18 +32,22 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         base.Update();
         if (pv.IsMine)
         {
-            if (skillCooltimeA >= 0) {skillCooltimeA -= Time.deltaTime;}
-            if (skillCooltimeS >= 0) {skillCooltimeS -= Time.deltaTime;}
-            if (skillCooltimeD >= 0) {skillCooltimeD -= Time.deltaTime;}
-        }
-        if (!isCasting && !isStun)
-        {
-            if (!skillRangeS.activeSelf)
-                PlayerSkillA();
-            if (!skillRangeA.activeSelf)
-                PlayerSkillS();
-            if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
-                PlayerSkillD();
+            if (!isDie)
+            {
+                if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
+                if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
+                if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
+
+                if (!isCasting && !isStun)
+                {
+                    if (!skillRangeS.activeSelf)
+                        PlayerSkillA();
+                    if (!skillRangeA.activeSelf)
+                        PlayerSkillS();
+                    if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
+                        PlayerSkillD();
+                }
+            }
         }
     }
 
