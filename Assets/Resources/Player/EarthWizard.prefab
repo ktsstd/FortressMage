@@ -692,6 +692,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
+  playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
   defaultSpped: 3
@@ -699,6 +700,7 @@ MonoBehaviour:
   isMoving: 0
   isStun: 0
   isCasting: 0
+  isDie: 0
   skillRangeA: {fileID: 2390296628994692440}
   skillRangeS: {fileID: 852522701287007955}
   skillRangeD: {fileID: 892685286943407204}

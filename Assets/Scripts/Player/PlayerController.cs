@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
 using Photon.Realtime;
 using Cinemachine;
@@ -9,6 +10,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     public PhotonView pv;
     private CinemachineVirtualCamera virtualCamera;
+
+    private PostProcessVolume postProcessVolume;
+    private Vignette vignetteEffect;
+    private float vignetteValue = 0f;
 
     private new Camera camera;
     public Animator animator;
@@ -38,6 +43,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         camera = Camera.main;
+        postProcessVolume = FindObjectOfType<PostProcessVolume>();
+        postProcessVolume.profile.TryGetSettings(out vignetteEffect);
         pv = GetComponent<PhotonView>();
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
         if (pv.IsMine)
@@ -57,6 +64,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 mousePosition = GetMousePosition();
 
                 AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+                vignetteEffect.intensity.value = Mathf.Lerp(vignetteEffect.intensity.value, vignetteValue, Time.deltaTime * 5f);
+
                 if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
                     isCasting = true;
                 else
@@ -78,6 +88,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             OnPlayerStun(2f);
         if (Input.GetKeyDown(KeyCode.Keypad1))
             OnPlayerKnockBack(transform);
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+            OnPlayerBlind();
     }
 
     Vector3 targetPos;
@@ -231,9 +243,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         OnPlayerStun(0.5f);
     }
 
+    public void OnPlayerBlind()
+    {
+        StartCoroutine(PlayerBlind());
+    }
+
+    IEnumerator PlayerBlind()
+    {
+        vignetteValue = 1f;
+        yield return new WaitForSeconds(6f);
+        vignetteValue = 0f;
+    }
+
     #endregion
-
-
 
     [PunRPC]
     public void PlayAnimation(string _ani)
