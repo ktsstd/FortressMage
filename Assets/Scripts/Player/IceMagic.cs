@@ -38,15 +38,19 @@ public class IceMagic : PlayerController
             if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
             if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
             if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
-        }
-        if (!isCasting && !isStun)
-        {
-            if (!skillRangeS.activeSelf && !skillRangeD.activeSelf)
-                PlayerSkillA();
-            if (!skillRangeA.activeSelf && !skillRangeD.activeSelf)
-                PlayerSkillS();
-            if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
-                PlayerSkillD();
+
+            if (!isDie)
+            {
+                if (!isCasting && !isStun)
+                {
+                    if (!skillRangeS.activeSelf && !skillRangeD.activeSelf)
+                        PlayerSkillA();
+                    if (!skillRangeA.activeSelf && !skillRangeD.activeSelf)
+                        PlayerSkillS();
+                    if (!skillRangeA.activeSelf && !skillRangeS.activeSelf)
+                        PlayerSkillD();
+                }
+            }
         }
     }
 

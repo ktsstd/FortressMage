@@ -389,6 +389,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
+  playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
   defaultSpped: 3
@@ -396,6 +397,7 @@ MonoBehaviour:
   isMoving: 0
   isStun: 0
   isCasting: 0
+  isDie: 0
   skillRangeA: {fileID: 6446129034553884371}
   skillRangeS: {fileID: 5979410305141900690}
   skillEffectD: {fileID: 5585016107503173546}
@@ -464,6 +466,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: Phoenix
+  - Type: 9
+    SynchronizeType: 0
+    Name: Die
+  - Type: 9
+    SynchronizeType: 0
+    Name: StandUp
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

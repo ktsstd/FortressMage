@@ -20,7 +20,7 @@ public class Turret : MonoBehaviourPun
     public float damage = 20f;
     public float increaseAmount = 5f;
     
-    private bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
+    public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
     private Animator animator; // Animator 컴포넌트 참조
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
 
