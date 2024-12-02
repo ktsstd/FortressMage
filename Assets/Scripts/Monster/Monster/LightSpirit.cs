@@ -13,7 +13,6 @@ public class LightSpirit : MonsterAI, IPunObservable
     private Transform closestTarget;
 
     private float stopDistance = 2.0f;
-    private float LightMonsterSpeed = 5.0f;
     // private float fadeDuration = 8.0f;
 
     private bool StartAttack = false;
@@ -43,23 +42,29 @@ public class LightSpirit : MonsterAI, IPunObservable
     public override void Update()
     {
         // if (castleTransform == null) return;
-        if (StartAttack) return;
-        closestTarget = GetClosestTarget();
+        // if (StartAttack) return;
+        bool isAtking = animator.GetBool("StartAttack");
         
-        float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
+        if (!isAtking && !StartAttack)
+        {
+            closestTarget = GetClosestTarget();
+            float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
 
-        if (distanceTotarget > attackRange + stopDistance)
-        {
-            agent.SetDestination(closestTarget.position);
-        }
-        else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
-        {
-            agent.ResetPath();
-            if (!StartAttack)
+            if (distanceTotarget > attackRange + stopDistance)
             {
+                agent.SetDestination(closestTarget.position);
+            }
+            else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
+            {
+                agent.ResetPath();
                 StartAttack = true;
                 StartCoroutine(LightAttackStart());
             }
+        }
+
+        else
+        {
+            agent.ResetPath();
         }
     }
 

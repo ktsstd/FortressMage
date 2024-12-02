@@ -117,6 +117,8 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                     }
                 }
             }
+            else continue;
+
             if (target.CompareTag("Castle"))
             {
                 float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
@@ -126,26 +128,29 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                     closestTarget = target;
                 }
             }
+            else continue;
 
             if (target.CompareTag("skilltower"))
             {
                 float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
                 if (sqrDistanceToTarget < closestSqrDistance)
                 {
-                    closestSqrDistance = sqrDistanceToTarget;
-                    closestTarget = target;
+                closestSqrDistance = sqrDistanceToTarget;
+                closestTarget = target;
                 }
             }
+            else continue;
 
-            if (target.CompareTag("player"))
+            if (target.CompareTag("Player"))
             {
                 float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
                 if (sqrDistanceToTarget < closestSqrDistance)
                 {
-                    closestSqrDistance = sqrDistanceToTarget;
-                    closestTarget = target;
+                closestSqrDistance = sqrDistanceToTarget;
+                closestTarget = target;
                 }
             }
+            else continue;
         }
 
         return closestTarget;
