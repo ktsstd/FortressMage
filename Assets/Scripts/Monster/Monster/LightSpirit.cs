@@ -68,31 +68,79 @@ public class LightSpirit : MonsterAI, IPunObservable
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        // "Turret", "Castle", "SkillTower"와 같은 태그를 사용해 각 대상을 찾음
         string[] tags = { "skilltower", "turret", "Castle" };
 
         foreach (string tag in tags)
         {
-            // 해당 태그를 가진 모든 객체를 찾음
             GameObject[] targetsWithTag = GameObject.FindGameObjectsWithTag(tag);
 
             foreach (GameObject targetObj in targetsWithTag)
             {
-                // 각 타겟의 Transform을 가져옴
                 Transform target = targetObj.transform;
-
-                // 타겟이 null이 아닌지 확인
+                
                 if (target == null) continue;
 
-                // 현재 객체와 타겟의 거리 계산 (제곱 거리 사용)
-                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-
-                // 가장 가까운 타겟을 선택
-                if (sqrDistanceToTarget < closestSqrDistance)
+                if (target.CompareTag("skilltower"))
                 {
-                    closestSqrDistance = sqrDistanceToTarget;
-                    closestTarget = target;
+                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                    if (sqrDistanceToTarget < closestSqrDistance)
+                    {
+                        closestSqrDistance = sqrDistanceToTarget;
+                        closestTarget = target;
+                    }
+                    // Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>();
+                    // if (skillTowerScript.canAttack == true)
+                    // {
+                    //     float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                    //     if (sqrDistanceToTarget < closestSqrDistance)
+                    //     {
+                    //         closestSqrDistance = sqrDistanceToTarget;
+                    //         closestTarget = target;
+                    //     }
+                    // }
                 }
+
+                if (target.CompareTag("turret"))
+                {
+                    Turret towerScript = target.GetComponent<Turret>();
+                    if (towerScript.canAttack == true)
+                    {
+                        float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                        if (sqrDistanceToTarget < closestSqrDistance)
+                        {
+                            closestSqrDistance = sqrDistanceToTarget;
+                            closestTarget = target;
+                        }
+                    }
+                }
+
+                if (target.CompareTag("Castle"))
+                {
+                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                    if (sqrDistanceToTarget < closestSqrDistance)
+                    {
+                        closestSqrDistance = sqrDistanceToTarget;
+                        closestTarget = target;
+                    }
+                    // Wall castleScript = CurTarget.GetComponent<Wall>();
+                    // if (castleScript.canAttack == true)
+                    // {
+                    //     float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                    //     if (sqrDistanceToTarget < closestSqrDistance)
+                    //     {
+                    //         closestSqrDistance = sqrDistanceToTarget;
+                    //         closestTarget = target;
+                    //     }
+                    // }
+                }
+
+                // float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+
+                // if (sqrDistanceToTarget < closestSqrDistance)
+                // {
+                //     closestSqrDistance = sqrDistanceToTarget;
+                //     closestTarget = target;
+                // }
             }
         }
 

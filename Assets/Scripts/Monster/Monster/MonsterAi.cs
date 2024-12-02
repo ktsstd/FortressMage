@@ -90,11 +90,61 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (target == null) continue;
 
-            float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-            if (sqrDistanceToTarget < closestSqrDistance)
+            // if (target.CompareTag("player"))
+            // {
+            //     PlayerController playerScript = target.GetComponent<PlayerController>();
+            //     if (playerScript.isDie == false)
+            //     {
+            //         float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+            //         if (sqrDistanceToTarget < closestSqrDistance)
+            //         {
+            //             closestSqrDistance = sqrDistanceToTarget;
+            //             closestTarget = target;
+            //         }
+            //     }
+            // }
+
+            if (target.CompareTag("turret"))
             {
-                closestSqrDistance = sqrDistanceToTarget;
-                closestTarget = target;
+                Turret towerScript = target.GetComponent<Turret>();
+                if (towerScript.canAttack == true)
+                {
+                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                    if (sqrDistanceToTarget < closestSqrDistance)
+                    {
+                        closestSqrDistance = sqrDistanceToTarget;
+                        closestTarget = target;
+                    }
+                }
+            }
+            if (target.CompareTag("Castle"))
+            {
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                if (sqrDistanceToTarget < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistanceToTarget;
+                    closestTarget = target;
+                }
+            }
+
+            if (target.CompareTag("skilltower"))
+            {
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                if (sqrDistanceToTarget < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistanceToTarget;
+                    closestTarget = target;
+                }
+            }
+
+            if (target.CompareTag("player"))
+            {
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+                if (sqrDistanceToTarget < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistanceToTarget;
+                    closestTarget = target;
+                }
             }
         }
 
