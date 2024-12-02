@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Vector3 receiveMousePos;
     private bool receiveMoving;
 
+    public float playerMaxHp = 100;
     public float playerHp = 100;
     public float playerAtk = 10;
     public float defaultSpped = 3;
@@ -163,6 +164,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             isDie = true;
             pv.RPC("PlayAnimation", RpcTarget.All, "Die");
         }
+    }
+
+    public void StandUp()
+    {
+        pv.RPC("PlayAnimation", RpcTarget.All, "StandUp");
+    }
+
+    public void ReSpawn()
+    {
+        isDie = false;
     }
 
     #region Player Crowd Control

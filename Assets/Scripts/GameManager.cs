@@ -64,6 +64,17 @@ public class GameManager : MonoBehaviour
         if (!isMonsterAlive())
         {
             if (!isStartWave) return;
+
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            for (int i = 0;i < players.Length; i++)
+            {
+                if (players[i].isDie)
+                {
+                    players[i].playerHp = players[i].playerMaxHp;
+                    players[i].StandUp();
+                }
+            }
+
             StartCoroutine(StartTestWave());
         }
     }

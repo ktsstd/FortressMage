@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface ISkillAnimationEvent
 {
+    void ReSpawn();
+
     void OnUseSkillA();
 
     void OnUseSkillS();
