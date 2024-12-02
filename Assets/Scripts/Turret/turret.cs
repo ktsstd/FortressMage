@@ -36,15 +36,6 @@ public class Turret : MonoBehaviourPun
         animator = GetComponent<Animator>();
     }
 
-    private void Update()
-    {
-        // �����̽��� �Է� ����
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            TakeDamage(damage); // �������� ����
-        }
-    }
-
 
     private IEnumerator FireContinuously()
     {

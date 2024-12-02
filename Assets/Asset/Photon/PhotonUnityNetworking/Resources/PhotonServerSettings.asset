@@ -65,6 +65,10 @@ MonoBehaviour:
   - HandleDestruction
   - UseShockWave
   - UseTempestFury
+  - UseLaser
+  - FireLaser
+  - DeactivateLaserRPC
+  - ApplyDamageToMonster
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
