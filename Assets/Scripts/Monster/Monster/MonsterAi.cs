@@ -80,36 +80,29 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     private Transform GetClosestTarget()
+{
+    float closestSqrDistance = Mathf.Infinity;
+    Transform closestTarget = null;
+
+    string[] tags = { "skilltower", "turret", "Castle", "Player" };
+
+    foreach (string tag in tags)
     {
-        float closestSqrDistance = Mathf.Infinity;
-        Transform closestTarget = null;
+        GameObject[] targetsWithTag = GameObject.FindGameObjectsWithTag(tag);
 
-        Transform[] targets = { player, skillTower, turret, castle };
-
-        foreach (Transform target in targets)
+        foreach (GameObject targetObj in targetsWithTag)
         {
+            Transform target = targetObj.transform;
             if (target == null) continue;
 
-            // if (target.CompareTag("player"))
-            // {
-            //     PlayerController playerScript = target.GetComponent<PlayerController>();
-            //     if (playerScript.isDie == false)
-            //     {
-            //         float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-            //         if (sqrDistanceToTarget < closestSqrDistance)
-            //         {
-            //             closestSqrDistance = sqrDistanceToTarget;
-            //             closestTarget = target;
-            //         }
-            //     }
-            // }
+            float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
 
-            if (target.CompareTag("turret"))
+            // 조건을 확인하여 가장 가까운 대상을 찾음
+            if (tag == "turret")
             {
                 Turret towerScript = target.GetComponent<Turret>();
-                if (towerScript.canAttack == true)
+                if (towerScript != null && towerScript.canAttack)
                 {
-                    float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
                     if (sqrDistanceToTarget < closestSqrDistance)
                     {
                         closestSqrDistance = sqrDistanceToTarget;
@@ -117,44 +110,20 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
                     }
                 }
             }
-            else continue;
-
-            if (target.CompareTag("Castle"))
+            else if (tag == "Castle" || tag == "skilltower" || tag == "Player")
             {
-                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
                 if (sqrDistanceToTarget < closestSqrDistance)
                 {
                     closestSqrDistance = sqrDistanceToTarget;
                     closestTarget = target;
                 }
             }
-            else continue;
-
-            if (target.CompareTag("skilltower"))
-            {
-                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                if (sqrDistanceToTarget < closestSqrDistance)
-                {
-                closestSqrDistance = sqrDistanceToTarget;
-                closestTarget = target;
-                }
-            }
-            else continue;
-
-            if (target.CompareTag("Player"))
-            {
-                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-                if (sqrDistanceToTarget < closestSqrDistance)
-                {
-                closestSqrDistance = sqrDistanceToTarget;
-                closestTarget = target;
-                }
-            }
-            else continue;
         }
-
-        return closestTarget;
     }
+
+    return closestTarget;
+}
+
 
     public virtual void AttackTarget(Transform target)
     {
