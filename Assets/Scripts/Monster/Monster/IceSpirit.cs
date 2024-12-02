@@ -83,7 +83,20 @@ public class IceSpirit : MonsterAI
                         }
                     }
                 }
-                else if (tag == "Castle" || tag == "skilltower" || tag == "Player")
+
+                if (tag == "player")
+                {
+                    PlayerController playerScript = target.GetComponent<PlayerController>();
+                    if (playerScript != null && !playerScript.isDie)
+                    {
+                        if (sqrDistanceToTarget < closestSqrDistance)
+                        {
+                            closestSqrDistance = sqrDistanceToTarget;
+                            closestTarget = target;
+                        }
+                    }
+                }
+                else if (tag == "Castle" || tag == "skilltower")
                 {
                     if (sqrDistanceToTarget < closestSqrDistance)
                     {

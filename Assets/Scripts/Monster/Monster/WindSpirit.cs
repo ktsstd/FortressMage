@@ -168,17 +168,4 @@ public class WindSpirit : MonsterAI
 
     //     Debug.Log($"{monster.name}이 버프 장판에서 나갔다");
     // }
-
-    public void MonsterDmged(int playerdamage)
-    {
-        if (CurHp <= 0)
-        {
-            CurHp -= playerdamage;
-        }
-
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
 }

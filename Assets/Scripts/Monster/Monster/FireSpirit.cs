@@ -1,28 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class FireSpirit : MonsterAI
 {   
     Animator animator;
     public bool StartAtking = false;
+    public Transform closestTarget;
 
     public override void Start()
     {
         base.Start();
-        attackRange = 2.0f; 
-        attackCooldown = 1.5f;
+        attackRange = 8.0f; 
+        attackCooldown = 5f;
         MonsterDmg = 20;
         MaxHp = 20f;
-        Speed = 1f;
+        Speed = 5f;
         StartAtking = false;
+        animator = GetComponent<Animator>();
         CurHp = MaxHp;
     }
 
     public override void Update()
     {
-        Transform closestTarget = GetClosestTarget();
-
+        if (!StartAtking)
+        {
+            closestTarget = GetClosestTarget();
+        }
+        
         if (closestTarget != null)
         {
             float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
@@ -35,13 +41,11 @@ public class FireSpirit : MonsterAI
             {
                 agent.ResetPath();
 
-                if (attackTimer <= 0f)
+                if (attackTimer <= 0f && !StartAtking)
                 {
                     animator.SetTrigger("StartAttack");
                     StartAtking = true;
-                    // StartCoroutine(FireStartAttack());
-                    // AttackTarget(closestTarget);
-                    attackTimer = attackCooldown;
+                    StartCoroutine(FireStartAttack());
                 }
             }
         }
@@ -83,7 +87,20 @@ public class FireSpirit : MonsterAI
                         }
                     }
                 }
-                else if (tag == "Castle" || tag == "skilltower" || tag == "Player")
+
+                if (tag == "player")
+                {
+                    PlayerController playerScript = target.GetComponent<PlayerController>();
+                    if (playerScript != null && !playerScript.isDie)
+                    {
+                        if (sqrDistanceToTarget < closestSqrDistance)
+                        {
+                            closestSqrDistance = sqrDistanceToTarget;
+                            closestTarget = target;
+                        }
+                    }
+                }
+                else if (tag == "Castle" || tag == "skilltower")
                 {
                     if (sqrDistanceToTarget < closestSqrDistance)
                     {
@@ -95,5 +112,67 @@ public class FireSpirit : MonsterAI
         }
 
         return closestTarget;
+    }
+
+    private IEnumerator FireStartAttack()
+    {
+        yield return new WaitForSeconds(0.5f);
+        while(StartAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Spirit of Fire_Move"))
+            {
+                Debug.Log("3");
+                FireDamageTarget(closestTarget);
+                StartAtking = false;
+                attackTimer = attackCooldown;
+                yield break;
+            }
+
+            else
+            {
+                yield return null;
+            }
+        }
+        yield break;
+    }
+
+    private void FireDamageTarget(Transform CurTarget)
+    {
+        if (CurTarget.CompareTag("skilltower"))
+        {
+            Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>();
+            if (skillTowerScript != null)
+            {
+                skillTowerScript.TakeDamage(MonsterDmg);
+            }
+        }
+
+        if (CurTarget.CompareTag("Castle"))
+        {
+            Wall castleScript = CurTarget.GetComponent<Wall>();
+            if (castleScript != null)
+            {
+                castleScript.TakeDamage(MonsterDmg);
+            }
+        }
+
+        if (CurTarget.CompareTag("turret"))
+        {
+            Turret towerScript = CurTarget.GetComponent<Turret>();
+            if (towerScript != null)
+            {
+                towerScript.TakeDamage(MonsterDmg);
+            }
+        }
+
+        if (CurTarget.CompareTag("Player"))
+        {
+            PlayerController playerScript = CurTarget.GetComponent<PlayerController>();
+            if (playerScript != null)
+            {
+                playerScript.OnHitPlayer(MonsterDmg);
+            }
+        }
     }
 }

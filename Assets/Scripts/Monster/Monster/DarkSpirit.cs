@@ -10,7 +10,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
     private Animator animator;
     // private ParticleSystem particleSys;
 
-    public Transform closestTarget;
+    private Transform closestTarget;
 
     private float stopDistance = 8.0f;
 
