@@ -106,11 +106,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_0"
+      name: Hp_back
       rect:
         serializedVersion: 2
         x: 348
@@ -118,20 +131,20 @@ TextureImporter:
         width: 526
         height: 29
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 464d1c5174364c644a943fe8198a83c3
-      internalID: 422393574
+      spriteID: f25ed6c6647a2c741be0e9c42cebcaf5
+      internalID: 470517202
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_1"
+      name: hp
       rect:
         serializedVersion: 2
         x: 943
@@ -139,20 +152,20 @@ TextureImporter:
         width: 526
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de73bde634f8e9343a65fd913510c923
-      internalID: -1572116034
+      spriteID: 90ef907e334445247a7616b11dbc6991
+      internalID: 148340932
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_2"
+      name: InGame ui_2
       rect:
         serializedVersion: 2
         x: 347
@@ -160,20 +173,20 @@ TextureImporter:
         width: 525
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f4b843acd8c6bc0498b215e65ad80f0d
-      internalID: 1027692310
+      spriteID: 604b4636308b49040a6a0e0583d7d994
+      internalID: -1436028787
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_3"
+      name: InGame ui_3
       rect:
         serializedVersion: 2
         x: 942
@@ -181,20 +194,20 @@ TextureImporter:
         width: 525
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1eda1cbde5cbec2469a6987a80248698
-      internalID: 128103301
+      spriteID: 7a3d7dfe186e52b4eb460ccda3f9dfba
+      internalID: 414097958
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_4"
+      name: Icon
       rect:
         serializedVersion: 2
         x: 13
@@ -202,20 +215,20 @@ TextureImporter:
         width: 109
         height: 107
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7bd9eb51ee559eb4f8de705d00f711a6
-      internalID: 1274617622
+      spriteID: 04775b4584602dd4499a7353d624a80d
+      internalID: 1558846881
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_5"
+      name: name
       rect:
         serializedVersion: 2
         x: 123
@@ -223,20 +236,20 @@ TextureImporter:
         width: 216
         height: 49
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 483ad98dcb798ed4e9f5db73f336de5d
-      internalID: -163318975
+      spriteID: b810a2b1fa1b31042b18c9a2a805b108
+      internalID: -102591904
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_6"
+      name: back
       rect:
         serializedVersion: 2
         x: 394
@@ -244,20 +257,20 @@ TextureImporter:
         width: 888
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cce3ed61bf5ec124fa24d3e0de21003a
-      internalID: 892110761
+      spriteID: d14157d6b184d334f9816783664d9bbf
+      internalID: -1932776121
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_7"
+      name: Lv
       rect:
         serializedVersion: 2
         x: 123
@@ -265,20 +278,20 @@ TextureImporter:
         width: 216
         height: 49
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 75922541671a28f47aeb35cb6d5ca9ad
-      internalID: -480497008
+      spriteID: 18eb3f62b1f4e4547a2c2eb63b6ccd63
+      internalID: 2062811478
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_8"
+      name: wave
       rect:
         serializedVersion: 2
         x: 26
@@ -286,20 +299,20 @@ TextureImporter:
         width: 46
         height: 120
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8bf84110680cb464f8f4dc7a4c5ae1d8
-      internalID: -687757455
+      spriteID: e865fd8c86c262144acb6e4d8864dc58
+      internalID: -1791473550
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_9"
+      name: wave_num
       rect:
         serializedVersion: 2
         x: 94
@@ -307,20 +320,20 @@ TextureImporter:
         width: 73
         height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 346c09da8b37dd145b3e4429c0c58f95
-      internalID: 2137727650
+      spriteID: 7443c5f12b930ab44b5ebfb7ce17a9d4
+      internalID: -1958578111
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_10"
+      name: InGame ui_10
       rect:
         serializedVersion: 2
         x: 22
@@ -328,20 +341,20 @@ TextureImporter:
         width: 235
         height: 58
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b6ca30b34974f5459ad25a45fa5b1d7
-      internalID: -1508908843
+      spriteID: d07bf418ae52ee445b3c416798aff271
+      internalID: 502822435
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_11"
+      name: InGame ui_11
       rect:
         serializedVersion: 2
         x: 258
@@ -349,20 +362,20 @@ TextureImporter:
         width: 235
         height: 58
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fbae89af136789249ad87a19df82931a
-      internalID: -391788694
+      spriteID: 172383d1ab809de488e3a8942f41d53e
+      internalID: 687563717
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_12"
+      name: InGame ui_12
       rect:
         serializedVersion: 2
         x: 31
@@ -370,20 +383,20 @@ TextureImporter:
         width: 470
         height: 254
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 11ab44a27722ab84d8c1e0c4372393f7
-      internalID: 726477840
+      spriteID: 56921e1e2d7e917498a9528f35534a73
+      internalID: -742002923
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_13"
+      name: skill_Lv_Up
       rect:
         serializedVersion: 2
         x: 1878
@@ -391,20 +404,20 @@ TextureImporter:
         width: 79
         height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd2d8c62e2d94b546881bfb1bfa19bf6
-      internalID: 1252097476
+      spriteID: 38dd223e5783db54aaf57f77e30f9359
+      internalID: -48760130
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_14"
+      name: skill_bac
       rect:
         serializedVersion: 2
         x: 1393
@@ -412,20 +425,20 @@ TextureImporter:
         width: 340
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83de39312452e0e469dd80376f8ec069
-      internalID: 901425794
+      spriteID: 49adb581661775f4686fdb0c26e7aeb2
+      internalID: -1618483538
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_15"
+      name: skill_Icon
       rect:
         serializedVersion: 2
         x: 1864
@@ -433,41 +446,41 @@ TextureImporter:
         width: 97
         height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 716f8b1a1785c8841a71b87a85574c21
-      internalID: -2064088881
+      spriteID: fc2031b82599f7244b38db9e307f3ab1
+      internalID: -1579748202
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_16"
+      name: skill_back
       rect:
         serializedVersion: 2
-        x: 872
+        x: 870
         y: 2
-        width: 481
+        width: 483
         height: 147
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54006ed0778f4fd4ca4dddc00810593b
-      internalID: -92396118
+      spriteID: 418806c41e73aca488b4a7f199e8bce9
+      internalID: -1457180532
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_17"
+      name: skill
       rect:
         serializedVersion: 2
         x: 1621
@@ -475,20 +488,20 @@ TextureImporter:
         width: 340
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a5d4ac5cc9c30064abf312f75f5aeba7
-      internalID: 709593449
+      spriteID: 9ba78761eda844a419fb641d7cd45c51
+      internalID: 1698453201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\uAC8C\uC784\uD654\uBA74 ui_18"
+      name: skills
       rect:
         serializedVersion: 2
         x: 1841
@@ -496,14 +509,14 @@ TextureImporter:
         width: 120
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f352cdab97dde24f9ab02b4f08c2542
-      internalID: 683400754
+      spriteID: d896bf919cc1bfb4faec117c64e42038
+      internalID: 312989125
       vertices: []
       indices: 
       edges: []
@@ -519,25 +532,25 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "\uAC8C\uC784\uD654\uBA74 ui_0": 422393574
-      "\uAC8C\uC784\uD654\uBA74 ui_1": -1572116034
-      "\uAC8C\uC784\uD654\uBA74 ui_10": -1508908843
-      "\uAC8C\uC784\uD654\uBA74 ui_11": -391788694
-      "\uAC8C\uC784\uD654\uBA74 ui_12": 726477840
-      "\uAC8C\uC784\uD654\uBA74 ui_13": 1252097476
-      "\uAC8C\uC784\uD654\uBA74 ui_14": 901425794
-      "\uAC8C\uC784\uD654\uBA74 ui_15": -2064088881
-      "\uAC8C\uC784\uD654\uBA74 ui_16": -92396118
-      "\uAC8C\uC784\uD654\uBA74 ui_17": 709593449
-      "\uAC8C\uC784\uD654\uBA74 ui_18": 683400754
-      "\uAC8C\uC784\uD654\uBA74 ui_2": 1027692310
-      "\uAC8C\uC784\uD654\uBA74 ui_3": 128103301
-      "\uAC8C\uC784\uD654\uBA74 ui_4": 1274617622
-      "\uAC8C\uC784\uD654\uBA74 ui_5": -163318975
-      "\uAC8C\uC784\uD654\uBA74 ui_6": 892110761
-      "\uAC8C\uC784\uD654\uBA74 ui_7": -480497008
-      "\uAC8C\uC784\uD654\uBA74 ui_8": -687757455
-      "\uAC8C\uC784\uD654\uBA74 ui_9": 2137727650
+      Hp_back: 470517202
+      Icon: 1558846881
+      InGame ui_10: 502822435
+      InGame ui_11: 687563717
+      InGame ui_12: -742002923
+      InGame ui_2: -1436028787
+      InGame ui_3: 414097958
+      Lv: 2062811478
+      back: -1932776121
+      hp: 148340932
+      name: -102591904
+      skill: 1698453201
+      skill_Icon: -1579748202
+      skill_Lv_Up: -48760130
+      skill_bac: -1618483538
+      skill_back: -1457180532
+      skills: 312989125
+      wave: -1791473550
+      wave_num: -1958578111
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
