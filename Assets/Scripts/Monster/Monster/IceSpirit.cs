@@ -57,17 +57,40 @@ public class IceSpirit : MonsterAI
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        Transform[] targets = { skillTower, turret, castle };
+        string[] tags = { "skilltower", "turret", "Castle", "Player" };
 
-        foreach (Transform target in targets)
+        foreach (string tag in tags)
         {
-            if (target == null) continue;
+            GameObject[] targetsWithTag = GameObject.FindGameObjectsWithTag(tag);
 
-            float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
-            if (sqrDistanceToTarget < closestSqrDistance)
+            foreach (GameObject targetObj in targetsWithTag)
             {
-                closestSqrDistance = sqrDistanceToTarget;
-                closestTarget = target;
+                Transform target = targetObj.transform;
+                if (target == null) continue;
+
+                float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
+
+                // 조건을 확인하여 가장 가까운 대상을 찾음
+                if (tag == "turret")
+                {
+                    Turret towerScript = target.GetComponent<Turret>();
+                    if (towerScript != null && towerScript.canAttack)
+                    {
+                        if (sqrDistanceToTarget < closestSqrDistance)
+                        {
+                            closestSqrDistance = sqrDistanceToTarget;
+                            closestTarget = target;
+                        }
+                    }
+                }
+                else if (tag == "Castle" || tag == "skilltower" || tag == "Player")
+                {
+                    if (sqrDistanceToTarget < closestSqrDistance)
+                    {
+                        closestSqrDistance = sqrDistanceToTarget;
+                        closestTarget = target;
+                    }
+                }
             }
         }
 

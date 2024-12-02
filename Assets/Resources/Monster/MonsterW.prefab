@@ -172,10 +172,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e21513c3a1b3054c858fae10656bb51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBuff: 1.5
-  attackCooldownReduction: 3
+  player: {fileID: 0}
+  skillTower: {fileID: 0}
+  turret: {fileID: 0}
+  castle: {fileID: 0}
+  attackRange: 2
+  attackCooldown: 2
+  attackTimer: 0
   MaxHp: 30
   CurHp: 0
+  MonsterDmg: 10
+  hasHealed: 0
+  hasBuffed: 0
+  agent: {fileID: 0}
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  skillCooltime: 0
 --- !u!114 &-1315244261316685053
 MonoBehaviour:
   m_ObjectHideFlags: 0

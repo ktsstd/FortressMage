@@ -258,6 +258,7 @@ MonoBehaviour:
   CurHp: 0
   MonsterDmg: 10
   hasHealed: 0
+  hasBuffed: 0
   agent: {fileID: 0}
   obstacleMask:
     serializedVersion: 2

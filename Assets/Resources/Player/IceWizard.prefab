@@ -609,6 +609,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
+  playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
   defaultSpped: 3

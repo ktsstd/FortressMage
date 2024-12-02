@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartTestWave()
     {
         yield return new WaitForSeconds(10f);
-        string[] FirstWaves = { "Monster/MonsterF", "Monster/MonsterI", "Monster/Spirit of Light" };
+        string[] FirstWaves = { "Monster/Spirit of Fire", "Monster/MonsterI", "Monster/Spirit of Light" };
         string[] SecondWaves = { "Monster/Spirit of Dark", "Monster/Spirit of Wind", "Monster/EliteMonster1", "Monster/EliteMonsetr2" };
 
         if (isTurretDestroyedAtWave.ContainsKey((int)Wave - 2) && isTurretDestroyedAtWave[(int)Wave - 2])
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour
     public void TestSpawnFire()
     {
         int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-        string FireMonster = "Monster/MonsterF";
+        string FireMonster = "Monster/Spirit of Fire";
 
         PhotonNetwork.Instantiate(FireMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }
@@ -239,6 +239,14 @@ public class GameManager : MonoBehaviour
         string DarkMonster = "Monster/Spirit of Dark";
 
         PhotonNetwork.Instantiate(DarkMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
+    public void TestSpawnWind()
+    {
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string WindMonster = "Monster/Spirit of Wind";
+
+        PhotonNetwork.Instantiate(WindMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }
 
     public void StartScene()

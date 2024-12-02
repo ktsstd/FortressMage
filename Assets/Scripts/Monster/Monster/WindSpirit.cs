@@ -5,11 +5,12 @@ using UnityEngine;
 public class WindSpirit : MonsterAI
 {
     private Animator animator;
-    private ParticleSystem particleSys; 
-    private float stopDistance = 2.0f;
+    private ParticleSystem particleSys;
     private Transform closestTarget;
-    public float speedBuff = 1.5f; // 버프 적용 시 속도 증가 비율
-    public float attackCooldownReduction = 3f; // 쿨타임 감소량
+
+    private float stopDistance = 20.0f;
+    private float skillCooldown = 10f;
+    public float skillCooltime;
 
     public override void Start()
     {
@@ -31,18 +32,19 @@ public class WindSpirit : MonsterAI
         {
             agent.SetDestination(closestTarget.position);
         }
-
-        // else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
-        // {
-        //     agent.ResetPath();
-        //     StartAttack = true;
-        //     StartCoroutine(LightAttackStart());
-        // }
-
         else
         {
             agent.ResetPath();
+            if (skillCooltime <= 0)
+            {
+                particleSys.Play();
+                animator.SetTrigger("StartAttack");
+                skillCooltime = skillCooldown;
+            }
         }
+
+        skillCooltime = Mathf.Max(0f, skillCooltime - Time.deltaTime);
+
     }
     
     private Transform GetClosestTarget()
@@ -129,14 +131,14 @@ public class WindSpirit : MonsterAI
         return closestTarget;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        MonsterAI monster = other.GetComponent<MonsterAI>();
-        if (monster != null)
-        {
-            ApplyBuff(monster);
-        }
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     MonsterAI monster = other.GetComponent<MonsterAI>();
+    //     if (monster != null)
+    //     {
+    //         ApplyBuff(monster);
+    //     }
+    // }
 
     // private void OnTriggerExit(Collider other)
     // {
@@ -147,17 +149,17 @@ public class WindSpirit : MonsterAI
     //     }
     // }
 
-    private void ApplyBuff(MonsterAI monster)
-    {
-        monster.Speed *= speedBuff; // 몬스터 속도 증가
-        monster.AttackCooldown -= attackCooldownReduction; // 공격 쿨타임 감소
+    // private void ApplyBuff(MonsterAI monster)
+    // {
+    //     monster.Speed *= speedBuff; // 몬스터 속도 증가
+    //     monster.AttackCooldown -= attackCooldownReduction; // 공격 쿨타임 감소
 
-        // 쿨타임이 0 미만이 되지 않도록 방지
-        if (monster.AttackCooldown < 0)
-        {
-            monster.AttackCooldown = 0;
-        }
-    }
+    //     // 쿨타임이 0 미만이 되지 않도록 방지
+    //     if (monster.AttackCooldown < 0)
+    //     {
+    //         monster.AttackCooldown = 0;
+    //     }
+    // }
 
     // private void RemoveBuff(MonsterAI monster)
     // {
