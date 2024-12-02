@@ -181,6 +181,12 @@ public class Turret : MonoBehaviourPun
     {
         health = 100f; // ü���� 100���� ����
         canAttack = true; // ���� �����ϰ� ����
+        hasExploded = false;
+        if (animator != null)
+        {
+            animator.ResetTrigger("DestroyTrigger"); // "DestroyTrigger" 초기화
+            animator.SetTrigger("RebuildTrigger");   // 재구축 애니메이션 트리거
+        }
         StartCoroutine(FireContinuously()); // ���� �ڷ�ƾ �ٽ� ����
     }
 
