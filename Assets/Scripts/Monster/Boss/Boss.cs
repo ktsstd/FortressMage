@@ -2,45 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
 
 public class Boss : MonsterAI
 {
     private Transform closestTarget;
+    private Transform CastlePos;
     private Animator animator;
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f, 30f };
-    public float[] BossMonsterSkillTimers = new float[4];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
+    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f };
+    public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
     private float AllSkillCooldown = 5f;  // ��ü ��ų ��Ÿ��
     public float AllSkillCooldownTimer;  // ��ü ��ų ��Ÿ�� Ÿ�̸�
+    private float BossObjDmg = 9999f;
 
-    private float S1Speed = 0f;
+    // private float S1Speed = 0f;
 
-    private bool isBossPatern = false;  // ���� ���� Ȱ��ȭ ����
+    public bool isBossPatern = false;  // ���� ���� Ȱ��ȭ ����
+    public bool isBossAtking = false;
+    // public bool isBossUseSkill2 = false; 집에서 마무리
 
-    public GameObject BossSkill1Obj; 
+    public GameObject BossSkill2Obj;
+    private GameObject[] BossSKill4Obj;
 
     public override void Start()
     {
         base.Start();  // �θ� Ŭ������ Start() ȣ��
         MaxHp = 200f;  // ü�� �ʱ�ȭ
-        MonsterDmg = 10;  // ���� ������ �ʱ�ȭ
-        attackRange = 78.0f; 
+        MonsterDmg = 30;  // ���� ������ �ʱ�ȭ
+        attackRange = 4.0f;
+        Speed = 1.0f;
         CurHp = MaxHp;  // ü�� ����
         isBossPatern = false;
+        isBossAtking = false;
+        isBossUseSkill2 = false;
         animator = GetComponent<Animator>();
-        StartCoroutine(StartRotate());
+        BossSkill2Obj.SetActive(false);
+        
+        // StartCoroutine(StartRotate());
     }
 
     private IEnumerator StartRotate()
     {
-        Transform BossSkilObjT = BossSkill1Obj.transform;
-        while(S1Speed == 300f)
-        {
-            S1Speed *= Time.deltaTime;
-            BossSkilObjT.transform.Rotate(0, S1Speed, 0);
-        }
+        // Transform BossSkilObjT = BossSkill1Obj.transform;
+        // S1Speed = 0.2f;
+        // while(S1Speed <= 100f)
+        // {
+        //     BossSkilObjT.transform.Rotate(0, -S1Speed, 0);
+        //     yield return new WaitForSeconds(0f); 
+        // }
         yield break;
     }
 
@@ -65,10 +77,7 @@ public class Boss : MonsterAI
 
     public override void Update()
     {
-        if (!isBossPatern && !NoTarget)
-        {
-            closestTarget = GetClosestTarget();
-        }
+        closestTarget = GetClosestTarget();
         
         if (closestTarget != null)
         {
@@ -78,24 +87,37 @@ public class Boss : MonsterAI
             {
                 if (!isBossPatern)
                 {
-                    agent.SetDestination(closestTarget.position);
+                    GameObject castleObj = GameObject.FindWithTag("Castle");
+                    CastlePos = castleObj.transform;
+                    agent.SetDestination(CastlePos.position);
+                }
+                else
+                {
+                    agent.ResetPath();
                 }
             }
             else
             {
                 agent.ResetPath();
 
-                if (attackTimer <= 0f && !isBossPatern)
+                if (!isBossPatern && !isBossAtking && !isBossUseSkill2)
                 {
-                    isBossPatern = true;
-                    StartCoroutine(BossPaternStart());
+                    if(closestTarget.CompareTag("Player"))
+                    {
+                        isBossPatern = true;
+                        isBossUseSkill2 = true;
+                        // StartCoroutine(BossPaternStart());
+                        StartCoroutine(BossSkill2());
+                    }
+                    else
+                    {
+                        BossDamageTarget(closestTarget);
+                    }
                 }
             }
         }
         else
         {
-            // closestTarget = GetClosestTarget();
-            NoTarget = true;
             GameObject castleObj = GameObject.FindWithTag("Castle");
             closestTarget = castleObj.transform;
         }
@@ -111,6 +133,12 @@ public class Boss : MonsterAI
         if (AllSkillCooldownTimer > 0f)
         {
             AllSkillCooldownTimer -= Time.deltaTime;
+        }
+
+        if (AllSkillCooldownTimer <= 0f)
+        {
+            agent.ResetPath();
+            StartCoroutine(BossPaternStart());
         }
     }
 
@@ -206,6 +234,12 @@ public class Boss : MonsterAI
         {
             return availableSkills[Random.Range(0, availableSkills.Count)];
         }
+
+        else
+        {
+            AllSkillCooldownTimer = AllSkillCooldown;
+            isBossPatern = false;
+        }
         return -1;  // ����� �� �ִ� ��ų�� ���ٸ� -1 ��ȯ
     }
 
@@ -213,65 +247,164 @@ public class Boss : MonsterAI
     {
         switch (skillIndex)
         {
-            case 0:
-                StartCoroutine(BossSkill1());
-                break;
-            case 1:
-                StartCoroutine(BossSkill2());
-                break;
-            case 2:
+            case 0: // StartCoroutine(BossSkill2());
                 StartCoroutine(BossSkill3());
                 break;
-            case 3:
+            case 1:
                 StartCoroutine(BossSkill4());
+                break;
+            case 2:
+                StartCoroutine(BossSkill5());
                 break;
             default:
                 Debug.LogWarning("Invalid skill index.");
+                AllSkillCooldownTimer = AllSkillCooldown;
                 break;
         }
     }
 
-    private IEnumerator BossSkill1()
-    {
-        isBossPatern = false;
-        yield break;
-    }
-
     private IEnumerator BossSkill2()
     {
-        isBossPatern = false;
+        animator.SetTrigger("BossSkill2");
+        isBossAtking = true;
+        yield return new WaitForSeconds(0.5f);
+        while (isBossAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Idle"))
+            {
+                isBossPatern = false;
+                BossSkill2Obj.SetActive(true); 
+                StartCoroutine(BossSkill2Start());
+                // GameObject bossSkillPrefab3 = PhotonNetwork.Instantiate("Additional/bossSkillPrefab2", transform.position, Quaternion.identity);
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
         yield break;
+    }
+    
+    private IEnumerator BossSkill2Start()
+    {
+        Animator bossskill2Anim = BossSkill2Obj.GetComponent<Animator>();
+        yield return new WaitForSeconds(0.5f);
+        while (BossSkill2Obj.activeSelf)
+        {
+            float animTime = bossskill2Anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (animTime >= 1.0f)
+            {
+                BossSkill2Obj.SetActive(false);
+                isBossAtking = false;
+                isBossUseSkill2 = false;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
     }
 
     private IEnumerator BossSkill3()
     {
-        isBossPatern = false;
+        animator.SetTrigger("BossSkill3");
+        isBossAtking = true;
+        yield return new WaitForSeconds(0.5f);
+        while (isBossAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Idle"))
+            {
+                isBossPatern = false;
+                isBossAtking = false;
+                GameObject bossSkillPrefab3 = PhotonNetwork.Instantiate("Additional/bossSkillPrefab3", transform.position, Quaternion.identity);
+                BossMonsterSkillTimers[0] = BossMonsterSkillCooldowns[0];
+                AllSkillCooldownTimer = AllSkillCooldown;
+                yield return new WaitForSeconds(1f);
+
+                
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
         yield break;
     }
 
     private IEnumerator BossSkill4()
     {
+        BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
+        AllSkillCooldownTimer = AllSkillCooldown;
+        isBossAtking = false;
+        isBossPatern = false;
+        yield break;
+    }
+
+    private IEnumerator BossSkill5()
+    {
+        BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
+        AllSkillCooldownTimer = AllSkillCooldown;
+        isBossAtking = false;
         isBossPatern = false;
         yield break;
     }
     private IEnumerator BossPaternStart()
     {
-        if (isBossPatern) yield break;
-        isBossPatern = true;
-
-        if (AllSkillCooldownTimer <= 0f)
+        if (!isBossPatern)
         {
+            isBossPatern = true;
             int selectedSkill = GetRandomSkill();
 
             if (selectedSkill != -1)
             {
-                BossMonsterSkillTimers[selectedSkill] = BossMonsterSkillCooldowns[selectedSkill];
-                AllSkillCooldownTimer = AllSkillCooldown;
-
                 UseSkill(selectedSkill);
+            }
+
+        }
+        
+        yield break;
+    }
+
+    private void BossDamageTarget(Transform CurTarget)
+    {
+        if (CurTarget.CompareTag("skilltower"))
+        {
+            Skilltower skillTowerScript = CurTarget.GetComponent<Skilltower>();
+            if (skillTowerScript != null)
+            {
+                skillTowerScript.TakeDamage(BossObjDmg);
             }
         }
 
-        yield break;
+        if (CurTarget.CompareTag("Castle"))
+        {
+            Wall castleScript = CurTarget.GetComponent<Wall>();
+            if (castleScript != null)
+            {
+                castleScript.TakeDamage(BossObjDmg);
+            }
+        }
+
+        if (CurTarget.CompareTag("turret"))
+        {
+            Turret towerScript = CurTarget.GetComponent<Turret>();
+            if (towerScript != null)
+            {
+                towerScript.TakeDamage(BossObjDmg);
+            }
+        }
+
+        // if (CurTarget.CompareTag("Player"))
+        // {
+        //     PlayerController playerScript = CurTarget.GetComponent<PlayerController>();
+        //     if (playerScript != null)
+        //     {
+        //         playerScript.OnHitPlayer(MonsterDmg);
+        //     }
+        // }
     }
 }
