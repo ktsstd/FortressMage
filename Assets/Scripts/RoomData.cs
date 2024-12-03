@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.UI;
 
 public class RoomData : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class RoomData : MonoBehaviour
 
     // PhotonManager ���� ����
     private PhotonManager photonManager;
+    public static string selectedRoomName;
+
+    private static Button lastSelectedButton = null;
 
     // ������Ƽ ����
     public RoomInfo RoomInfo
@@ -31,7 +35,7 @@ public class RoomData : MonoBehaviour
 
 
             // ��ư Ŭ�� �̺�Ʈ�� �Լ� ����
-            GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnEnterRoom(_roomInfo.Name));
+            GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => OnRoomSelected());
         }
     }
     void Awake()
@@ -46,11 +50,46 @@ public class RoomData : MonoBehaviour
 
         photonManager = GameObject.Find("PhotonManager").GetComponent<PhotonManager>();
     }
-    void OnEnterRoom(string roomName)
+
+    public void ResetRoomData()
+{
+    // RoomInfo 초기화
+    _roomInfo = null;
+
+    // UI 텍스트 초기화
+    if (roomNameText != null) roomNameText.text = "";
+    if (roomPlayerCountText != null) roomPlayerCountText.text = "(0/0)";
+    
+    // 버튼을 활성화 상태로 되돌리기 (방을 나갈 때)
+    Button selectedButton = GetComponent<Button>();
+    if (selectedButton != null)
     {
-        // ������ ����
-        photonManager.SetUserId();
-        // �� ����
-        PhotonNetwork.JoinRoom(roomName);
+        selectedButton.interactable = true;  // 버튼을 다시 활성화 상태로 변경
+    }
+}
+
+    void OnRoomSelected()
+    {
+        // 방 선택 시 해당 방 이름을 저장
+        if (lastSelectedButton != null)
+        {
+            lastSelectedButton.interactable = true;  // 이전 버튼 활성화
+        }
+
+        // 현재 선택된 버튼을 비활성화
+        Button selectedButton = GetComponent<Button>();
+        if (selectedButton != null)
+        {
+            selectedButton.interactable = false;  // 현재 버튼 비활성화
+        }
+
+        // 선택된 버튼을 추적
+        lastSelectedButton = selectedButton;
+
+        // 방 이름 저장
+        selectedRoomName = _roomInfo.Name;
+
+        // 대기실 입장 버튼을 보여줌
+        photonManager.ShowEnterRoomButton();
     }
 }

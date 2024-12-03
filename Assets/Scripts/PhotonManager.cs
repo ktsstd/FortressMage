@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.UI;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
@@ -23,6 +24,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // RoomItem �������� �߰��� ScrollContent
     public Transform scrollContent;
 
+    [SerializeField] private Button enterWaitingRoomButton;
+    [SerializeField] private Button refreshButton;
+
     void Start()
     {
          // ����� ���������ε�
@@ -31,6 +35,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         // ���� ������ �г��ӵ��
         PhotonNetwork.NickName = userId;
+        refreshButton.onClick.AddListener(ClearAndRefreshRoomList);
     }
 
     void Awake()
@@ -71,6 +76,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log($"PhotonNetwork.InLobby = {PhotonNetwork.InLobby}");
         //Debug.Log("5) ���� �濡 ���� �õ�");
         //PhotonNetwork.JoinRandomRoom();
+        foreach (var room in rooms.Values)
+        {
+            Destroy(room);
+        }
     }
 
     bool IsNicknameTaken(string nickname)
@@ -149,39 +158,58 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     //�� ����� �����ϴ� �ݹ��Լ�
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        // 삭제된 RoomItem 프리팹을 저장할 임시변수
-        GameObject tempRoom = null; 
-        foreach (var roomInfo in roomList)
+        // 삭제된 방 아이템 초기화
+    foreach (Transform child in scrollContent)
+    {
+        Destroy(child.gameObject); // 기존 방 아이템 삭제
+    }
+
+    // 방 목록 갱신
+    foreach (var roomInfo in roomList)
+    {
+        if (!roomInfo.RemovedFromList)
         {
-            // 룸이 삭제된 경우
-            if (roomInfo.RemovedFromList == true)
+            // 새로운 방 아이템 생성
+            GameObject roomPrefab = Instantiate(roomItemPrefab, scrollContent);
+            RoomData roomData = roomPrefab.GetComponent<RoomData>();
+
+            if (roomData != null)
             {
-                // 딕셔너리에서 룸 이름으로 검색해 저장된 RoomItem 프리팹를 추출
-                rooms.TryGetValue(roomInfo.Name, out tempRoom);
-                // RoomItem 프리팹 삭제
-                Destroy(tempRoom);
-                // 딕셔너리에서 해당 룸 이름의 데이터를 삭제
-                rooms.Remove(roomInfo.Name);
+                roomData.RoomInfo = roomInfo;  // 방 정보 업데이트
             }
-            else // 룸 정보가 변경된 경우
-            {
-                // 룸 이름이 딕셔너리에 없는 경우 새로 추가
-                if (rooms.ContainsKey(roomInfo.Name) == false)
-                {
-                    // RoomInfo 프리팹을 scrollContent 하위에 생성
-                    GameObject roomPrefab = Instantiate(roomItemPrefab, scrollContent);
-                    // 룸 정보를 표시하기 위해 RoomInfo 정보 전달
-                    roomPrefab.GetComponent<RoomData>().RoomInfo = roomInfo;
-                    // 딕셔너리 자료형에 데이터 추가
-                    rooms.Add(roomInfo.Name, roomPrefab);
-                }
-                else // 룸 이름이 딕셔너리에 없는 경우에 룸 정보를 갱신
-                {
-                    rooms.TryGetValue(roomInfo.Name, out tempRoom);
-                    tempRoom.GetComponent<RoomData>().RoomInfo = roomInfo;
-                }
-            }
+
+            rooms.Add(roomInfo.Name, roomPrefab);  // 방 아이템을 딕셔너리에 추가
         }
+    }
+    }
+
+    public void ClearAndRefreshRoomList()
+    {
+        // 기존 방 아이템 삭제
+        foreach (Transform child in scrollContent)
+    {
+        Destroy(child.gameObject); // 기존 방 아이템 삭제
+    }
+
+        rooms.Clear(); // rooms 딕셔너리 초기화
+
+        // 방 목록을 다시 불러오고 갱신하도록 PhotonNetwork의 방 목록을 요청
+        PhotonNetwork.JoinLobby();
+    }
+
+
+    public void ShowEnterRoomButton()
+    {
+        enterWaitingRoomButton.onClick.RemoveAllListeners();
+        enterWaitingRoomButton.onClick.AddListener(() => OnEnterRoom());
+    }
+
+    public void OnEnterRoom()
+    {
+        string roomName = RoomData.selectedRoomName; // RoomData에서 방 이름을 받아옴
+
+    // 실제로 해당 방에 입장
+    PhotonNetwork.JoinRoom(roomName); // 해당 방에 입장
     }
 
     public void OnMakeRoomClick()
@@ -199,4 +227,25 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // �� ����
         PhotonNetwork.CreateRoom(SetRoomName(), ro);
     }
+
+    public override void OnLeftRoom()
+{
+    // 방을 떠날 때 로비로 돌아가서 방 목록을 갱신
+    Debug.Log("Left the room");
+
+    // 로비로 들어가서 방 목록 갱신
+    PhotonNetwork.JoinLobby();
+
+    // 기존 방 아이템 초기화
+    foreach (var room in rooms.Values)
+    {
+        RoomData roomData = room.GetComponent<RoomData>();
+        if (roomData != null)
+        {
+            roomData.ResetRoomData();  // 방 아이템의 데이터를 리셋
+        }
+    }
+    
+    rooms.Clear();  // 방 목록을 초기화
+}
 }

@@ -70,6 +70,13 @@ MonoBehaviour:
   - DeactivateLaserRPC
   - ApplyDamageToMonster
   - OnPlayerBlind
+  - UpdateRoomNameOnClients
+  - UpdateImageSelection
+  - DisableOtherPlayersSelection
+  - UpdateImageForOthers
+  - ChangeTargetImage2
+  - UpdateImages
+  - UpdateHealth
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

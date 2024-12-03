@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -12,14 +13,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public TMP_Text roomNameText;
     public TMP_Text[] playerTexts;
     public Button exitBtn;
+    public TMP_Text messageText;
 
     private List<Photon.Realtime.Player> playerList = new List<Photon.Realtime.Player>();  // 방에 있는 플레이어 리스트
+
+    public Image[] targetImage;  // 여러 이미지 컴포넌트를 배열로 관리
+
+    public Sprite[] newSprites;  // 교체할 이미지들
+    public Button confirmBtn;
+    private bool isFirstImageUpdated = false;
 
 
     void Awake()
     {
         exitBtn.onClick.AddListener(() => OnExitClick());
+        confirmBtn.onClick.AddListener(() => OnConfirmClick());  // 확정 버튼 클릭 시 호출될 함수 등록
     }
+    private void OnConfirmClick()
+{
+    // 두 번째 이미지를 변경하는 함수 호출
+    UpdateSecondImageLocally();
+}
 
     private void OnExitClick()
     {
@@ -55,6 +69,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         playerList.Add(newPlayer);
         UpdatePlayerListUI();
+
+         if (messageText != null)
+        {
+            string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> 님이 방에 들어왔습니다!";
+            messageText.text += msg; // 메시지를 계속 추가
+        }
     }
 
     // 방에서 플레이어가 나가면 텍스트를 초기화할 수도 있습니다.
@@ -62,6 +82,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         playerList.Remove(otherPlayer);
         UpdatePlayerListUI();
+
+        if (messageText != null)
+        {
+            string msg = $"\n<color=#ff0000>{otherPlayer.NickName}</color> 님이 방을 나갔습니다.";
+            messageText.text += msg; // 메시지를 계속 추가
+        }
     }
 
     // 플레이어 리스트를 기반으로 UI를 업데이트하는 함수
@@ -85,4 +111,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         UpdatePlayerListUI(); // 새로운 방장 정보 갱신
     }
+    // 버튼 클릭 시 호출되는 함수 (이미지를 변경하는 함수)
+    public void OnImageSwitchButtonClick()
+    {
+        // 이미지를 변경하는 함수 호출
+        UpdateImagesLocally();
+    }
+
+    private void UpdateImagesLocally()
+{
+    if (newSprites != null && newSprites.Length > 0)
+    {
+        if (targetImage.Length > 0 && targetImage[0] != null)
+        {
+            targetImage[0].sprite = newSprites[0];
+            isFirstImageUpdated = true;  // 첫 번째 이미지가 변경되었음을 표시
+        }
+    }
+}
+private void UpdateSecondImageLocally()
+{
+    // 첫 번째 이미지가 변경된 후, 두 번째 이미지를 변경
+    if (isFirstImageUpdated && newSprites != null && newSprites.Length > 1)
+    {
+        if (targetImage.Length > 1 && targetImage[1] != null)
+        {
+            targetImage[1].sprite = newSprites[1];
+        }
+    }
+}
 }

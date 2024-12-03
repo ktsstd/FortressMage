@@ -9365,6 +9365,8 @@ MonoBehaviour:
   userIF: {fileID: 1837132446}
   isjoin: 0
   scrollContent: {fileID: 1248857390}
+  enterWaitingRoomButton: {fileID: 2056749115}
+  refreshButton: {fileID: 1640357342}
 --- !u!4 &1293273045
 Transform:
   m_ObjectHideFlags: 0
@@ -9523,7 +9525,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1294188838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82bb6232429010a489de00a0476c8bb4, type: 3}
+  m_Script: {fileID: 11500000, guid: e0fb7b607f5f4154ebe803ce2cecbff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectToToggle: {fileID: 89070546}
