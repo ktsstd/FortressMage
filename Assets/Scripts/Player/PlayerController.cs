@@ -200,6 +200,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void ReSpawn()
     {
         isDie = false;
+        playerUi.playerHp = playerHp;
+        playerUi.playerMaxHp = playerMaxHp;
     }
 
     public void PlayerUiSetting()
