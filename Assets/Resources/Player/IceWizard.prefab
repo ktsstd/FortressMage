@@ -606,9 +606,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
+  playerUi: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
+  IconImage: {fileID: 1294305382, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
+  skillImages:
+  - {fileID: 637683149, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
+  - {fileID: 979498786, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
+  - {fileID: 642782459, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
@@ -753,6 +759,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: Blizzard
+  - Type: 9
+    SynchronizeType: 0
+    Name: Die
+  - Type: 9
+    SynchronizeType: 0
+    Name: StandUp
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

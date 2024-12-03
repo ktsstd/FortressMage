@@ -48,6 +48,8 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                         PlayerSkillD();
                 }
             }
+            playerUi.playerHp = playerHp;
+            playerUi.playerMaxHp = playerMaxHp;
         }
     }
 
@@ -124,6 +126,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                 {
                     pv.RPC("UsePhoenix", RpcTarget.All, null);
                     pv.RPC("PlayAnimation", RpcTarget.All, "Phoenix");
+                    skillCooltimeD = 30f;
                 }
             }
         }
@@ -167,7 +170,6 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     [PunRPC]
     void UsePhoenix()
     {
-        skillCooltimeD = 30f;
         skillEffectD.SetActive(true);
         // 공격력 증가 처리하기
         Invoke("OffPhoenix", 15f);

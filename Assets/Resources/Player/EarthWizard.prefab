@@ -689,9 +689,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
+  playerUi: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
+  IconImage: {fileID: 891502559, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
+  skillImages:
+  - {fileID: 251637097, guid: 61f0f41276739c749ab6a893d20fb810, type: 3}
+  - {fileID: 601218885, guid: 87edde6d70b2973428afb4728c9d44e6, type: 3}
+  - {fileID: -2081610418, guid: 61f0f41276739c749ab6a893d20fb810, type: 3}
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
@@ -829,6 +835,12 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: StoneWall
+  - Type: 9
+    SynchronizeType: 0
+    Name: Die
+  - Type: 9
+    SynchronizeType: 0
+    Name: StandUp
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
 using Photon.Realtime;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private float vignetteValue = 0f;
 
     private new Camera camera;
+    public PlayerUi playerUi;
     public Animator animator;
     public Rigidbody rigidbody;
 
@@ -26,6 +28,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Quaternion receiveRot;
     private Vector3 receiveMousePos;
     private bool receiveMoving;
+
+    public Sprite IconImage;
+    public Sprite[] skillImages;
+    // 방어막 이미지 추가
 
     public float playerMaxHp = 100;
     public float playerHp = 100;
@@ -47,10 +53,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         postProcessVolume.profile.TryGetSettings(out vignetteEffect);
         pv = GetComponent<PhotonView>();
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
+        playerUi = FindObjectOfType<PlayerUi>();
         if (pv.IsMine)
         {
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
+
+            PlayerUiSetting();
         }
     }
 
@@ -186,6 +195,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void ReSpawn()
     {
         isDie = false;
+    }
+
+    public void PlayerUiSetting()
+    {
+        playerUi.StartUISetting(IconImage, skillImages);
     }
 
     #region Player Crowd Control

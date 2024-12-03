@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1902b318c84e9dc4492d587fd76dbc99
+guid: 06ea68808872b5848bc900d8c62179ee
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -93,37 +93,11 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hp_back
+      name: hp_back
       rect:
         serializedVersion: 2
         x: 348
@@ -131,14 +105,14 @@ TextureImporter:
         width: 526
         height: 29
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f25ed6c6647a2c741be0e9c42cebcaf5
-      internalID: 470517202
+      spriteID: dd3d2bb135de62c4fa9a58ecc72cfb1b
+      internalID: -680739819
       vertices: []
       indices: 
       edges: []
@@ -152,20 +126,20 @@ TextureImporter:
         width: 526
         height: 28
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 90ef907e334445247a7616b11dbc6991
-      internalID: 148340932
+      spriteID: 900796ece3f765646a43a2230db05ada
+      internalID: -2003875579
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: InGame ui_2
+      name: Player_Ui_2
       rect:
         serializedVersion: 2
         x: 347
@@ -173,20 +147,20 @@ TextureImporter:
         width: 525
         height: 28
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 604b4636308b49040a6a0e0583d7d994
-      internalID: -1436028787
+      spriteID: 70540b9df33816544afe1578d773610a
+      internalID: -1455780083
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: InGame ui_3
+      name: Player_Ui_3
       rect:
         serializedVersion: 2
         x: 942
@@ -194,35 +168,14 @@ TextureImporter:
         width: 525
         height: 28
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7a3d7dfe186e52b4eb460ccda3f9dfba
-      internalID: 414097958
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Icon
-      rect:
-        serializedVersion: 2
-        x: 13
-        y: 753
-        width: 109
-        height: 107
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 04775b4584602dd4499a7353d624a80d
-      internalID: 1558846881
+      spriteID: 23ca34cf8c7405b45baf5cd96a992daa
+      internalID: -1512933115
       vertices: []
       indices: 
       edges: []
@@ -231,19 +184,19 @@ TextureImporter:
       name: name
       rect:
         serializedVersion: 2
-        x: 123
+        x: 113
         y: 809
-        width: 216
+        width: 226
         height: 49
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b810a2b1fa1b31042b18c9a2a805b108
-      internalID: -102591904
+      spriteID: dad831b56be8a2441bf9e49c619194f6
+      internalID: -1792138036
       vertices: []
       indices: 
       edges: []
@@ -257,203 +210,119 @@ TextureImporter:
         width: 888
         height: 120
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d14157d6b184d334f9816783664d9bbf
-      internalID: -1932776121
+      spriteID: dada63e56fe011e43a68cf28c671ddaf
+      internalID: 1761950524
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Lv
+      name: lv
       rect:
         serializedVersion: 2
-        x: 123
+        x: 113
         y: 755
-        width: 216
+        width: 226
         height: 49
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18eb3f62b1f4e4547a2c2eb63b6ccd63
-      internalID: 2062811478
+      spriteID: b2314daf8e3fb084db701f08a62970d0
+      internalID: -491921916
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wave
+      name: fire_icon
       rect:
         serializedVersion: 2
-        x: 26
-        y: 477
-        width: 46
-        height: 120
+        x: 204
+        y: 574
+        width: 108
+        height: 107
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e865fd8c86c262144acb6e4d8864dc58
-      internalID: -1791473550
+      spriteID: da1cc1d386bad074d8e843a2f8481e11
+      internalID: -1125889105
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wave_num
+      name: ice_icon
       rect:
         serializedVersion: 2
-        x: 94
-        y: 555
-        width: 73
-        height: 74
+        x: 328
+        y: 574
+        width: 108
+        height: 107
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7443c5f12b930ab44b5ebfb7ce17a9d4
-      internalID: -1958578111
+      spriteID: 9eb41cd3d00f81b48857d8a365dfa87b
+      internalID: 1294305382
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: InGame ui_10
+      name: electro_icon
       rect:
         serializedVersion: 2
-        x: 22
-        y: 382
-        width: 235
-        height: 58
+        x: 454
+        y: 574
+        width: 108
+        height: 107
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d07bf418ae52ee445b3c416798aff271
-      internalID: 502822435
+      spriteID: 3eb6c2e41e5a0c84f8241d4e3c573768
+      internalID: 1064506094
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: InGame ui_11
+      name: earth_icon
       rect:
         serializedVersion: 2
-        x: 258
-        y: 382
-        width: 235
-        height: 58
+        x: 580
+        y: 574
+        width: 108
+        height: 107
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 172383d1ab809de488e3a8942f41d53e
-      internalID: 687563717
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: InGame ui_12
-      rect:
-        serializedVersion: 2
-        x: 31
-        y: 75
-        width: 470
-        height: 254
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 56921e1e2d7e917498a9528f35534a73
-      internalID: -742002923
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: skill_Lv_Up
-      rect:
-        serializedVersion: 2
-        x: 1878
-        y: 218
-        width: 79
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38dd223e5783db54aaf57f77e30f9359
-      internalID: -48760130
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: skill_bac
-      rect:
-        serializedVersion: 2
-        x: 1393
-        y: 173
-        width: 340
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 49adb581661775f4686fdb0c26e7aeb2
-      internalID: -1618483538
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: skill_Icon
-      rect:
-        serializedVersion: 2
-        x: 1864
-        y: 101
-        width: 97
-        height: 96
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc2031b82599f7244b38db9e307f3ab1
-      internalID: -1579748202
+      spriteID: 9052c175804534e4c9f70197e5dceef4
+      internalID: 891502559
       vertices: []
       indices: 
       edges: []
@@ -462,25 +331,193 @@ TextureImporter:
       name: skill_back
       rect:
         serializedVersion: 2
-        x: 870
-        y: 2
-        width: 483
-        height: 147
+        x: 755
+        y: 338
+        width: 146
+        height: 139
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 418806c41e73aca488b4a7f199e8bce9
-      internalID: -1457180532
+      spriteID: 472b26c5ff2116848a6bbf5749fd101e
+      internalID: 504263967
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skill
+      name: Player_Ui_12
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 235
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70a3b9debe8163143bda0b9d9e0be8fa
+      internalID: 379598222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Ui_17
+      rect:
+        serializedVersion: 2
+        x: 1878
+        y: 218
+        width: 79
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfa4e2b994c44334c979bd84e1cdb162
+      internalID: -390218841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Ui_18
+      rect:
+        serializedVersion: 2
+        x: 872
+        y: 188
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aee73ef8c1f4650458045004ce55d6a0
+      internalID: 958271595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lv_up
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 193
+        width: 114
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00d81cee82bac2848bf7724ec8c32808
+      internalID: 1575794556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cooltime_back
+      rect:
+        serializedVersion: 2
+        x: 1393
+        y: 173
+        width: 340
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eff2264390a0c54191b4551da41c097
+      internalID: 97744958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Ui_25
+      rect:
+        serializedVersion: 2
+        x: 1864
+        y: 101
+        width: 97
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bee9bce7286ea3c40a84e3ba05de5fb2
+      internalID: 1831392197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wave
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 5
+        width: 460
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3a1243ddcf5cca449225dd037581aed
+      internalID: 4486476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: skill_Ui_back
+      rect:
+        serializedVersion: 2
+        x: 873
+        y: 1
+        width: 484
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1faff4cdd4c5744d8c4b3f1e7b92aa2
+      internalID: -1176348908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cooltime
       rect:
         serializedVersion: 2
         x: 1621
@@ -488,20 +525,20 @@ TextureImporter:
         width: 340
         height: 24
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9ba78761eda844a419fb641d7cd45c51
-      internalID: 1698453201
+      spriteID: 47adfa431d63d894e9d39a49798a23e9
+      internalID: 2139798516
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: skills
+      name: Player_Ui_29
       rect:
         serializedVersion: 2
         x: 1841
@@ -509,14 +546,14 @@ TextureImporter:
         width: 120
         height: 26
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d896bf919cc1bfb4faec117c64e42038
-      internalID: 312989125
+      spriteID: a2a5056ef9d42bf4880c3f52ad1810b3
+      internalID: -1803235833
       vertices: []
       indices: 
       edges: []
@@ -524,7 +561,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: a8945920e1d09504b9beb17fcc4db8ef
+    spriteID: af26c52fcdadbfc42bcc196c817b2dc1
     internalID: 0
     vertices: []
     indices: 
@@ -532,25 +569,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Hp_back: 470517202
-      Icon: 1558846881
-      InGame ui_10: 502822435
-      InGame ui_11: 687563717
-      InGame ui_12: -742002923
-      InGame ui_2: -1436028787
-      InGame ui_3: 414097958
-      Lv: 2062811478
-      back: -1932776121
-      hp: 148340932
-      name: -102591904
-      skill: 1698453201
-      skill_Icon: -1579748202
-      skill_Lv_Up: -48760130
-      skill_bac: -1618483538
-      skill_back: -1457180532
-      skills: 312989125
-      wave: -1791473550
-      wave_num: -1958578111
+      Player_Ui_12: 379598222
+      Player_Ui_13: -1110298168
+      Player_Ui_14: 770068898
+      Player_Ui_15: 641685606
+      Player_Ui_16: -496395828
+      Player_Ui_17: -390218841
+      Player_Ui_18: 958271595
+      Player_Ui_19: 1525252407
+      Player_Ui_2: -1455780083
+      Player_Ui_20: -1874099072
+      Player_Ui_21: 252244669
+      Player_Ui_22: 1241023523
+      Player_Ui_25: 1831392197
+      Player_Ui_29: -1803235833
+      Player_Ui_3: -1512933115
+      back: 1761950524
+      cooltime: 2139798516
+      cooltime_back: 97744958
+      earth_icon: 891502559
+      electro_icon: 1064506094
+      fire_icon: -1125889105
+      hp: -2003875579
+      hp_back: -680739819
+      ice_icon: 1294305382
+      lv: -491921916
+      lv_up: 1575794556
+      name: -1792138036
+      skill_Ui_back: -1176348908
+      skill_back: 504263967
+      wave: 4486476
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

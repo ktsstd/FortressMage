@@ -636,9 +636,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
+  playerUi: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
+  IconImage: {fileID: 1064506094, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
+  skillImages:
+  - {fileID: -389228284, guid: 159bcaac07268ef4b9bae8330154cd0f, type: 3}
+  - {fileID: -1770844601, guid: 159bcaac07268ef4b9bae8330154cd0f, type: 3}
+  - {fileID: 1178691548, guid: 159bcaac07268ef4b9bae8330154cd0f, type: 3}
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
