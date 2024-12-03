@@ -73,6 +73,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //PhotonNetwork.JoinRandomRoom();
     }
 
+    bool IsNicknameTaken(string nickname)
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.NickName == nickname)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // ���� �� ���� ����
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
@@ -81,7 +93,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
         OnMakeRoomClick();
 
-        // ���ο� �� ����
+        //���ο� �� ����
         //RoomOptions ro = new RoomOptions();
         //ro.MaxPlayers = 4;
         //ro.IsOpen = true;
@@ -106,9 +118,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("MultiplayScene");
+            PhotonNetwork.LoadLevel("WaitingRoom");
         }
-        
+
     }
 
     // �������� �����ϴ·���
@@ -131,43 +143,40 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // �� ���� �Է¿��θ�Ȯ���ϴ·���
     string SetRoomName()
     {
-        return $"ROOM_{Random.Range(1,101):000}";
+        return $"ROOM_{Random.Range(1, 101):000}";
     }
+
 
     //�� ����� �����ϴ� �ݹ��Լ�
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-         // ������ RoomItem �������� ������ �ӽú���
-         GameObject tempRoom = null; 
-
-         foreach (var roomInfo in roomList)
+        // 삭제된 RoomItem 프리팹을 저장할 임시변수
+        GameObject tempRoom = null;
+        foreach (var roomInfo in roomList)
         {
-            // ���� ������ ���
+            // 룸이 삭제된 경우
             if (roomInfo.RemovedFromList == true)
             {
-                // ��ųʸ����� �� �̸����� �˻��� ����� RoomItem �����ո� ����
+                // 딕셔너리에서 룸 이름으로 검색해 저장된 RoomItem 프리팹를 추출
                 rooms.TryGetValue(roomInfo.Name, out tempRoom);
-
-                // RoomItem ������ ����
+                // RoomItem 프리팹 삭제
                 Destroy(tempRoom);
-
-                // ��ųʸ����� �ش� �� �̸��� �����͸� ����
+                // 딕셔너리에서 해당 룸 이름의 데이터를 삭제
                 rooms.Remove(roomInfo.Name);
             }
-            else // �� ������ ����� ���
+            else // 룸 정보가 변경된 경우
             {
-                // �� �̸��� ��ųʸ��� ���� ��� ���� �߰�
-                if (rooms.ContainsKey(roomInfo.Name) == false)
+                // 룸 이름이 딕셔너리에 없는 경우 새로 추가
+                if (!rooms.ContainsKey(roomInfo.Name) == false)
                 {
-                    // RoomInfo �������� scrollContent ������ ����
+                    // RoomInfo 프리팹을 scrollContent 하위에 생성
                     GameObject roomPrefab = Instantiate(roomItemPrefab, scrollContent);
-                    // �� ������ ǥ���ϱ� ���� RoomInfo ���� ����
+                    // 룸 정보를 표시하기 위해 RoomInfo 정보 전달
                     roomPrefab.GetComponent<RoomData>().RoomInfo = roomInfo;
-
-                    // ��ųʸ� �ڷ����� ������ �߰�
+                    // 딕셔너리 자료형에 데이터 추가
                     rooms.Add(roomInfo.Name, roomPrefab);
                 }
-                else // �� �̸��� ��ųʸ��� ���� ��쿡 �� ������ ����
+                else // 룸 이름이 딕셔너리에 없는 경우에 룸 정보를 갱신
                 {
                     rooms.TryGetValue(roomInfo.Name, out tempRoom);
                     tempRoom.GetComponent<RoomData>().RoomInfo = roomInfo;
