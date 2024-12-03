@@ -417,7 +417,7 @@ MonoBehaviour:
       - m_Target: {fileID: 780854728}
         m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
         m_MethodName: OnImageSwitchButtonClick
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3330,7 +3330,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4410,8 +4410,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 780854728}
         m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
-        m_MethodName: OnConfirmClick
-        m_Mode: 3
+        m_MethodName: OnConfirmButtonClick
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4547,7 +4547,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5158,7 +5158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD29C\uD1A0\uB9AC\uC5BC \uC785\uC7A5"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 102f3bea3e562ce4c83b7e06a33ceca7, type: 2}
   m_sharedMaterial: {fileID: -326488895927979930, guid: 102f3bea3e562ce4c83b7e06a33ceca7, type: 2}
@@ -5917,6 +5917,9 @@ MonoBehaviour:
   targetImage:
   - {fileID: 330014898}
   - {fileID: 1780073622}
+  - {fileID: 588350541}
+  - {fileID: 673444926}
+  - {fileID: 506007076}
   newSprites:
   - {fileID: 2065196384, guid: 0c4dcb64b7f02cb439ce502e952b69f7, type: 3}
   - {fileID: -1125889105, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
@@ -5926,7 +5929,6 @@ MonoBehaviour:
   - {fileID: 1064506094, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
   - {fileID: -44539232, guid: 0c4dcb64b7f02cb439ce502e952b69f7, type: 3}
   - {fileID: 891502559, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
-  confirmBtn: {fileID: 594596293}
 --- !u!4 &780854729
 Transform:
   m_ObjectHideFlags: 0
@@ -10344,7 +10346,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 6
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

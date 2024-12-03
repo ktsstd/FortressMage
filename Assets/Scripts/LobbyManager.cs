@@ -20,20 +20,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public Image[] targetImage;  // 여러 이미지 컴포넌트를 배열로 관리
 
     public Sprite[] newSprites;  // 교체할 이미지들
-    public Button confirmBtn;
-    private bool isFirstImageUpdated = false;
 
+    private bool isConfirmed = false; 
 
     void Awake()
     {
         exitBtn.onClick.AddListener(() => OnExitClick());
-        confirmBtn.onClick.AddListener(() => OnConfirmClick());  // 확정 버튼 클릭 시 호출될 함수 등록
     }
-    private void OnConfirmClick()
-{
-    // 두 번째 이미지를 변경하는 함수 호출
-    UpdateSecondImageLocally();
-}
 
     private void OnExitClick()
     {
@@ -70,6 +63,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         playerList.Add(newPlayer);
         UpdatePlayerListUI();
 
+
          if (messageText != null)
         {
             string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> 님이 방에 들어왔습니다!";
@@ -82,6 +76,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         playerList.Remove(otherPlayer);
         UpdatePlayerListUI();
+
 
         if (messageText != null)
         {
@@ -111,33 +106,35 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         UpdatePlayerListUI(); // 새로운 방장 정보 갱신
     }
-    // 버튼 클릭 시 호출되는 함수 (이미지를 변경하는 함수)
-    public void OnImageSwitchButtonClick()
+
+    public void OnImageSwitchButtonClick(int imageIndex)
     {
-        // 이미지를 변경하는 함수 호출
-        UpdateImagesLocally();
+        if (isConfirmed) return; // 확정되었으면 이미지 변경을 할 수 없도록
+
+        // 로컬 플레이어의 번호에 따라 업데이트
+        int targetPlayer = PhotonNetwork.LocalPlayer.ActorNumber;
+        UpdateImageForPlayer(imageIndex, targetPlayer);
     }
 
-    private void UpdateImagesLocally()
-{
-    if (newSprites != null && newSprites.Length > 0)
+    private void UpdateImageForPlayer(int buttonIndex, int playerNumber)
     {
-        if (targetImage.Length > 0 && targetImage[0] != null)
-        {
-            targetImage[0].sprite = newSprites[0];
-            isFirstImageUpdated = true;  // 첫 번째 이미지가 변경되었음을 표시
-        }
+        if (newSprites == null || newSprites.Length < 2 || playerNumber < 1 || playerNumber > 4) return;
+
+        int startIndex = buttonIndex * 2;
+
+        // 1번 타겟 이미지는 모든 플레이어에게 동일
+        if (startIndex < newSprites.Length && targetImage[0] != null)
+            targetImage[0].sprite = newSprites[startIndex];
+
+        // 플레이어에 따라 타겟 이미지 변경 (playerNumber 1, 2, 3, 4에 대해 각각 2번, 3번, 4번, 5번 타겟 변경)
+        int targetIndex = playerNumber;  // 1번 -> 1, 2번 -> 2, 3번 -> 3, 4번 -> 4
+
+        if (targetIndex < targetImage.Length && startIndex + 1 < newSprites.Length && targetImage[targetIndex] != null)
+            targetImage[targetIndex].sprite = newSprites[startIndex + 1];
     }
-}
-private void UpdateSecondImageLocally()
-{
-    // 첫 번째 이미지가 변경된 후, 두 번째 이미지를 변경
-    if (isFirstImageUpdated && newSprites != null && newSprites.Length > 1)
+
+    public void OnConfirmButtonClick()
     {
-        if (targetImage.Length > 1 && targetImage[1] != null)
-        {
-            targetImage[1].sprite = newSprites[1];
-        }
+        isConfirmed = true; // 확정 버튼이 눌리면 캐릭터 변경을 못하게 설정
     }
-}
 }
