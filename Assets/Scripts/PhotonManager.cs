@@ -118,7 +118,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("WaitingRoom");
+            PhotonNetwork.LoadLevel("MultiplayScene");
         }
 
     }
@@ -146,12 +146,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         return $"ROOM_{Random.Range(1, 101):000}";
     }
 
-
     //�� ����� �����ϴ� �ݹ��Լ�
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         // 삭제된 RoomItem 프리팹을 저장할 임시변수
-        GameObject tempRoom = null;
+        GameObject tempRoom = null; 
         foreach (var roomInfo in roomList)
         {
             // 룸이 삭제된 경우
@@ -167,7 +166,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             else // 룸 정보가 변경된 경우
             {
                 // 룸 이름이 딕셔너리에 없는 경우 새로 추가
-                if (!rooms.ContainsKey(roomInfo.Name) == false)
+                if (rooms.ContainsKey(roomInfo.Name) == false)
                 {
                     // RoomInfo 프리팹을 scrollContent 하위에 생성
                     GameObject roomPrefab = Instantiate(roomItemPrefab, scrollContent);

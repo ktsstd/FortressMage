@@ -2418,7 +2418,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -1, y: -2}
-  m_SizeDelta: {x: 800, y: 500}
+  m_SizeDelta: {x: 450, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330014898
 MonoBehaviour:
@@ -2440,7 +2440,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1430039287, guid: 2f53beda823062c4c9333928ce4999d3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4286,10 +4286,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetImage: {fileID: 330014898}
   newSprites:
-  - {fileID: 21300000, guid: 9f86a82417149014ea9c0c9ca1ac8a1e, type: 3}
-  - {fileID: 21300000, guid: b88cf4925de3cb94c84481c361afd6cf, type: 3}
-  - {fileID: 21300000, guid: 02b0bb74687fe824bbb80159ed62751a, type: 3}
-  - {fileID: 21300000, guid: 8993ddab9f213cb408c87855e35ab437, type: 3}
+  - {fileID: 2065196384, guid: 0c4dcb64b7f02cb439ce502e952b69f7, type: 3}
+  - {fileID: 409409248, guid: 0c4dcb64b7f02cb439ce502e952b69f7, type: 3}
+  - {fileID: 1144569875, guid: 0c4dcb64b7f02cb439ce502e952b69f7, type: 3}
+  - {fileID: -44539232, guid: 0c4dcb64b7f02cb439ce502e952b69f7, type: 3}
 --- !u!114 &582825707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4310,7 +4310,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1430039287, guid: 2f53beda823062c4c9333928ce4999d3, type: 3}
+  m_Sprite: {fileID: -756313670, guid: 2f53beda823062c4c9333928ce4999d3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12637,10 +12637,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
