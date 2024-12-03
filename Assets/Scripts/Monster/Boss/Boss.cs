@@ -2,50 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Photon.Pun;
 
 public class Boss : MonsterAI
 {
     private Transform closestTarget;
-    private Transform CastlePos;
     private Animator animator;
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f };
-    public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
+    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f, 30f };
+    public float[] BossMonsterSkillTimers = new float[4];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
     private float AllSkillCooldown = 5f;  // ��ü ��ų ��Ÿ��
     public float AllSkillCooldownTimer;  // ��ü ��ų ��Ÿ�� Ÿ�̸�
 
-    // private float S1Speed = 0f;
+    private float S1Speed = 0f;
 
-    public bool isBossPatern = false;  // ���� ���� Ȱ��ȭ ����
-    public bool isBossAtking = false;
+    private bool isBossPatern = false;  // ���� ���� Ȱ��ȭ ����
 
-    // public GameObject BossSkill1Obj; 
+    public GameObject BossSkill1Obj; 
 
     public override void Start()
     {
         base.Start();  // �θ� Ŭ������ Start() ȣ��
         MaxHp = 200f;  // ü�� �ʱ�ȭ
         MonsterDmg = 10;  // ���� ������ �ʱ�ȭ
-        attackRange = 4.0f;
+        attackRange = 78.0f; 
         CurHp = MaxHp;  // ü�� ����
         isBossPatern = false;
-        isBossAtking = false;
         animator = GetComponent<Animator>();
-        // StartCoroutine(StartRotate());
+        StartCoroutine(StartRotate());
     }
 
     private IEnumerator StartRotate()
     {
-        // Transform BossSkilObjT = BossSkill1Obj.transform;
-        // S1Speed = 0.2f;
-        // while(S1Speed <= 100f)
-        // {
-        //     BossSkilObjT.transform.Rotate(0, -S1Speed, 0);
-        //     yield return new WaitForSeconds(0f); 
-        // }
+        Transform BossSkilObjT = BossSkill1Obj.transform;
+        while(S1Speed == 300f)
+        {
+            S1Speed *= Time.deltaTime;
+            BossSkilObjT.transform.Rotate(0, S1Speed, 0);
+        }
         yield break;
     }
 
@@ -70,7 +65,7 @@ public class Boss : MonsterAI
 
     public override void Update()
     {
-        if (!isBossPatern)
+        if (!isBossPatern && !NoTarget)
         {
             closestTarget = GetClosestTarget();
         }
@@ -83,30 +78,24 @@ public class Boss : MonsterAI
             {
                 if (!isBossPatern)
                 {
-                    GameObject castleObj = GameObject.FindWithTag("Castle");
-                    CastlePos = castleObj.transform;
-                    agent.SetDestination(CastlePos.position);
-                }
-                else
-                {
-                    agent.ResetPath();
+                    agent.SetDestination(closestTarget.position);
                 }
             }
             else
             {
                 agent.ResetPath();
 
-                if (!isBossPatern && !isBossAtking)
+                if (attackTimer <= 0f && !isBossPatern)
                 {
                     isBossPatern = true;
-                    // StartCoroutine(BossPaternStart());
-                    StartCoroutine(BossSkill2());
+                    StartCoroutine(BossPaternStart());
                 }
             }
         }
         else
         {
             // closestTarget = GetClosestTarget();
+            NoTarget = true;
             GameObject castleObj = GameObject.FindWithTag("Castle");
             closestTarget = castleObj.transform;
         }
@@ -123,13 +112,6 @@ public class Boss : MonsterAI
         {
             AllSkillCooldownTimer -= Time.deltaTime;
         }
-
-        if (AllSkillCooldownTimer <= 0f && !isBossPatern)
-        {
-            agent.ResetPath();
-            isBossPatern = true;
-            StartCoroutine(BossPaternStart());
-        }
     }
 
     private Transform GetClosestTarget()
@@ -137,7 +119,7 @@ public class Boss : MonsterAI
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        string[] tags = { "Player" };
+        string[] tags = { "skilltower", "turret", "Player" };
 
         foreach (string tag in tags)
         {
@@ -151,6 +133,22 @@ public class Boss : MonsterAI
                 float sqrDistanceToTarget = (target.position - transform.position).sqrMagnitude;
 
                 // 조건을 확인하여 가장 가까운 대상을 찾음
+                if (tag == "turret")
+                {
+                    Turret towerScript = target.GetComponent<Turret>();
+                    if (towerScript != null)
+                    {
+                        if (!towerScript.canAttack) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
+                    }
+                }
 
                 if (tag == "Player")
                 {
@@ -158,6 +156,22 @@ public class Boss : MonsterAI
                     if (playerScript != null)
                     {
                         if (playerScript.isDie) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
+                    }
+                }
+                if (tag == "skilltower")
+                {
+                    Skilltower skilltowerScript = target.GetComponent<Skilltower>();
+                    if (skilltowerScript != null)
+                    {
+                        if (!skilltowerScript.canAttack) continue;
                         else
                         {
                             if (sqrDistanceToTarget < closestSqrDistance)
@@ -199,14 +213,17 @@ public class Boss : MonsterAI
     {
         switch (skillIndex)
         {
-            case 0: // StartCoroutine(BossSkill2());
-                StartCoroutine(BossSkill3());
+            case 0:
+                StartCoroutine(BossSkill1());
                 break;
             case 1:
-                StartCoroutine(BossSkill4());
+                StartCoroutine(BossSkill2());
                 break;
             case 2:
-                StartCoroutine(BossSkill5());
+                StartCoroutine(BossSkill3());
+                break;
+            case 3:
+                StartCoroutine(BossSkill4());
                 break;
             default:
                 Debug.LogWarning("Invalid skill index.");
@@ -214,62 +231,46 @@ public class Boss : MonsterAI
         }
     }
 
-    private IEnumerator BossSkill2() // 영부가 줄때까지
+    private IEnumerator BossSkill1()
     {
-        isBossAtking = false;
+        isBossPatern = false;
+        yield break;
+    }
+
+    private IEnumerator BossSkill2()
+    {
         isBossPatern = false;
         yield break;
     }
 
     private IEnumerator BossSkill3()
     {
-        animator.SetTrigger("BossSkill3");
-        isBossAtking = true;
-        while (isBossAtking)
-        {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Idle"))
-            {
-                isBossPatern = false;
-                isBossAtking = false;
-                GameObject bossSkillPrefab3 = PhotonNetwork.Instantiate("Additional/bossSkillPrefab3", transform.position, Quaternion.identity);
-                BossMonsterSkillTimers[0] = BossMonsterSkillCooldowns[0];
-                AllSkillCooldownTimer = AllSkillCooldown;
-                yield break;
-            }
-            else
-            {
-                yield return null;
-            }
-        }
+        isBossPatern = false;
         yield break;
     }
 
     private IEnumerator BossSkill4()
     {
-        BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
-        AllSkillCooldownTimer = AllSkillCooldown;
-        isBossAtking = false;
-        isBossPatern = false;
-        yield break;
-    }
-
-    private IEnumerator BossSkill5()
-    {
-        BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
-        AllSkillCooldownTimer = AllSkillCooldown;
-        isBossAtking = false;
         isBossPatern = false;
         yield break;
     }
     private IEnumerator BossPaternStart()
     {
-        int selectedSkill = GetRandomSkill();
+        if (isBossPatern) yield break;
+        isBossPatern = true;
+
+        if (AllSkillCooldownTimer <= 0f)
+        {
+            int selectedSkill = GetRandomSkill();
 
             if (selectedSkill != -1)
             {
+                BossMonsterSkillTimers[selectedSkill] = BossMonsterSkillCooldowns[selectedSkill];
+                AllSkillCooldownTimer = AllSkillCooldown;
+
                 UseSkill(selectedSkill);
             }
+        }
 
         yield break;
     }
