@@ -10,14 +10,17 @@ public class ElectroMagic : PlayerController
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
+    private float skillMaxCooltimeA = 2f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
+    private float skillMaxCooltimeS = 5f;
 
     public GameObject skillRangeD;
     private Vector3 skillPosD;
     private float skillCooltimeD;
+    private float skillMaxCooltimeD = 20f;
 
     public GameObject electricshotPrefab;
     public GameObject shockwavePrefab;
@@ -33,9 +36,9 @@ public class ElectroMagic : PlayerController
         base.Update();
         if (pv.IsMine)
         {
-            if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
-            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
-            if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
+            if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; playerUi.skillsCoolTime[0] = skillCooltimeA; playerUi.skillsMaxCoolTime[0] = skillMaxCooltimeA; }
+            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; playerUi.skillsCoolTime[1] = skillCooltimeS; playerUi.skillsMaxCoolTime[1] = skillMaxCooltimeS; }
+            if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; playerUi.skillsCoolTime[2] = skillCooltimeD; playerUi.skillsMaxCoolTime[2] = skillMaxCooltimeD; }
             if (!isDie)
             {
                 if (!isCasting && !isStun)
@@ -89,7 +92,7 @@ public class ElectroMagic : PlayerController
                     skillRangeA.SetActive(false);
                     skillPosA = skillRangeA.transform.position;
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
-                    skillCooltimeA = 2f;
+                    skillCooltimeA = skillMaxCooltimeA;
                     pv.RPC("PlayAnimation", RpcTarget.All, "ElectricShot");
                 }
             }
@@ -111,7 +114,7 @@ public class ElectroMagic : PlayerController
                     skillRangeS.SetActive(false);
                     skillPosS = skillRangeS.transform.position;
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
-                    skillCooltimeS = 5f;
+                    skillCooltimeS = skillMaxCooltimeS;
                     pv.RPC("PlayAnimation", RpcTarget.All, "ShockWave");
                     pv.RPC("UseShockWave", RpcTarget.All, skillPosS);
                 }
@@ -133,7 +136,7 @@ public class ElectroMagic : PlayerController
                 if (Input.GetKeyUp(KeyCode.D))
                 {
                     skillRangeD.SetActive(false);
-                    skillCooltimeD = 1f;
+                    skillCooltimeD = skillMaxCooltimeD;
                     skillPosD = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
                     pv.RPC("PlayAnimation", RpcTarget.All, "TempestFury");

@@ -7,6 +7,7 @@ public class PlayerUi : MonoBehaviour
 {
     public Image icon;
     public Image[] skills;
+    public Image[] skillsback;
 
     public Slider playerHpSlider;
     public Slider MixSkillSlider;
@@ -19,6 +20,10 @@ public class PlayerUi : MonoBehaviour
     void Update()
     {
         playerHpSlider.value = playerHp / playerMaxHp;
+        for (int i = 0; i < 3; i++)
+        {
+            skills[i].fillAmount = 1 - (skillsCoolTime[i] / skillsMaxCoolTime[i]);
+        }
     }
 
     public void StartUISetting(Sprite _icon, Sprite[] _skills)
@@ -27,6 +32,7 @@ public class PlayerUi : MonoBehaviour
         for (int i = 0; i <3; i++)
         {
             skills[i].sprite = _skills[i];
+            skillsback[i].sprite = _skills[i];
         }
     }
 }

@@ -11,14 +11,17 @@ public class EarthMagic : PlayerController
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
+    private float skillMaxCooltimeA = 3f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
+    private float skillMaxCooltimeS = 5f;
 
     public GameObject skillRangeD;
     private Vector3 skillPosD;
     private float skillCooltimeD;
+    private float skillMaxCooltimeD = 20f;
 
 
     public GameObject stonePrefab;
@@ -35,9 +38,9 @@ public class EarthMagic : PlayerController
         base.Update();
         if (pv.IsMine)
         {
-            if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
-            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
-            if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
+            if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; playerUi.skillsCoolTime[0] = skillCooltimeA; playerUi.skillsMaxCoolTime[0] = skillMaxCooltimeA; }
+            if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; playerUi.skillsCoolTime[1] = skillCooltimeS; playerUi.skillsMaxCoolTime[1] = skillMaxCooltimeS; }
+            if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; playerUi.skillsCoolTime[2] = skillCooltimeD; playerUi.skillsMaxCoolTime[2] = skillMaxCooltimeD; }
 
             if (!isDie)
             {
@@ -89,7 +92,7 @@ public class EarthMagic : PlayerController
                     skillRangeA.SetActive(false);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
                     skillPosA = new Vector3(GetSkillRange(skillRanges[0]).x, transform.position.y + 0.5f, GetSkillRange(skillRanges[0]).z);
-                    skillCooltimeA = 3f;
+                    skillCooltimeA = skillMaxCooltimeA;
                     pv.RPC("PlayAnimation", RpcTarget.All, "StoneShoot");
                 }
             }
@@ -113,7 +116,7 @@ public class EarthMagic : PlayerController
                     skillRangeS.SetActive(false);
                     skillPosS = Vector3.Lerp(transform.position, GetSkillRange(skillRanges[1]), 0.5f);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
-                    skillCooltimeS = 3f;
+                    skillCooltimeS = skillMaxCooltimeS;
                     pv.RPC("PlayAnimation", RpcTarget.All, "Earthquake");
                 }
             }
@@ -137,7 +140,7 @@ public class EarthMagic : PlayerController
                     skillRangeD.SetActive(false);
                     skillPosD = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
-                    skillCooltimeD = 20f;
+                    skillCooltimeD = skillMaxCooltimeD;
                     pv.RPC("PlayAnimation", RpcTarget.All, "StoneWall");
                 }
             }

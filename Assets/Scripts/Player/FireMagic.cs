@@ -11,13 +11,16 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
+    private float skillMaxCooltimeA = 3f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
+    private float skillMaxCooltimeS = 10f;
 
     public GameObject skillEffectD;
     private float skillCooltimeD;
+    private float skillMaxCooltimeD = 30f;
 
     public GameObject fireballPrefab;
     public GameObject firestormPrefab;
@@ -34,9 +37,9 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         {
             if (!isDie)
             {
-                if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; }
-                if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; }
-                if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; }
+                if (skillCooltimeA >= 0) { skillCooltimeA -= Time.deltaTime; playerUi.skillsCoolTime[0] = skillCooltimeA; playerUi.skillsMaxCoolTime[0] = skillMaxCooltimeA; }
+                if (skillCooltimeS >= 0) { skillCooltimeS -= Time.deltaTime; playerUi.skillsCoolTime[1] = skillCooltimeS; playerUi.skillsMaxCoolTime[1] = skillMaxCooltimeS; }
+                if (skillCooltimeD >= 0) { skillCooltimeD -= Time.deltaTime; playerUi.skillsCoolTime[2] = skillCooltimeD; playerUi.skillsMaxCoolTime[2] = skillMaxCooltimeD; }
 
                 if (!isCasting && !isStun)
                 {
@@ -48,8 +51,6 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                         PlayerSkillD();
                 }
             }
-            playerUi.playerHp = playerHp;
-            playerUi.playerMaxHp = playerMaxHp;
         }
     }
 
@@ -86,7 +87,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                     skillRangeA.SetActive(false);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
                     skillPosA = new Vector3(GetSkillRange(skillRanges[0]).x, transform.position.y + 0.5f, GetSkillRange(skillRanges[0]).z);
-                    skillCooltimeA = 3f;
+                    skillCooltimeA = skillMaxCooltimeA;
                     pv.RPC("PlayAnimation", RpcTarget.All, "FireBall");
                 }
             }
@@ -109,7 +110,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                     skillRangeS.SetActive(false);
                     skillPosS = new Vector3(GetSkillRange(skillRanges[1]).x, 0.1f, GetSkillRange(skillRanges[1]).z);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[0]) - transform.position);
-                    skillCooltimeS = 5f;
+                    skillCooltimeS = skillMaxCooltimeS;
                     pv.RPC("PlayAnimation", RpcTarget.All, "FireStorm");
                 }
             }
@@ -126,7 +127,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                 {
                     pv.RPC("UsePhoenix", RpcTarget.All, null);
                     pv.RPC("PlayAnimation", RpcTarget.All, "Phoenix");
-                    skillCooltimeD = 30f;
+                    skillCooltimeD = skillMaxCooltimeD;
                 }
             }
         }

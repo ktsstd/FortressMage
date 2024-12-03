@@ -612,8 +612,8 @@ MonoBehaviour:
   mousePosition: {x: 0, y: 0, z: 0}
   IconImage: {fileID: 1294305382, guid: 06ea68808872b5848bc900d8c62179ee, type: 3}
   skillImages:
-  - {fileID: 637683149, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
   - {fileID: 979498786, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
+  - {fileID: 637683149, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
   - {fileID: 642782459, guid: dac4c8295ee69a7419964749eaa73a6c, type: 3}
   playerMaxHp: 100
   playerHp: 100

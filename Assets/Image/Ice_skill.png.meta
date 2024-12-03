@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ice_skill_A
+      name: Ice_skill_S
       rect:
         serializedVersion: 2
         x: 16
@@ -118,7 +118,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ice_skill_S
+      name: Ice_skill_A
       rect:
         serializedVersion: 2
         x: 699
@@ -170,9 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Ice_skill_A: 637683149
+      Ice_skill_A: 979498786
       Ice_skill_D: 642782459
-      Ice_skill_S: 979498786
+      Ice_skill_S: 637683149
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

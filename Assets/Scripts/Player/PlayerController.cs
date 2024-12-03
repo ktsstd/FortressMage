@@ -60,6 +60,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             virtualCamera.LookAt = transform;
 
             PlayerUiSetting();
+
+            playerUi.playerHp = playerHp;
+            playerUi.playerMaxHp = playerMaxHp;
         }
     }
 
@@ -180,11 +183,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void OnHitPlayer(float _damage)
     {
         playerHp -= _damage;
-        if (playerHp < 0)
+        if (playerHp <= 0)
         {
             isDie = true;
             pv.RPC("PlayAnimation", RpcTarget.All, "Die");
         }
+        playerUi.playerHp = playerHp;
+        playerUi.playerMaxHp = playerMaxHp;
     }
 
     public void StandUp()
