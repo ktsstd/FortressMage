@@ -22,10 +22,10 @@ public class Boss : MonsterAI
 
     public bool isBossPatern = false;  // ���� ���� Ȱ��ȭ ����
     public bool isBossAtking = false;
-    // public bool isBossUseSkill2 = false; 집에서 마무리
+    public bool isBossUseSkill2 = false;
 
     public GameObject BossSkill2Obj;
-    private GameObject[] BossSKill4Obj;
+    // private GameObject[] BossSKill4Obj; 집에서 마무리
 
     public override void Start()
     {
