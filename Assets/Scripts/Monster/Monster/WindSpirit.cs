@@ -17,6 +17,7 @@ public class WindSpirit : MonsterAI
         base.Start();
         MaxHp = 60f;
         Speed = 5f;
+        defaultspped = Speed;
         CurHp = MaxHp;
         animator = GetComponent<Animator>();
         particleSys = GetComponentInChildren<ParticleSystem>();

@@ -16,12 +16,15 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public float attackTimer = 0f;
     public float MaxHp = 20f;
     public float CurHp;
+    public float defaultspped;
 
     public int MonsterDmg = 10;
 
     public bool hasHealed = false; // 힐 상태 초기화
     public bool hasBuffed = false; 
     public bool NoTarget = false;
+    private bool canMove = true;
+    public bool isSlow = false;
 
     public NavMeshAgent agent;
     protected PlayerController playerController;
@@ -43,6 +46,8 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         NoTarget = false;
         hasBuffed = false;
         hasHealed = false;
+        canMove = true;
+        isSlow = false;
 
         // GameObject playerObject = GameObject.FindWithTag("Player");
         // if (playerObject != null)
@@ -61,21 +66,29 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (closestTarget != null)
         {
-            float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
-
-            if (sqrDistanceToTarget > attackRange * attackRange)
+            if (canMove)
             {
-                agent.SetDestination(closestTarget.position);
+                float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
+
+                if (sqrDistanceToTarget > attackRange * attackRange)
+                {
+                    agent.SetDestination(closestTarget.position);
+                }
+                else
+                {
+                    agent.ResetPath();
+
+                    if (attackTimer <= 0f)
+                    {
+                        AttackTarget(closestTarget);
+                        attackTimer = attackCooldown;
+                    }
+                }
             }
+
             else
             {
                 agent.ResetPath();
-
-                if (attackTimer <= 0f)
-                {
-                    AttackTarget(closestTarget);
-                    attackTimer = attackCooldown;
-                }
             }
         }
 
@@ -83,6 +96,77 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             attackTimer -= Time.deltaTime;
         }
+    }
+
+    private Coroutine BurnCoroutine;
+    public void OnMonsterBurned(float _time, int burndmg)
+    {
+        if (BurnCoroutine != null)
+            StopCoroutine(BurnCoroutine);
+
+        BurnCoroutine = StartCoroutine(MonsterBurned(_time, burndmg));
+    }
+
+    IEnumerator MonsterBurned(float _time, int burndmg) // 스턴 상태 처리
+    {
+        while(_time <= 0)
+        {
+            _time -= 1f;
+            MonsterDmged(burndmg);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private Coroutine stunCoroutine;
+    public void OnMonsterStun(float _time)
+    {
+        if (stunCoroutine != null)
+            StopCoroutine(stunCoroutine);
+
+        stunCoroutine = StartCoroutine(MonsterStun(_time));
+    }
+
+    IEnumerator MonsterStun(float _time) // 스턴 상태 처리
+    {
+        canMove = false;
+        yield return new WaitForSeconds(_time);
+        canMove = true;
+    }
+
+    private Coroutine speedCoroutine;
+    public void OnMonsterSpeedDown(float _time, float _moveSpeed)
+    {
+        if (Speed > _moveSpeed)
+        {
+            if (speedCoroutine != null)
+                StopCoroutine(speedCoroutine);
+
+            speedCoroutine = StartCoroutine(MonsterSpeedDown(_time, _moveSpeed));
+        }
+        else
+        {
+            if (speedCoroutine != null)
+                StopCoroutine(speedCoroutine);
+
+            speedCoroutine = StartCoroutine(MonsterSpeedDown(_time, Speed));
+        }
+    }
+
+    IEnumerator MonsterSpeedDown(float _time, float _moveSpeed) // 이동 속도 감소 처리
+    {
+        isSlow = true;
+        Speed = _moveSpeed;
+        yield return new WaitForSeconds(_time);
+        if (!hasBuffed)
+        {
+            Speed = defaultspped;
+            isSlow = false;
+        }
+        else
+        {
+            Speed -= _moveSpeed;
+        }
+        
     }
 
     private Transform GetClosestTarget()

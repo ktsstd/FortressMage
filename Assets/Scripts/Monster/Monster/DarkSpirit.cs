@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
-using Unity.VisualScripting;
 
 public class DarkSpirit : MonsterAI, IPunObservable
 {
@@ -23,6 +22,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
         base.Start();
         MaxHp = 60f;
         Speed = 10f;
+        defaultspped = Speed;
         attackRange = 3f;
         CurHp = MaxHp;
         Attacked = false;

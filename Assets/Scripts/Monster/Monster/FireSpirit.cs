@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class FireSpirit : MonsterAI
 {   
@@ -18,6 +17,7 @@ public class FireSpirit : MonsterAI
         MonsterDmg = 20;
         MaxHp = 60f;
         Speed = 5f;
+        defaultspped = Speed;
         StartAtking = false;
         animator = GetComponent<Animator>();
         CurHp = MaxHp;

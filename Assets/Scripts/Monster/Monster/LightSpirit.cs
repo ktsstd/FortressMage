@@ -22,6 +22,7 @@ public class LightSpirit : MonsterAI, IPunObservable
         base.Start();
         MaxHp = 60f;
         Speed = 5f;
+        defaultspped = Speed;
         CurHp = MaxHp;
         StartAttack = false;
         animator = GetComponent<Animator>();

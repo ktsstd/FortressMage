@@ -25,7 +25,7 @@ public class Boss : MonsterAI
     public bool isBossUseSkill2 = false;
 
     public GameObject BossSkill2Obj;
-    // private GameObject[] BossSKill4Obj; 집에서 마무리
+    public GameObject[] BossSKill4Obj;
 
     public override void Start()
     {
@@ -40,6 +40,8 @@ public class Boss : MonsterAI
         isBossUseSkill2 = false;
         animator = GetComponent<Animator>();
         BossSkill2Obj.SetActive(false);
+        GameObject BossSkill4ObjResource = Resources.Load<GameObject>("Additional/Boss_Skill_4");
+        BossSKill4Obj[0] = BossSkill4ObjResource.gameObject.transform.GetChild(0).gameObject;
         
         // StartCoroutine(StartRotate());
     }
@@ -243,7 +245,29 @@ public class Boss : MonsterAI
         return -1;  // ����� �� �ִ� ��ų�� ���ٸ� -1 ��ȯ
     }
 
-    private void UseSkill(int skillIndex)
+    // [PunRPC]
+    // public void BossSkill4Pos(int BossSkill4Posvalue)
+    // {
+    //     switch (BossSkill4Posvalue)
+    //     {
+    //         case 0: // StartCoroutine(BossSkill2());
+    //             StartCoroutine(BossSkill3());
+    //             break;
+    //         case 1:
+    //             StartCoroutine(BossSkill4());
+    //             break;
+    //         case 2:
+    //             StartCoroutine(BossSkill5());
+    //             break;
+    //         default:
+    //             Debug.LogWarning("Invalid skill index.");
+    //             AllSkillCooldownTimer = AllSkillCooldown;
+    //             break;
+    //     }
+    // }
+
+    [PunRPC]
+    public void UseSkill(int skillIndex)
     {
         switch (skillIndex)
         {
@@ -322,7 +346,7 @@ public class Boss : MonsterAI
                 GameObject bossSkillPrefab3 = PhotonNetwork.Instantiate("Additional/bossSkillPrefab3", transform.position, Quaternion.identity);
                 BossMonsterSkillTimers[0] = BossMonsterSkillCooldowns[0];
                 AllSkillCooldownTimer = AllSkillCooldown;
-                yield return new WaitForSeconds(1f);
+                // yield return new WaitForSeconds(1f);
 
                 
                 yield break;
@@ -337,10 +361,29 @@ public class Boss : MonsterAI
 
     private IEnumerator BossSkill4()
     {
-        BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
-        AllSkillCooldownTimer = AllSkillCooldown;
-        isBossAtking = false;
-        isBossPatern = false;
+        animator.SetTrigger("BossSkill4");
+        isBossAtking = true;
+        yield return new WaitForSeconds(0.5f);
+        while (isBossAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Idle"))
+            {
+                isBossPatern = false;
+                isBossAtking = false;
+                // GameObject bossSkillPrefab4 = PhotonNetwork.Instantiate("Additional/Boss_Skill_4", transform.position, Quaternion.identity);
+                BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
+                AllSkillCooldownTimer = AllSkillCooldown;
+                // yield return new WaitForSeconds(1f);
+
+                
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
         yield break;
     }
 
@@ -354,14 +397,15 @@ public class Boss : MonsterAI
     }
     private IEnumerator BossPaternStart()
     {
-        if (!isBossPatern)
+        if (!isBossPatern && PhotonNetwork.IsMasterClient)
         {
             isBossPatern = true;
             int selectedSkill = GetRandomSkill();
 
             if (selectedSkill != -1)
             {
-                UseSkill(selectedSkill);
+                photonView.RPC("UseSkill", RpcTarget.All, selectedSkill);
+                // UseSkill(selectedSkill);
             }
 
         }

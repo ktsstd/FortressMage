@@ -29,7 +29,16 @@ public class Buff : MonoBehaviour
         if (!monsterObj.hasBuffed)
         {
             Debug.Log("Applying Buff to: " + monsterObj.gameObject.name);  // 버프가 적용될 때 로그 출력
-            monsterObj.Speed *= speedBuff; // 몬스터 속도 증가
+            if (monsterObj.isSlow)
+            {
+                float SlowedSpeed = monsterObj.defaultspped;
+                SlowedSpeed -= monsterObj.Speed;
+                monsterObj.Speed = (monsterObj.defaultspped * speedBuff) - SlowedSpeed;
+            }
+            else
+            {
+                monsterObj.Speed *= speedBuff;
+            }
             monsterObj.AttackCooldown -= attackCooldownReduction; // 공격 쿨타임 감소
             monsterObj.hasBuffed = true; // 버프 적용 표시
         }
