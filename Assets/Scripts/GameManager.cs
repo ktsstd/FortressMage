@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using System.Security.Cryptography;
 
 public class GameManager : MonoBehaviour
 {
     public Transform[] monsterSpawnPoint;
+    public Transform BossSpawnPoint;
 
     // public GameObject[] normalMonster;
     // public GameObject[] eliteMonster;
@@ -260,6 +262,13 @@ public class GameManager : MonoBehaviour
         string WindMonster = "Monster/Spirit of Wind";
 
         PhotonNetwork.Instantiate(WindMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
+    public void TestSpawnBoss()
+    {
+        string BossMonster = "Boss/Boss";
+
+        PhotonNetwork.Instantiate(BossMonster, BossSpawnPoint.position, Quaternion.identity);
     }
 
     public void StartScene()

@@ -8,6 +8,7 @@ public class Boss : MonsterAI
 {
     private Transform closestTarget;
     private Transform CastlePos;
+    private Transform ClosetPlayerpos;
     public Transform Boss4Pos1;
     public Transform Boss4Pos2;
     public Transform Boss4Pos3;
@@ -196,6 +197,24 @@ public class Boss : MonsterAI
         return closestTarget;
     }
 
+    private GameObject FindPlayerpos()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject playerPos = null;
+        float shortestDistance = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (GameObject playerObj in players)
+        {
+            float distancetoPlayer = Vector3.Distance(currentPosition, playerObj.transform.position);
+            if (distancetoPlayer < shortestDistance)
+            {
+                shortestDistance = distancetoPlayer;
+                playerPos = playerObj;
+            }
+        }
+        return playerPos;
+    }
+
     private int GetRandomSkill()
     {
         List<int> availableSkills = new List<int>();
@@ -379,10 +398,31 @@ public class Boss : MonsterAI
 
     private IEnumerator BossSkill5()
     {
-        BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
-        AllSkillCooldownTimer = AllSkillCooldown;
-        isBossAtking = false;
-        isBossPatern = false;
+        animator.SetTrigger("BossSkill5");
+        isBossAtking = true;
+        yield return new WaitForSeconds(0.5f);
+        GameObject playerPos = FindPlayerpos();
+        ClosetPlayerpos = playerPos.transform; 
+        while (isBossAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Idle"))
+            {
+                isBossPatern = false;
+                isBossAtking = false;
+                PhotonNetwork.Instantiate("Additional/Boss_Skill_5", ClosetPlayerpos.position, Quaternion.Euler(-90, 0, 0));
+                BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
+                AllSkillCooldownTimer = AllSkillCooldown;
+                // yield return new WaitForSeconds(1f);
+
+                
+                yield break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
         yield break;
     }
     private IEnumerator BossPaternStart()

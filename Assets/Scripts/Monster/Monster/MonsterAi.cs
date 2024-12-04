@@ -160,13 +160,12 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!hasBuffed)
         {
             Speed = defaultspped;
-            isSlow = false;
         }
         else
         {
             Speed -= _moveSpeed;
         }
-        
+        isSlow = false;
     }
 
     private Transform GetClosestTarget()
