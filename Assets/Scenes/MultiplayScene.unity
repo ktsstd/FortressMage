@@ -3132,6 +3132,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2960344207821904364, guid: 8860050867996654b92da52899408da0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2960344207821904364, guid: 8860050867996654b92da52899408da0, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -4114,7 +4118,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f86a82417149014ea9c0c9ca1ac8a1e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9c74100a393c11242ba830b284dd2dc3, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4483,7 +4487,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f86a82417149014ea9c0c9ca1ac8a1e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9c74100a393c11242ba830b284dd2dc3, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4609,7 +4613,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f86a82417149014ea9c0c9ca1ac8a1e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9c74100a393c11242ba830b284dd2dc3, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

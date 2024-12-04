@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private Quaternion receiveRot;
     private Vector3 receiveMousePos;
     private bool receiveMoving;
+    private bool receiveDie;
 
     public Sprite IconImage;
     public Sprite[] skillImages;
@@ -94,6 +95,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             transform.rotation = Quaternion.Slerp(transform.rotation, receiveRot, Time.deltaTime * 10);
             mousePosition = receiveMousePos;
             isMoving = receiveMoving;
+            isDie = receiveDie;
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -141,6 +143,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(transform.rotation);
             stream.SendNext(mousePosition);
             stream.SendNext(isMoving);
+            stream.SendNext(isDie);
         }
         else
         {
@@ -148,6 +151,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             receiveRot = (Quaternion)stream.ReceiveNext();
             receiveMousePos = (Vector3)stream.ReceiveNext();
             receiveMoving = (bool)stream.ReceiveNext();
+            receiveDie = (bool)stream.ReceiveNext();
         }
     }
 
@@ -182,26 +186,35 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     // 플레이어에게 피해를 입힐 때 호출
     public void OnHitPlayer(float _damage)
     {
-        playerHp -= _damage;
-        if (playerHp <= 0)
+        if (pv.IsMine)
         {
-            isDie = true;
-            pv.RPC("PlayAnimation", RpcTarget.All, "Die");
+            playerHp -= _damage;
+            playerUi.playerHp = playerHp;
+            playerUi.playerMaxHp = playerMaxHp;
+            if (playerHp <= 0)
+            {
+                isDie = true;
+                pv.RPC("PlayAnimation", RpcTarget.All, "Die");
+            }
         }
-        playerUi.playerHp = playerHp;
-        playerUi.playerMaxHp = playerMaxHp;
     }
 
+    [PunRPC]
     public void StandUp()
     {
-        pv.RPC("PlayAnimation", RpcTarget.All, "StandUp");
+        if (pv.IsMine)
+            pv.RPC("PlayAnimation", RpcTarget.All, "StandUp");
     }
 
     public void ReSpawn()
     {
-        isDie = false;
-        playerUi.playerHp = playerHp;
-        playerUi.playerMaxHp = playerMaxHp;
+        if (pv.IsMine)
+        {
+            isDie = false;
+            playerHp = playerMaxHp;
+            playerUi.playerHp = playerHp;
+            playerUi.playerMaxHp = playerMaxHp;
+        }
     }
 
     public void PlayerUiSetting()

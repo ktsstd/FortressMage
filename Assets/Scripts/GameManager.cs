@@ -70,8 +70,7 @@ public class GameManager : MonoBehaviour
             {
                 if (players[i].isDie)
                 {
-                    players[i].playerHp = players[i].playerMaxHp;
-                    players[i].StandUp();
+                    players[i].pv.RPC("StandUp", RpcTarget.All, null);
                 }
             }
 
