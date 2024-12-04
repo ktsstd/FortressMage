@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
-using System.Security.Cryptography;
 
 public class GameManager : MonoBehaviour
 {

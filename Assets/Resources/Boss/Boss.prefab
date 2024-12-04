@@ -5672,7 +5672,6 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  ClosetPlayerpos: {fileID: 0}
   Boss4Pos1: {fileID: 4589420800508721669}
   Boss4Pos2: {fileID: 9138635153462425037}
   Boss4Pos3: {fileID: 3810701808651724374}
