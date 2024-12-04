@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private float Wave = 1;
 
     private bool isStartWave = false;
+
+    public int playerLv = 1;
     
     private Dictionary<int, bool> isTurretDestroyedAtWave = new Dictionary<int, bool>();
 
@@ -42,6 +44,11 @@ public class GameManager : MonoBehaviour
     public float GetWave()
     {
         return Wave;
+    }
+
+    public string GetPlayerLvToString()
+    {
+        return "LV. " + playerLv;
     }
 
     public void StartWave()
@@ -73,6 +80,7 @@ public class GameManager : MonoBehaviour
                     players[i].pv.RPC("StandUp", RpcTarget.All, null);
                 }
             }
+            playerLv += 1;
 
             StartCoroutine(StartTestWave());
         }

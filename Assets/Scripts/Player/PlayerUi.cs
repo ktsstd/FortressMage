@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUi : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class PlayerUi : MonoBehaviour
     public Image[] skillsback;
 
     public Slider playerHpSlider;
-    public Slider MixSkillSlider;
+    public Slider mixSkillSlider;
+
+    public TextMeshProUGUI playerLvText;
 
     public float playerMaxHp;
     public float playerHp;
@@ -24,6 +27,7 @@ public class PlayerUi : MonoBehaviour
         {
             skills[i].fillAmount = 1 - (skillsCoolTime[i] / skillsMaxCoolTime[i]);
         }
+        playerLvText.text = GameManager.Instance.GetPlayerLvToString();
     }
 
     public void StartUISetting(Sprite _icon, Sprite[] _skills)
