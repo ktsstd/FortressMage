@@ -8,10 +8,16 @@ public class Boss : MonsterAI
 {
     private Transform closestTarget;
     private Transform CastlePos;
+    public Transform Boss4Pos1;
+    public Transform Boss4Pos2;
+    public Transform Boss4Pos3;
+    public Transform Boss4Posx1;
+    public Transform Boss4Posx2;
+
     private Animator animator;
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 30f, 30f, 30f };
+    private float[] BossMonsterSkillCooldowns = { 30f, 5f, 30f };
     public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
     private float AllSkillCooldown = 5f;  // ��ü ��ų ��Ÿ��
@@ -25,14 +31,13 @@ public class Boss : MonsterAI
     public bool isBossUseSkill2 = false;
 
     public GameObject BossSkill2Obj;
-    public GameObject[] BossSKill4Obj;
 
     public override void Start()
     {
         base.Start();  // �θ� Ŭ������ Start() ȣ��
         MaxHp = 200f;  // ü�� �ʱ�ȭ
         MonsterDmg = 30;  // ���� ������ �ʱ�ȭ
-        attackRange = 4.0f;
+        attackRange = 6.0f;
         Speed = 1.0f;
         CurHp = MaxHp;  // ü�� ����
         isBossPatern = false;
@@ -40,42 +45,7 @@ public class Boss : MonsterAI
         isBossUseSkill2 = false;
         animator = GetComponent<Animator>();
         BossSkill2Obj.SetActive(false);
-        GameObject BossSkill4ObjResource = Resources.Load<GameObject>("Additional/Boss_Skill_4");
-        BossSKill4Obj[0] = BossSkill4ObjResource.gameObject.transform.GetChild(0).gameObject;
-        
-        // StartCoroutine(StartRotate());
     }
-
-    private IEnumerator StartRotate()
-    {
-        // Transform BossSkilObjT = BossSkill1Obj.transform;
-        // S1Speed = 0.2f;
-        // while(S1Speed <= 100f)
-        // {
-        //     BossSkilObjT.transform.Rotate(0, -S1Speed, 0);
-        //     yield return new WaitForSeconds(0f); 
-        // }
-        yield break;
-    }
-
-    // public override void Update()
-    // {
-    //     StartCoroutine(BossPaternStart());
-
-    //     // �� ��ų Ÿ�̸� ����
-    //     for (int i = 0; i < BossMonsterSkillTimers.Length; i++)
-    //     {
-    //         if (BossMonsterSkillTimers[i] > 0f)
-    //         {
-    //             BossMonsterSkillTimers[i] -= Time.deltaTime;
-    //         }
-    //     }
-
-    //     if (AllSkillCooldownTimer > 0f)
-    //     {
-    //         AllSkillCooldownTimer -= Time.deltaTime;
-    //     }
-    // }
 
     public override void Update()
     {
@@ -108,7 +78,6 @@ public class Boss : MonsterAI
                     {
                         isBossPatern = true;
                         isBossUseSkill2 = true;
-                        // StartCoroutine(BossPaternStart());
                         StartCoroutine(BossSkill2());
                     }
                     else
@@ -149,7 +118,7 @@ public class Boss : MonsterAI
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        string[] tags = { "skilltower", "turret", "Player" };
+        string[] tags = { "skilltower", "turret", "Player", "Obstacle" };
 
         foreach (string tag in tags)
         {
@@ -212,6 +181,15 @@ public class Boss : MonsterAI
                         }
                     }
                 }
+
+                if (tag == "Obstacle")
+                {
+                    if (sqrDistanceToTarget < closestSqrDistance)
+                    {
+                        closestSqrDistance = sqrDistanceToTarget;
+                        closestTarget = target;
+                    }
+                }
             }
         }
 
@@ -245,26 +223,16 @@ public class Boss : MonsterAI
         return -1;  // ����� �� �ִ� ��ų�� ���ٸ� -1 ��ȯ
     }
 
-    // [PunRPC]
-    // public void BossSkill4Pos(int BossSkill4Posvalue)
-    // {
-    //     switch (BossSkill4Posvalue)
-    //     {
-    //         case 0: // StartCoroutine(BossSkill2());
-    //             StartCoroutine(BossSkill3());
-    //             break;
-    //         case 1:
-    //             StartCoroutine(BossSkill4());
-    //             break;
-    //         case 2:
-    //             StartCoroutine(BossSkill5());
-    //             break;
-    //         default:
-    //             Debug.LogWarning("Invalid skill index.");
-    //             AllSkillCooldownTimer = AllSkillCooldown;
-    //             break;
-    //     }
-    // }
+    [PunRPC]
+    public int spawnPlaceint()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            int spawnPlaceRandom = Random.Range(0, 3);
+            return spawnPlaceRandom;
+        }
+        return -1;
+    }
 
     [PunRPC]
     public void UseSkill(int skillIndex)
@@ -343,7 +311,7 @@ public class Boss : MonsterAI
             {
                 isBossPatern = false;
                 isBossAtking = false;
-                GameObject bossSkillPrefab3 = PhotonNetwork.Instantiate("Additional/bossSkillPrefab3", transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("Additional/bossSkillPrefab3", transform.position, Quaternion.identity);
                 BossMonsterSkillTimers[0] = BossMonsterSkillCooldowns[0];
                 AllSkillCooldownTimer = AllSkillCooldown;
                 // yield return new WaitForSeconds(1f);
@@ -371,6 +339,28 @@ public class Boss : MonsterAI
             {
                 isBossPatern = false;
                 isBossAtking = false;
+                int random = spawnPlaceint();
+                if (random == 0)
+                {
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos1.position, Quaternion.identity);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos2.position, Quaternion.identity);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
+                }
+                if (random == 1)
+                {
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos1.position, Quaternion.identity);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos3.position, Quaternion.identity);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
+                }
+                if (random == 2)
+                {
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos2.position, Quaternion.identity);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos3.position, Quaternion.identity);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
+                }
                 // GameObject bossSkillPrefab4 = PhotonNetwork.Instantiate("Additional/Boss_Skill_4", transform.position, Quaternion.identity);
                 BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
                 AllSkillCooldownTimer = AllSkillCooldown;
@@ -440,6 +430,11 @@ public class Boss : MonsterAI
             {
                 towerScript.TakeDamage(BossObjDmg);
             }
+        }
+
+        if (CurTarget.CompareTag("Obstacle"))
+        {
+            Destroy(CurTarget.gameObject);
         }
 
         // if (CurTarget.CompareTag("Player"))

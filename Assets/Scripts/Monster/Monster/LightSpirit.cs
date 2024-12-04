@@ -28,22 +28,10 @@ public class LightSpirit : MonsterAI, IPunObservable
         animator = GetComponent<Animator>();
         particleSys = GetComponentInChildren<ParticleSystem>();
         MonsterDmg = 50;
-        // GameObject castleObject = GameObject.FindWithTag("Castle");
-        // if (castleObject != null)
-        // {
-        //     castleTransform = castleObject.transform;
-        // }
-
-        // else
-        // {
-        //     return;
-        // }
     }
 
     public override void Update()
     {
-        // if (castleTransform == null) return;
-        // if (StartAttack) return;
         bool isAtking = animator.GetBool("StartAttack");
         if (!isAtking && !StartAttack)
         {
@@ -136,13 +124,37 @@ public class LightSpirit : MonsterAI, IPunObservable
 
     private IEnumerator LightAttackStart()
     {
-        yield return new WaitForSeconds(3f);
-        animator.SetBool("StartAttack", true);
-        particleSys.Play();
-        yield return new WaitForSeconds(2f);
-        LightDamageTarget(closestTarget);
-        yield return new WaitForSeconds(2f);
-        photonView.RPC("MonsterDied", RpcTarget.All);
+        while(StartAttack)
+        {
+            yield return new WaitForSeconds(3f);
+            animator.SetBool("StartAttack", true);
+            particleSys.Play();
+            Animator LightAnim = GetComponent<Animator>();
+            // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float animTime = LightAnim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (animTime >= 1.0f)
+            {
+                LightDamageTarget(closestTarget);
+                photonView.RPC("MonsterDied", RpcTarget.All);
+            }
+            // if (stateInfo.IsName("Spirit of Light_Animation_Move"))
+            // {
+            //     LightDamageTarget(closestTarget);
+            //     photonView.RPC("MonsterDied", RpcTarget.All);
+            // }
+
+            else
+            {
+                yield return null;
+            }
+        }
+        // yield return new WaitForSeconds(3f);
+        // animator.SetBool("StartAttack", true);
+        // particleSys.Play();
+        // yield return new WaitForSeconds(2f);
+        // LightDamageTarget(closestTarget);
+        // yield return new WaitForSeconds(2f);
+        // photonView.RPC("MonsterDied", RpcTarget.All);
         yield break;
     }
 

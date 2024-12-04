@@ -79,6 +79,9 @@ MonoBehaviour:
   - UpdateHealth
   - StandUp
   - UseSkill
+  - spawnPlaceint
+  - Destroythis
+  - SelfDestroy
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
