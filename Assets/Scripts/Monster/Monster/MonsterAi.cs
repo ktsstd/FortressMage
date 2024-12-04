@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
+using System.Security.Cryptography;
 
 public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -17,14 +18,17 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public float MaxHp = 20f;
     public float CurHp;
     public float defaultspped;
+    public float monsterSlowCurTime;
 
     public int MonsterDmg = 10;
 
     public bool hasHealed = false; // 힐 상태 초기화
     public bool hasBuffed = false; 
     public bool NoTarget = false;
-    private bool canMove = true;
     public bool isSlow = false;
+    private bool canMove = true;
+
+    private List<(float slowtime, float slowmoveSpeed)> slowEffects = new List<(float, float)>();
 
     public NavMeshAgent agent;
     protected PlayerController playerController;
@@ -133,39 +137,65 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         canMove = true;
     }
 
-    private Coroutine speedCoroutine;
     public void OnMonsterSpeedDown(float _time, float _moveSpeed)
     {
-        if (Speed > _moveSpeed)
+        if (monsterSlowCurTime > 0)
         {
-            if (speedCoroutine != null)
-                StopCoroutine(speedCoroutine);
-
-            speedCoroutine = StartCoroutine(MonsterSpeedDown(_time, _moveSpeed));
+            slowEffects.Add((_time, _moveSpeed));
+            slowEffects.Sort((a, b) => b.slowmoveSpeed.CompareTo(a.slowmoveSpeed));
         }
         else
         {
-            if (speedCoroutine != null)
-                StopCoroutine(speedCoroutine);
-
-            speedCoroutine = StartCoroutine(MonsterSpeedDown(_time, Speed));
+            OnMonsterSpeedDownStart(_time, _moveSpeed);
         }
     }
 
-    IEnumerator MonsterSpeedDown(float _time, float _moveSpeed) // 이동 속도 감소 처리
+    private Coroutine speedCoroutine;
+    public void OnMonsterSpeedDownStart(float _time, float _moveSpeed)
+    {
+        if (speedCoroutine != null)
+            StopCoroutine(speedCoroutine);
+
+        speedCoroutine = StartCoroutine(MonsterSpeedDowning(_time, _moveSpeed));
+    }
+
+    IEnumerator MonsterSpeedDowning(float _time, float _moveSpeed) // 이동 속도 감소 처리
     {
         isSlow = true;
+        monsterSlowCurTime = _time;
         Speed = _moveSpeed;
-        yield return new WaitForSeconds(_time);
-        if (!hasBuffed)
+        while (monsterSlowCurTime > 0)
         {
-            Speed = defaultspped;
+            yield return null;
+            monsterSlowCurTime -= Time.deltaTime;
+
+            for (int i = 0; i < slowEffects.Count; i++)
+            {
+                var remaineffect = slowEffects[i];
+                slowEffects[i] = (remaineffect.slowtime - Time.deltaTime, remaineffect.slowmoveSpeed);
+            }
+        }
+        // yield return new WaitForSeconds(_time);
+        if (slowEffects.Count > 0)
+        {
+            var nextSlowEffect = slowEffects[0];
+            slowEffects.RemoveAt(0);
+
+            OnMonsterSpeedDownStart(nextSlowEffect.slowtime, nextSlowEffect.slowmoveSpeed);
         }
         else
         {
-            Speed -= _moveSpeed;
+            if (!hasBuffed)
+            {
+                Speed = defaultspped;
+            }
+            else
+            {
+                Speed -= _moveSpeed;
+            }
+            speedCoroutine = null;
+            isSlow = false;
         }
-        isSlow = false;
     }
 
     private Transform GetClosestTarget()
