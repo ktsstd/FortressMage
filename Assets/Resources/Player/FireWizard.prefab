@@ -386,6 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   playerUi: {fileID: 0}
+  skilltower: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
@@ -394,6 +395,7 @@ MonoBehaviour:
   - {fileID: 2060092489, guid: 0929c2128672c8146bf5556462341565, type: 3}
   - {fileID: 41541928, guid: 0929c2128672c8146bf5556462341565, type: 3}
   - {fileID: 619027558, guid: 0929c2128672c8146bf5556462341565, type: 3}
+  playerLv: 1
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10

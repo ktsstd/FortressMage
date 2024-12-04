@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.ComponentModel;
 
-public class Skilltower : MonoBehaviourPun
+public class Skilltower : MonoBehaviourPun, IPunObservable
 {
     public float health = 100f;
 
@@ -18,9 +19,18 @@ public class Skilltower : MonoBehaviourPun
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
     private bool hasExploded = false;
 
+    public PlayerUi playerUi;
+    public PhotonView pv;
+
+    public int[] elementalSet = new int[] {0, 0};
+    public int[] receiveElemental;
+    public Sprite[] elementals;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
+        pv = GetComponent<PhotonView>();
+        playerUi = FindObjectOfType<PlayerUi>();
     }
 
     private void Update()
@@ -43,6 +53,25 @@ public class Skilltower : MonoBehaviourPun
         }
     }
 
+    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(elementalSet);
+        }
+        else
+        {
+            receiveElemental = (int[])stream.ReceiveNext();
+        }
+
+    }
+
+    [PunRPC]
+    public void SetingElemental(int _slot, int _set)
+    {
+        elementalSet[_slot] = _set;
+        playerUi.elementalSet[_slot].sprite = elementals[_set];
+    }
 
     public void TakeDamage(float damage)
     {

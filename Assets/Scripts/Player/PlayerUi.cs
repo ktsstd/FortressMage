@@ -10,11 +10,14 @@ public class PlayerUi : MonoBehaviour
     public Image[] skills;
     public Image[] skillsback;
 
+    public Image[] elementalSet;
+
     public Slider playerHpSlider;
     public Slider mixSkillSlider;
 
     public TextMeshProUGUI playerLvText;
 
+    public float playerLv;
     public float playerMaxHp;
     public float playerHp;
     public float[] skillsCoolTime;
@@ -27,7 +30,7 @@ public class PlayerUi : MonoBehaviour
         {
             skills[i].fillAmount = 1 - (skillsCoolTime[i] / skillsMaxCoolTime[i]);
         }
-        playerLvText.text = GameManager.Instance.GetPlayerLvToString();
+        playerLvText.text = "LV. " + playerLv;
     }
 
     public void StartUISetting(Sprite _icon, Sprite[] _skills)

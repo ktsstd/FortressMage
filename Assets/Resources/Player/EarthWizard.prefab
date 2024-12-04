@@ -690,6 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   playerUi: {fileID: 0}
+  skilltower: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
@@ -698,6 +699,7 @@ MonoBehaviour:
   - {fileID: 251637097, guid: 61f0f41276739c749ab6a893d20fb810, type: 3}
   - {fileID: 601218885, guid: 87edde6d70b2973428afb4728c9d44e6, type: 3}
   - {fileID: -2081610418, guid: 61f0f41276739c749ab6a893d20fb810, type: 3}
+  playerLv: 1
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10

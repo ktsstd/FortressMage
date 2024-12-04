@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FrostShackles : MonoBehaviour
 {
-    float damageDelay = 0.5f;
+    float damageDelay = 0f;
     GameObject childObject;
     int count = 0;
 
@@ -29,12 +29,10 @@ public class FrostShackles : MonoBehaviour
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
                     monster.MonsterDmged(1);
-                    if (count == 6)
-                        Debug.Log("얼리기");
+                    monster.OnMonsterSpeedDown(1f, 2f);
+                    if (count == 5)
+                        monster.OnMonsterStun(3f);
                 }
-                Debug.Log("아이차가워");
-                if (count == 5)
-                    Debug.Log("얼리기");
                 damageDelay = 0.5f;
                 count++;
             }

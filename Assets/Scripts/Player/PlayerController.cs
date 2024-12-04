@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private new Camera camera;
     public PlayerUi playerUi;
+    public Skilltower skilltower;
     public Animator animator;
     public Rigidbody rigidbody;
 
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public Sprite[] skillImages;
     // 방어막 이미지 추가
 
+    public float playerLv = 1;
     public float playerMaxHp = 100;
     public float playerHp = 100;
     public float playerAtk = 10;
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         pv = GetComponent<PhotonView>();
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
         playerUi = FindObjectOfType<PlayerUi>();
+        skilltower = FindObjectOfType<Skilltower>();
         if (pv.IsMine)
         {
             virtualCamera.Follow = transform;
@@ -62,6 +65,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
             PlayerUiSetting();
 
+            playerUi.playerLv = playerLv;
             playerUi.playerHp = playerHp;
             playerUi.playerMaxHp = playerMaxHp;
         }
@@ -104,6 +108,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             OnPlayerKnockBack(transform);
         if (Input.GetKeyDown(KeyCode.Keypad2))
             OnPlayerBlind();
+        if (pv.IsMine)
+            if (Input.GetKeyDown(KeyCode.Keypad8))
+                skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, 1);
+        if (pv.IsMine)
+            if (Input.GetKeyDown(KeyCode.Keypad9))
+                skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, 2);
     }
 
     Vector3 targetPos;
@@ -220,6 +230,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void PlayerUiSetting()
     {
         playerUi.StartUISetting(IconImage, skillImages);
+    }
+    [PunRPC]
+    public void PlayerLvUp()
+    {
+        playerLv++;
+        playerUi.playerLv = playerLv;
     }
 
     #region Player Crowd Control

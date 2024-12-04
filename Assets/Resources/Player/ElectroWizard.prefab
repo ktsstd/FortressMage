@@ -645,6 +645,7 @@ MonoBehaviour:
   - {fileID: -389228284, guid: 159bcaac07268ef4b9bae8330154cd0f, type: 3}
   - {fileID: -1770844601, guid: 159bcaac07268ef4b9bae8330154cd0f, type: 3}
   - {fileID: 1178691548, guid: 159bcaac07268ef4b9bae8330154cd0f, type: 3}
+  playerLv: 1
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10

@@ -79,8 +79,11 @@ public class GameManager : MonoBehaviour
                 {
                     players[i].pv.RPC("StandUp", RpcTarget.All, null);
                 }
+
+                players[i].pv.RPC("PlayerLvUp", RpcTarget.All, null);
             }
-            playerLv += 1;
+
+
 
             StartCoroutine(StartTestWave());
         }
@@ -263,4 +266,5 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("New Scene");
     }
+
 }

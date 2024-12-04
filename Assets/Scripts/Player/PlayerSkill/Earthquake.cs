@@ -46,8 +46,8 @@ public class Earthquake : MonoBehaviour
             if (other.gameObject.TryGetComponent(out MonsterAI monster))
             {
                 monster.MonsterDmged(10);
+                monster.OnMonsterSpeedDown(1f, 3f);
             }
-            Debug.Log("πŸ¿ß");
         }
     }
     void SelfDestroy()

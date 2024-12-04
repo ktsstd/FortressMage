@@ -365,10 +365,12 @@ MonoBehaviour:
   attackTimer: 0
   MaxHp: 30
   CurHp: 0
+  defaultspped: 0
   MonsterDmg: 10
   hasHealed: 0
   hasBuffed: 0
   NoTarget: 0
+  isSlow: 0
   agent: {fileID: 0}
   obstacleMask:
     serializedVersion: 2

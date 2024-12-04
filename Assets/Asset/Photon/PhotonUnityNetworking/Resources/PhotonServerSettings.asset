@@ -82,6 +82,8 @@ MonoBehaviour:
   - spawnPlaceint
   - Destroythis
   - SelfDestroy
+  - PlayerLvUp
+  - SetingElemental
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
