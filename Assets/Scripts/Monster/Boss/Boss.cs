@@ -486,4 +486,13 @@ public class Boss : MonsterAI
         //     }
         // }
     }
+
+    public override void OnMonsterStun(float _time)
+    {
+        
+    }
+    public override void OnMonsterSpeedDown(float _time, float _moveSpeed)
+    {
+        
+    }
 }

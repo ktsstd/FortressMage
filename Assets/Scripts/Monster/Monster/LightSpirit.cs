@@ -47,16 +47,22 @@ public class LightSpirit : MonsterAI, IPunObservable
                 closestTarget = castleObj.transform;
             }
             float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
-
-            if (distanceTotarget > attackRange + stopDistance)
+            if (canMove)
             {
-                agent.SetDestination(closestTarget.position);
+                if (distanceTotarget > attackRange + stopDistance)
+                {
+                    agent.SetDestination(closestTarget.position);
+                }
+                else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
+                {
+                    agent.ResetPath();
+                    StartAttack = true;
+                    StartCoroutine(LightAttackStart());
+                }
             }
-            else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
+            else
             {
-                agent.ResetPath();
-                StartAttack = true;
-                StartCoroutine(LightAttackStart());
+                StopCoroutine(LightAttackStart());
             }
         }
 

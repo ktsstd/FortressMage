@@ -38,21 +38,24 @@ public class WindSpirit : MonsterAI
         }
         
         float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
-
-        if (distanceTotarget > attackRange + stopDistance)
+        if (canMove)
         {
-            agent.SetDestination(closestTarget.position);
-        }
-        else
-        {
-            agent.ResetPath();
-            if (skillCooltime <= 0)
+            if (distanceTotarget > attackRange + stopDistance)
             {
-                animator.SetTrigger("StartAttack");
-                skillCooltime = skillCooldown;
-                particleSys.Play();
+                agent.SetDestination(closestTarget.position);
+            }
+            else
+            {
+                agent.ResetPath();
+                if (skillCooltime <= 0)
+                {
+                    animator.SetTrigger("StartAttack");
+                    skillCooltime = skillCooldown;
+                    particleSys.Play();
+                }
             }
         }
+        
 
         skillCooltime = Mathf.Max(0f, skillCooltime - Time.deltaTime);
 

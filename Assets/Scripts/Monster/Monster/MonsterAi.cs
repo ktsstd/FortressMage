@@ -26,11 +26,12 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool hasBuffed = false; 
     public bool NoTarget = false;
     public bool isSlow = false;
-    private bool canMove = true;
+    public bool canMove = true;
 
     private List<(float slowtime, float slowmoveSpeed)> slowEffects = new List<(float, float)>();
 
     public NavMeshAgent agent;
+    public Animator animator;
     protected PlayerController playerController;
     protected Skilltower skilltower;
     protected Turret turretS;
@@ -60,6 +61,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         //     playerController = player.GetComponent<PlayerController>();
         // }        
 
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
     }
@@ -122,7 +124,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     private Coroutine stunCoroutine;
-    public void OnMonsterStun(float _time)
+    public virtual void OnMonsterStun(float _time)
     {
         if (stunCoroutine != null)
             StopCoroutine(stunCoroutine);
@@ -133,11 +135,13 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     IEnumerator MonsterStun(float _time) // 스턴 상태 처리
     {
         canMove = false;
+        animator.speed = 0f;
         yield return new WaitForSeconds(_time);
         canMove = true;
+        animator.speed = 1f;
     }
 
-    public void OnMonsterSpeedDown(float _time, float _moveSpeed)
+    public virtual void OnMonsterSpeedDown(float _time, float _moveSpeed)
     {
         if (monsterSlowCurTime > 0)
         {
