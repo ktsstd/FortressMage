@@ -56,7 +56,7 @@ public class FrozenAwl : MonoBehaviour
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
                     monster.MonsterDmged(10);
-                    monster.OnMonsterSpeedDown(1f, 0.5f);
+                    monster.OnMonsterSpeedDown(3f, 0.5f);
                 }
             }
         }

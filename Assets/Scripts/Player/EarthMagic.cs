@@ -31,6 +31,7 @@ public class EarthMagic : PlayerController
     public override void Start()
     {
         base.Start();
+        elementalCode = 4;
     }
 
     public override void Update()

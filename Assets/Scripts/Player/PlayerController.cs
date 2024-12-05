@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public float playerAtk = 10;
     public float defaultSpped = 3;
     public float playerSpeed = 3;
+    public int elementalCode = 0;
 
     public bool isMoving = false;
     public bool isStun = false;
@@ -91,6 +92,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
                 if (!isStun && !isCasting)
                     Move();
+
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, elementalCode);
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, elementalCode);
+                
+
             }
         }
         else
@@ -108,12 +116,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             OnPlayerKnockBack(transform);
         if (Input.GetKeyDown(KeyCode.Keypad2))
             OnPlayerBlind();
-        if (pv.IsMine)
-            if (Input.GetKeyDown(KeyCode.Keypad8))
-                skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, 1);
-        if (pv.IsMine)
-            if (Input.GetKeyDown(KeyCode.Keypad9))
-                skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, 2);
     }
 
     Vector3 targetPos;

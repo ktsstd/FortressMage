@@ -29,6 +29,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     public override void Start()
     {
         base.Start();
+        elementalCode = 1;
     }
     public override void Update()
     {

@@ -782,10 +782,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -983368527, guid: 20157bc776c610d428f044f80818774f, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -6391,10 +6391,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -983368527, guid: 20157bc776c610d428f044f80818774f, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -7479,6 +7479,12 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  elementalSetCoolTime:
+  - 0
+  - 0
+  elementalSetMaxCoolTime:
+  - 0
+  - 0
 --- !u!1 &1610095600
 GameObject:
   m_ObjectHideFlags: 0
@@ -8955,13 +8961,19 @@ MonoBehaviour:
   playerUi: {fileID: 0}
   pv: {fileID: 0}
   elementalSet: 0000000000000000
-  receiveElemental: 
+  receiveElemental: 0000000000000000
   elementals:
   - {fileID: -983368527, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: 1149215082, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: 487831792, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: -1990547033, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: -258447449, guid: 20157bc776c610d428f044f80818774f, type: 3}
+  elementalSetCoolTime:
+  - 0
+  - 0
+  elementalSetMaxCoolTime:
+  - 2
+  - 2
 --- !u!136 &1770064735
 CapsuleCollider:
   m_ObjectHideFlags: 0

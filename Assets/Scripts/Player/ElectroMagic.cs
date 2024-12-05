@@ -29,6 +29,7 @@ public class ElectroMagic : PlayerController
     public override void Start()
     {
         base.Start();
+        elementalCode = 3;
     }
 
     public override void Update()
