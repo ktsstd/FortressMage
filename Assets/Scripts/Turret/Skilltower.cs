@@ -27,7 +27,7 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     public Sprite[] elementals;
 
     public float[] elementalSetCoolTime;
-    private float[] receiveElementalSetCoolTime;
+    public float[] receiveElementalSetCoolTime;
     public float[] elementalSetMaxCoolTime;
 
     private void Start()
@@ -49,28 +49,29 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
             }
         }
 
-        if (!PhotonNetwork.IsMasterClient)
+        if (!pv.IsMine)
         {
             elementalSet = receiveElemental;
-            elementalSetCoolTime = receiveElementalSetCoolTime;
         }
+        if (!PhotonNetwork.IsMasterClient)
+            elementalSetCoolTime = receiveElementalSetCoolTime;
     }
 
     public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
+            stream.SendNext(elementalSet);
             if (PhotonNetwork.IsMasterClient)
-            {
-                stream.SendNext(elementalSet);
                 stream.SendNext(elementalSetCoolTime);
-            }
         }
         else
         {
             receiveElemental = (int[])stream.ReceiveNext();
-            receiveElementalSetCoolTime = (float[])stream.ReceiveNext();
+            if (!PhotonNetwork.IsMasterClient)
+                receiveElementalSetCoolTime = (float[])stream.ReceiveNext();
         }
+
     }
 
     [PunRPC]
@@ -83,12 +84,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
             elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
             elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
         }
-    }
-
-    [PunRPC]
-    public void SettingMasterElemental()
-    {
-
     }
 
     public void TakeDamage(float damage)
