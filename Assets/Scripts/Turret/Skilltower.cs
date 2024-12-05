@@ -53,8 +53,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
         {
             elementalSet = receiveElemental;
         }
-        if (!PhotonNetwork.IsMasterClient)
-            elementalSetCoolTime = receiveElementalSetCoolTime;
     }
 
     public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -62,14 +60,10 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(elementalSet);
-            if (PhotonNetwork.IsMasterClient)
-                stream.SendNext(elementalSetCoolTime);
         }
         else
         {
             receiveElemental = (int[])stream.ReceiveNext();
-            if (!PhotonNetwork.IsMasterClient)
-                receiveElementalSetCoolTime = (float[])stream.ReceiveNext();
         }
 
     }
