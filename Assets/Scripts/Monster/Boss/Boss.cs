@@ -47,6 +47,7 @@ public class Boss : MonsterAI
         isBossUseSkill2 = false;
 
         // DEMO
+        Demoobj = GameObject.Find("TEST").transform.GetChild(1).gameObject;
         AllSkillCooldownTimer = AllSkillCooldown;
         StartCoroutine(DemoBoss());
 
