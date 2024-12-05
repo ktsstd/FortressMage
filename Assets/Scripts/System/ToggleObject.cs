@@ -1,18 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class ToggleObject : MonoBehaviour
 {
+    public Slider sizeSlider;
+    public Text valueText;
+    public RectTransform uiSize1;
+    public RectTransform uiSize2;
+
     public GameObject objectToToggle;
+
+    void Start()
+    {
+        valueText.text = sizeSlider.value.ToString();
+
+        sizeSlider.onValueChanged.AddListener(OnSliderValueChanged);
+        
+        UpdateUIElements();
+    }
 
     void Update()
     {
-        // ESC 키가 눌렸을 때
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // 오브젝트의 활성화 상태를 토글
             objectToToggle.SetActive(!objectToToggle.activeSelf);
         }
+    }
+
+    void OnSliderValueChanged(float value)
+    {
+        valueText.text = value.ToString(); 
+        UpdateUIElements();
+    }
+
+    void UpdateUIElements()
+    {
+        float newSize = sizeSlider.value;
+
+        uiSize1.sizeDelta = new Vector2(newSize, newSize); 
+        uiSize2.sizeDelta = new Vector2(newSize, newSize);
     }
 }
