@@ -85,6 +85,7 @@ MonoBehaviour:
   - PlayerLvUp
   - SetingElemental
   - MoveDefault
+  - SettingMasterElemental
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
