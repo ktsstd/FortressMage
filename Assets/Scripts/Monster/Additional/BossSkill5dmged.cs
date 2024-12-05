@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class BossSkill5dmged : MonoBehaviour
 {
@@ -20,6 +19,6 @@ public class BossSkill5dmged : MonoBehaviour
 
     void Destroythis()
     {
-        PhotonNetwork.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

@@ -26,7 +26,7 @@ public class BossSkill5 : MonoBehaviour
         {
             playerObj.transform.position = defaultPos; 
             PlayerController playerScript = playerObj.GetComponent<PlayerController>();
-            playerScript.OnPlayerStun(2.8f);
+            playerScript.OnPlayerStun(2.1f);
         }
         StartCoroutine(StartBoss5D());
         // if (PhotonNetwork.IsMasterClient)
