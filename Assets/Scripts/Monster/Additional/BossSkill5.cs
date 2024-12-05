@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossSkill5 : MonoBehaviour
+public class BossSkill5 : MonoBehaviourPun
 {
+    private Vector3 defaultPos;
     void Start()
     {
-        // GameObject[] playerObj =         
+        defaultPos = transform.position;
+        GameObject[] playertag = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject playerObj in playertag)
+        {
+            playerObj.transform.position = defaultPos;
+        }
     }
 }
