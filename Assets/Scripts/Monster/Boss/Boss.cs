@@ -15,7 +15,6 @@ public class Boss : MonsterAI
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
 
-    private Animator animator;
     // private ParticleSystem
 
     private float[] BossMonsterSkillCooldowns = { 30f, 5f, 30f };
@@ -35,16 +34,14 @@ public class Boss : MonsterAI
 
     public override void Start()
     {
+        MaxHp = 200f;
         base.Start();  // �θ� Ŭ������ Start() ȣ��
-        MaxHp = 200f;  // ü�� �ʱ�ȭ
         MonsterDmg = 30;  // ���� ������ �ʱ�ȭ
         attackRange = 6.0f;
         Speed = 1.0f;
-        CurHp = MaxHp;  // ü�� ����
         isBossPatern = false;
         isBossAtking = false;
         isBossUseSkill2 = false;
-        animator = GetComponent<Animator>();
         BossSkill2Obj.SetActive(false);
     }
 

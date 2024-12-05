@@ -6,28 +6,47 @@ using Photon.Pun;
 public class BossSkill5 : MonoBehaviour
 {
     private Vector3 defaultPos;
+    private Vector3 SpawnPos;
     private PhotonView pv;
 
     void Start()
     {
         pv = GetComponent<PhotonView>();
         defaultPos = transform.position;
-        pv.RPC("MoveDefault", RpcTarget.All);
+        SpawnPos = new Vector3(defaultPos.x, defaultPos.y + 50, defaultPos.z);
+        // pv.RPC("MoveDefault", RpcTarget.All);
+        MoveDefault();
     }
 
-    [PunRPC]
+    // [PunRPC]
     public void MoveDefault()
     {
-        if (PhotonNetwork.IsMasterClient)
+        GameObject[] playertag = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject playerObj in playertag)
         {
-            GameObject[] playertag = GameObject.FindGameObjectsWithTag("Player");
-            foreach(GameObject playerObj in playertag)
-            {
-                playerObj.transform.position = defaultPos;
-                PlayerController playerScript = playerObj.GetComponent<PlayerController>();
-                playerScript.OnPlayerStun(2f);
-                PhotonNetwork.Instantiate("Additional/Boss_Skill_5_1", defaultPos, Quaternion.identity); // Quaternion.Euler(-90, 0, 0)
-            }
+            playerObj.transform.position = defaultPos; 
+            PlayerController playerScript = playerObj.GetComponent<PlayerController>();
+            playerScript.OnPlayerStun(1.2f);
         }
+        StartCoroutine(StartBoss5D());
+        // if (PhotonNetwork.IsMasterClient)
+        // {
+        //     GameObject[] playertag = GameObject.FindGameObjectsWithTag("Player");
+        //     foreach(GameObject playerObj in playertag)
+        //     {
+        //         playerObj.transform.position = defaultPos; 
+        //     }
+        // }
+        // PlayerController playerScript = playerObj.GetComponent<PlayerController>();
+        // playerScript.OnPlayerStun(2f);
+        // PhotonNetwork.Instantiate("Additional/Boss_Skill_5-1", defaultPos, Quaternion.identity); // Quaternion.Euler(-90, 0, 0)
+        // PhotonNetwork.Destroy(gameObject);
+    }
+
+    private IEnumerator StartBoss5D()
+    {
+        PhotonNetwork.Instantiate("Additional/Boss_Skill_5-1", SpawnPos, Quaternion.Euler(90, 0, 0)); // Quaternion.identity
+        yield return new WaitForSeconds(1.2f);
+        PhotonNetwork.Destroy(gameObject);
     }
 }
