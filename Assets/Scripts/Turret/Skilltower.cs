@@ -11,10 +11,9 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     public GameObject Lazer;
     public Transform LazerPosition;
     public float cooldownTime = 2f;
-    private float lastSkillTime = -Mathf.Infinity;
 
     public float destroyDelay = 4.5f;
-    public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
+    public bool canAttack = true;
     private Animator animator; // Animator 컴포넌트 참조
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
     private bool hasExploded = false;
@@ -25,10 +24,12 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     public int[] elementalSet;
     public int[] receiveElemental;
     public Sprite[] elementals;
+    public Sprite[] mixSkills;
 
     public float[] elementalSetCoolTime;
-    public float[] receiveElementalSetCoolTime;
     public float[] elementalSetMaxCoolTime;
+
+    //private float resetTime = 0.5f;
 
     private void Start()
     {
@@ -49,7 +50,12 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
             }
         }
 
-        if (!pv.IsMine)
+        if (pv.IsMine)
+        {
+            //if (resetTime >= 0) { resetTime -= Time.deltaTime; }
+            //if (resetTime <= 0) { elementalSet = elementalSet; resetTime = 0.5f; }
+        }
+        else
         {
             elementalSet = receiveElemental;
         }
@@ -65,7 +71,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
         {
             receiveElemental = (int[])stream.ReceiveNext();
         }
-
     }
 
     [PunRPC]
@@ -77,8 +82,24 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
             playerUi.elementalSet[_slot].sprite = elementals[_set];
             elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
             elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+
+            if (elementalSet[0] == 1 && elementalSet[1] == 3)
+                playerUi.mixSkill.sprite = mixSkills[1];
+            else if (elementalSet[0] == 3 && elementalSet[1] == 1)
+                playerUi.mixSkill.sprite = mixSkills[1];
+            else if (elementalSet[0] == 1 && elementalSet[1] == 4)
+                playerUi.mixSkill.sprite = mixSkills[2];
+            else if (elementalSet[0] == 4 && elementalSet[1] == 1)
+                playerUi.mixSkill.sprite = mixSkills[2];
+            else if (elementalSet[0] == 2 && elementalSet[1] == 3)
+                playerUi.mixSkill.sprite = mixSkills[3];
+            else if (elementalSet[0] == 3 && elementalSet[1] == 2)
+                playerUi.mixSkill.sprite = mixSkills[3];
+            else
+                playerUi.mixSkill.sprite = mixSkills[6];
         }
     }
+
 
     public void TakeDamage(float damage)
     {

@@ -10,6 +10,8 @@ public class PlayerUi : MonoBehaviour
     public Image[] skills;
     public Image[] skillsback;
 
+    public Image mixSkill;
+
     public Image[] elementalSet;
 
     public Slider playerHpSlider;
