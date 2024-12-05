@@ -198,12 +198,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (newSprites == null || newSprites.Length < 4) return;
 
-        // 버튼 클릭 시 이미지를 업데이트합니다.
-        if (targetImage != null && buttonIndex < newSprites.Length)
-        {
-            targetImage.sprite = newSprites[buttonIndex];  // 해당 인덱스의 이미지를 타겟 이미지에 변경
-            playerSelectedButtonIndex[PhotonNetwork.LocalPlayer.ActorNumber] = buttonIndex;  // 선택한 버튼 인덱스를 저장
-        }
+       if (targetImage != null && buttonIndex < newSprites.Length)
+    {
+        targetImage.sprite = newSprites[buttonIndex];  // 해당 인덱스의 이미지를 타겟 이미지에 변경
+        playerSelectedButtonIndex[PhotonNetwork.LocalPlayer.ActorNumber] = buttonIndex;  // 선택한 버튼 인덱스를 저장
+
+        // 선택된 캐릭터 정보를 PhotonNetwork.LocalPlayer의 CustomProperties에 저장
+        ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable();
+        playerProps.Add("selectedCharacter", buttonIndex);  // 선택된 캐릭터의 인덱스를 저장
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+    }
     }
     [PunRPC]
     public void UpdateButtonStateForAllClients(int buttonIndex)

@@ -24,7 +24,6 @@ public class Turret : MonoBehaviourPun
     public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
     private Animator animator; // Animator 컴포넌트 참조
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
-    [SerializeField] private Slider _hpBar;
 
     private bool hasExploded = false;
 
@@ -36,12 +35,6 @@ public class Turret : MonoBehaviourPun
         }
 
         animator = GetComponent<Animator>();
-
-        if (_hpBar != null)
-        {
-            _hpBar.maxValue = health;  // 체력바의 최대값은 turret의 최대 체력
-            _hpBar.value = health;     // 체력바의 초기값은 현재 체력
-        }
     }
 
 
@@ -130,13 +123,6 @@ public class Turret : MonoBehaviourPun
 
      public void TakeDamage(float damage)
     {
-        health -= damage;
-
-        if (_hpBar != null)
-        {
-            _hpBar.value = health; // 체력바의 값을 현재 체력으로 업데이트
-        }
-         photonView.RPC("UpdateHealth", RpcTarget.AllBuffered, health);
         if (health <= 0f)
         {
             health = 0f;
@@ -147,18 +133,6 @@ public class Turret : MonoBehaviourPun
             // GameManager�� Wave ���� �����ͼ� ��
             float currentWave = GameManager.Instance.GetWave();
             GameManager.Instance.CheckTurretDestroyedOnWave(currentWave); // ���� ���̺� ����
-        }
-    }
-
-    [PunRPC]
-    private void UpdateHealth(float updatedHealth)
-    {
-        health = updatedHealth;
-
-        // 체력바 값 동기화
-        if (_hpBar != null)
-        {
-            _hpBar.value = health;
         }
     }
 
@@ -203,11 +177,6 @@ public class Turret : MonoBehaviourPun
         {
             animator.ResetTrigger("DestroyTrigger"); // "DestroyTrigger" 초기화
             animator.SetTrigger("RebuildTrigger");   // 재구축 애니메이션 트리거
-        }
-
-        if (_hpBar != null)
-        {
-            _hpBar.value = health; // 체력바를 초기화된 체력으로 설정
         }
         StartCoroutine(FireContinuously()); // ���� �ڷ�ƾ �ٽ� ����
     }

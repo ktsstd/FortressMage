@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
+    public GameObject[] characterPrefabs;
+    public Transform[] spawnPoint;
+    public TMP_Text NickText;
+
     public Transform[] monsterSpawnPoint;
     public Transform BossSpawnPoint;
 
@@ -24,6 +29,38 @@ public class GameManager : MonoBehaviour
     private Dictionary<int, bool> isTurretDestroyedAtWave = new Dictionary<int, bool>();
 
     private static GameManager _instance;
+
+    void Start()
+    {
+        // PhotonNetwork.LocalPlayer에서 선택된 캐릭터 정보 가져오기
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("selectedCharacter"))
+        {
+            int selectedCharacterIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["selectedCharacter"];
+
+            // 스폰할 포인트를 배열에서 랜덤으로 선택 (혹은 인덱스에 따라 선택 가능)
+            Transform selectedSpawnPoint = spawnPoint[Random.Range(0, spawnPoint.Length)];
+
+            // 캐릭터를 선택된 스폰 포인트에서 스폰
+            SpawnCharacter(selectedCharacterIndex, selectedSpawnPoint.position);
+        }
+
+        if (NickText != null)
+        {
+            NickText.text = PhotonNetwork.LocalPlayer.NickName;
+        }
+    }
+
+    void SpawnCharacter(int characterIndex, Vector3 spawnPosition)
+    {
+        if (characterIndex >= 0 && characterIndex < characterPrefabs.Length)
+        {
+            // 선택된 캐릭터의 이름을 사용하여 PhotonNetwork.Instantiate
+            string prefabName = "Player/" + characterPrefabs[characterIndex].name;
+
+            // 캐릭터를 PhotonNetwork.Instantiate로 선택된 위치에 소환
+            PhotonNetwork.Instantiate(prefabName, spawnPosition, Quaternion.identity);
+        }
+    }
 
     public static GameManager Instance
     {
