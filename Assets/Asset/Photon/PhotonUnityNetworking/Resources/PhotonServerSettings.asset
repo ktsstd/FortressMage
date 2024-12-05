@@ -84,6 +84,22 @@ MonoBehaviour:
   - SelfDestroy
   - PlayerLvUp
   - SetingElemental
+  - UpdateReadyState
+  - UpdateNickname
+  - UpdateNicknameInLobby
+  - UpdateNicknameInPhotonManager
+  - LockCharacterSelection
+  - NotifyImageConfirmed
+  - UpdateButtonState
+  - OnCharacterConfirmed
+  - OnConfirmButtonRPC
+  - DisableSelectedButtonForAll
+  - EnableSelectedButtonForAll
+  - EnableAllButtons
+  - EnableButtonForAllClients
+  - UpdateButtonStateForAllClients
+  - SyncButtonDeactivation
+  - SyncButtonSelection
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

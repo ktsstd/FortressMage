@@ -16,6 +16,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public TMP_InputField userIF;
 
     public bool isjoin = false;
+    public Button changeuserIFButton;
 
     //�� ��Ͽ� ���� �����͸� �����ϱ� ���� ��ųʸ� �ڷ���
     private Dictionary<string, GameObject> rooms = new Dictionary<string, GameObject>();
@@ -29,13 +30,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-         // ����� ���������ε�
-        userId = PlayerPrefs.GetString("Player", $"USER_{Random.Range(1, 21):00}");
+        // ����� ���������ε�
+        userId = PlayerPrefs.GetString("Player", $"USER_{Random.Range(1, 21):00}_{System.Guid.NewGuid()}");
         userIF.text = userId;
 
         // ���� ������ �г��ӵ��
         PhotonNetwork.NickName = userId;
         refreshButton.onClick.AddListener(ClearAndRefreshRoomList);
+
+        changeuserIFButton.onClick.AddListener(ChangeNickname);
     }
 
     void Awake()
@@ -44,8 +47,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         // ���� ���� ����
         PhotonNetwork.GameVersion = version;
-        // ����� �̸� ����
-        PhotonNetwork.NickName = userId;
         // ��Ʈ��ũ ���� �ӵ� Ȯ��
         Debug.Log("PhotonNetwork.SendRate : " + PhotonNetwork.SendRate);
         // ��Ʈ��ũ ���� ����
@@ -58,6 +59,25 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         {
         PhotonNetwork.ConnectUsingSettings();
         }
+    }
+
+    public void ChangeNickname()
+    {
+        string userId = userIF.text.Trim();  // 새 닉네임 입력값
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return;
+        }
+
+        // Photon 네트워크에 새 닉네임 설정
+        PhotonNetwork.NickName = userId;
+
+        // PlayerPrefs에 새 닉네임 저장
+        PlayerPrefs.SetString("Player", userId);
+
+        // 입력 필드를 초기화
+        userIF.text = userId;
     }
 
     // ������ ������ ���� ����
@@ -127,7 +147,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("MultiplayScene");
+            PhotonNetwork.LoadLevel("WaitingRoom");
         }
 
     }
@@ -152,7 +172,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // �� ���� �Է¿��θ�Ȯ���ϴ·���
     string SetRoomName()
     {
-        return $"ROOM_{Random.Range(1, 101):000}";
+        return $"방{Random.Range(1, 101):000}";
     }
 
     //�� ����� �����ϴ� �ݹ��Լ�
@@ -229,23 +249,22 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     }
 
     public override void OnLeftRoom()
-{
-    // 방을 떠날 때 로비로 돌아가서 방 목록을 갱신
-    Debug.Log("Left the room");
-
-    // 로비로 들어가서 방 목록 갱신
-    PhotonNetwork.JoinLobby();
-
-    // 기존 방 아이템 초기화
-    foreach (var room in rooms.Values)
     {
-        RoomData roomData = room.GetComponent<RoomData>();
-        if (roomData != null)
+        // 방을 떠날 때 로비로 돌아가서 방 목록을 갱신
+        Debug.Log("Left the room");
+
+        // 로비로 들어가서 방 목록 갱신
+        PhotonNetwork.JoinLobby();
+
+        // 기존 방 아이템 초기화
+        foreach (var room in rooms.Values)
         {
-            roomData.ResetRoomData();  // 방 아이템의 데이터를 리셋
+            RoomData roomData = room.GetComponent<RoomData>();
+            if (roomData != null)
+            {
+                roomData.ResetRoomData();  // 방 아이템의 데이터를 리셋
+            }
         }
+        rooms.Clear();  // 방 목록을 초기화
     }
-    
-    rooms.Clear();  // 방 목록을 초기화
-}
 }
