@@ -38,17 +38,26 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        if (elementalSetCoolTime[0] >= 0)
-        { 
-            elementalSetCoolTime[0] -= Time.deltaTime;
-            playerUi.elementalSetCoolTime[0] = elementalSetCoolTime[0];
-            playerUi.elementalSetMaxCoolTime[0] = elementalSetMaxCoolTime[0];
-        }
-        if (elementalSetCoolTime[1] >= 0) 
+        for (int i = 0; i < 2; i++)
         {
-            elementalSetCoolTime[1] -= Time.deltaTime;
-            playerUi.elementalSetCoolTime[1] = elementalSetCoolTime[1];
-            playerUi.elementalSetMaxCoolTime[1] = elementalSetMaxCoolTime[1];
+            if (elementalSetCoolTime[i] >= 0)
+            {
+                elementalSetCoolTime[i] -= Time.deltaTime;
+                playerUi.elementalSetCoolTime[i] = elementalSetCoolTime[i];
+                playerUi.elementalSetMaxCoolTime[i] = elementalSetMaxCoolTime[i];
+            }
+            else
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+
+                }
+            }
+        }
+
+        if (!pv.IsMine)
+        {
+            elementalSet = receiveElemental;
         }
     }
 
@@ -62,7 +71,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
         {
             receiveElemental = (int[])stream.ReceiveNext();
         }
-
     }
 
     [PunRPC]

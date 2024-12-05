@@ -637,6 +637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pv: {fileID: 0}
   playerUi: {fileID: 0}
+  skilltower: {fileID: 0}
   animator: {fileID: 0}
   rigidbody: {fileID: 0}
   mousePosition: {x: 0, y: 0, z: 0}
@@ -651,6 +652,7 @@ MonoBehaviour:
   playerAtk: 10
   defaultSpped: 3
   playerSpeed: 3
+  elementalCode: 0
   isMoving: 0
   isStun: 0
   isCasting: 0
