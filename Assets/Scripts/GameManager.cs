@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     // public GameObject[] eliteMonster;
     // public GameObject bossMonster;
     public GameObject TestSpawnObj;
+    public GameObject DEMObossObj;
 
     private int[] maxMonsterCount = { 5, 5, 5, 6, 7 };
     private float Wave = 1;
@@ -146,68 +147,47 @@ public class GameManager : MonoBehaviourPunCallbacks
         // { "Monster/Spirit of Fire", "Monster/MonsterI", "Monster/Spirit of Light", "Monster/Spirit of Dark",
         // "Monster/Spirit of Wind", "Monster/EliteMonster1", "Monster/EliteMonsetr2" }
         yield return new WaitForSeconds(15f);
-        string[] FirstWaves = { "Monster/Spirit of Fire"};
-        string[] SecondWaves = { "Monster/Spirit of Fire", "Monster/Spirit of Light" };
-        string[] ThirdWaves = { "Monster/Spirit of Fire", "Monster/Spirit of Light", "Monster/Spirit of Dark" };
 
         if (isTurretDestroyedAtWave.ContainsKey((int)Wave - 2) && isTurretDestroyedAtWave[(int)Wave - 2])
         {
             ResetTurretHealthOnWave(Wave);
-            isTurretDestroyedAtWave[(int)Wave - 2] = false; // 재생성 후 상태 초기화
+            isTurretDestroyedAtWave[(int)Wave - 2] = false;
         }
 
         if (Wave == 1)
         {
-            for (int i = 0; i < maxMonsterCount[0]; i++)
-            {
-                foreach (var FirstWave in FirstWaves)
-                {
-                    int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Fire" ? 2f : 0.3f);
-                }
-            }
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 11, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 6, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 1, 0f));
         }
         else if (Wave == 2)
         {
-            for (int i = 0; i < maxMonsterCount[1]; i++)
-            {
-                foreach (var SecondWave in SecondWaves)
-                {
-                    int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(SecondWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(SecondWave == "Monster/Spirit of Light" ? 2f : 0.3f);
-                }
-            }
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 16, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 3, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 5, 1f));
         }
-
         else if (Wave == 3)
         {
-            for (int i = 0; i < maxMonsterCount[2]; i++)
-            {
-                foreach (var ThirdWave in ThirdWaves)
-                {
-                    int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(ThirdWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(ThirdWave == "Monster/Spirit of Dark" ? 2f : 0.3f);
-                }
-            }
+            //PhotonNetwork.Instantiate("Boss/Boss", BossSpawnPoint.position, Quaternion.identity);
+            DEMObossObj.SetActive(true);    
         }
 
-        else if (Wave == 4)
-        {
-            for (int i = 0; i < maxMonsterCount[3]; i++)
-            {
-                foreach (var FirstWave in FirstWaves)
-                {
-                    int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-                    PhotonNetwork.Instantiate(FirstWave, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
-                    yield return new WaitForSeconds(FirstWave == "Monster/Spirit of Light" ? 2f : 0.3f);
-                }
-            }
-        }
         Wave += 1;
         Debug.Log(Wave);
+    }
+
+    private IEnumerator SpawnMonsters(string monsterName, int count, float spawnDelay)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+            PhotonNetwork.Instantiate(monsterName, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+            if (spawnDelay > 0f)
+            {
+                yield return new WaitForSeconds(spawnDelay);
+            }
+        }
     }
 
     private void ResetTurretHealthOnWave(float wave)

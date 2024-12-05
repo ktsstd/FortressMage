@@ -12,6 +12,7 @@ TagManager:
   - Obstacle
   - Ground
   - turret
+  - DEMO
   layers:
   - Default
   - TransparentFX

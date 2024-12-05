@@ -269,7 +269,9 @@ MonoBehaviour:
   hasBuffed: 0
   NoTarget: 0
   isSlow: 0
+  canMove: 1
   agent: {fileID: 0}
+  animator: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

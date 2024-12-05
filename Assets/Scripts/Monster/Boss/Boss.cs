@@ -14,12 +14,14 @@ public class Boss : MonsterAI
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
 
+    public GameObject Demoobj;
+
     // private ParticleSystem
 
     private float[] BossMonsterSkillCooldowns = { 2f, 0.5f, 4f };
     public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
-    private float AllSkillCooldown = 1f;  // ��ü ��ų ��Ÿ��
+    private float AllSkillCooldown = 500000f;  // ��ü ��ų ��Ÿ��
     public float AllSkillCooldownTimer;  // ��ü ��ų ��Ÿ�� Ÿ�̸�
     private float BossObjDmg = 9999f;
 
@@ -43,7 +45,27 @@ public class Boss : MonsterAI
         isBossPatern = false;
         isBossAtking = false;
         isBossUseSkill2 = false;
+
+        // DEMO
+        AllSkillCooldownTimer = AllSkillCooldown;
+        StartCoroutine(DemoBoss());
+
         BossSkill2Obj.SetActive(false);
+    }
+
+    private IEnumerator DemoBoss()
+    {
+        StartCoroutine(BossSkill4());
+        yield return new WaitForSeconds(5f);
+        GameObject[] DemoplayerObjs = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject Demoplayer in DemoplayerObjs)
+        {
+            PlayerController DemoPlayerScripts = Demoplayer.GetComponent<PlayerController>();
+            DemoPlayerScripts.OnPlayerBlind();
+        }
+        yield return new WaitForSeconds(4f);
+        Demoobj.SetActive(true);
+
     }
 
     public override void Update()
