@@ -83,18 +83,18 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
             elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
             elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
 
-            if (elementalSet[0] == 1 && elementalSet[1] == 3)
+            if ((elementalSet[0] == 1 && elementalSet[1] == 2) || (elementalSet[0] == 2 && elementalSet[1] == 1))
+                playerUi.mixSkill.sprite = mixSkills[0];
+            else if ((elementalSet[0] == 1 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 1))
                 playerUi.mixSkill.sprite = mixSkills[1];
-            else if (elementalSet[0] == 3 && elementalSet[1] == 1)
-                playerUi.mixSkill.sprite = mixSkills[1];
-            else if (elementalSet[0] == 1 && elementalSet[1] == 4)
+            else if ((elementalSet[0] == 1 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 1))
                 playerUi.mixSkill.sprite = mixSkills[2];
-            else if (elementalSet[0] == 4 && elementalSet[1] == 1)
-                playerUi.mixSkill.sprite = mixSkills[2];
-            else if (elementalSet[0] == 2 && elementalSet[1] == 3)
+            else if ((elementalSet[0] == 2 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 2))
                 playerUi.mixSkill.sprite = mixSkills[3];
-            else if (elementalSet[0] == 3 && elementalSet[1] == 2)
-                playerUi.mixSkill.sprite = mixSkills[3];
+            else if ((elementalSet[0] == 2 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 2))
+                playerUi.mixSkill.sprite = mixSkills[4];
+            else if ((elementalSet[0] == 3 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 3))
+                playerUi.mixSkill.sprite = mixSkills[5];
             else
                 playerUi.mixSkill.sprite = mixSkills[6];
         }

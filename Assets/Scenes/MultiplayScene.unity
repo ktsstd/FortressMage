@@ -7463,7 +7463,7 @@ MonoBehaviour:
   - {fileID: 194265577}
   - {fileID: 67773843}
   - {fileID: 1713307617}
-  mixSkill: {fileID: 0}
+  mixSkill: {fileID: 1034742830}
   elementalSet:
   - {fileID: 1276416295}
   - {fileID: 97765070}
@@ -8978,7 +8978,14 @@ MonoBehaviour:
   - {fileID: 487831792, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: -1990547033, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: -258447449, guid: 20157bc776c610d428f044f80818774f, type: 3}
-  mixSkills: []
+  mixSkills:
+  - {fileID: -621848546, guid: 9962b35aededa8b468c611e173ad7bea, type: 3}
+  - {fileID: -1965190474, guid: 8e41390f8fe8aa74aa1cf54f7e54aeca, type: 3}
+  - {fileID: -937531788, guid: 8e41390f8fe8aa74aa1cf54f7e54aeca, type: 3}
+  - {fileID: -1284106854, guid: 8e41390f8fe8aa74aa1cf54f7e54aeca, type: 3}
+  - {fileID: 2009799831, guid: 9962b35aededa8b468c611e173ad7bea, type: 3}
+  - {fileID: -923030609, guid: 9962b35aededa8b468c611e173ad7bea, type: 3}
+  - {fileID: -983368527, guid: 20157bc776c610d428f044f80818774f, type: 3}
   elementalSetCoolTime:
   - 0
   - 0
