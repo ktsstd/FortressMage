@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7111981857170570969}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3239477009800645825}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3423912493271551900}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2821387905948534802}
   - component: {fileID: 6727240196870393971}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Object001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7338117623380187916}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4299196592926961027}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2402279866080655633}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5956704299756255696}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 1935641481213467283}
   - component: {fileID: 4412302425711927555}
   - component: {fileID: 4195674743724911589}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 1005902972937848876}
   - component: {fileID: 7994101083940663107}
   - component: {fileID: 7995990758851636193}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: S
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5021840851542329331}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6283577321704318425}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +558,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2897710780366723882}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 6119304920319026916}
   - component: {fileID: 6691292237801323159}
   - component: {fileID: 3403320146213379041}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ElectroWizard
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -803,7 +803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5588089110699769504}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bone010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -895,8 +895,16 @@ PrefabInstance:
       value: A
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e4b93920991602c4ba054893c85068e1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e4b93920991602c4ba054893c85068e1, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: e4b93920991602c4ba054893c85068e1, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

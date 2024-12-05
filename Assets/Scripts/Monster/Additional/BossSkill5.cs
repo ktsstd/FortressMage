@@ -26,7 +26,7 @@ public class BossSkill5 : MonoBehaviour
         {
             playerObj.transform.position = defaultPos; 
             PlayerController playerScript = playerObj.GetComponent<PlayerController>();
-            playerScript.OnPlayerStun(1.2f);
+            playerScript.OnPlayerStun(2.8f);
         }
         StartCoroutine(StartBoss5D());
         // if (PhotonNetwork.IsMasterClient)
@@ -46,7 +46,7 @@ public class BossSkill5 : MonoBehaviour
     private IEnumerator StartBoss5D()
     {
         PhotonNetwork.Instantiate("Additional/Boss_Skill_5-1", SpawnPos, Quaternion.Euler(90, 0, 0)); // Quaternion.identity
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(2.8f);
         PhotonNetwork.Destroy(gameObject);
     }
 }
