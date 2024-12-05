@@ -14909,6 +14909,7 @@ GameObject:
   - component: {fileID: 1689784525119232618}
   - component: {fileID: 6662178243914262797}
   - component: {fileID: -6082136676877218126}
+  - component: {fileID: 5111347104330446109}
   m_Layer: 0
   m_Name: Boss_Skill_5
   m_TagString: Untagged
@@ -19754,6 +19755,18 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &5111347104330446109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805874266440288025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1203dd6356868d6439f182efd1e8405c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3639333802750606636
 PrefabInstance:
   m_ObjectHideFlags: 0

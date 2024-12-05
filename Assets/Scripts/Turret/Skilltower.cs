@@ -22,9 +22,13 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     public PlayerUi playerUi;
     public PhotonView pv;
 
-    public int[] elementalSet = new int[] {0, 0};
+    public int[] elementalSet;
     public int[] receiveElemental;
     public Sprite[] elementals;
+
+    public float[] elementalSetCoolTime;
+    public float[] receiveElementalSetCoolTime;
+    public float[] elementalSetMaxCoolTime;
 
     private void Start()
     {
@@ -35,21 +39,19 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-        if (photonView.IsMine)
+        for (int i = 0; i < 2; i++)
         {
-            // Q키가 눌렸을 때만 레이저 발사
-            if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastSkillTime + cooldownTime)
+            if (elementalSetCoolTime[i] >= 0)
             {
-                if (Lazer != null)
-                {
-                    // 레이저 오브젝트를 생성하고 쿨타임 업데이트
-                    GameObject laserInstance = Instantiate(Lazer, LazerPosition.position, Quaternion.identity);
-                    lastSkillTime = Time.time;
-
-                    // 4초 후에 레이저 오브젝트 삭제
-                    Destroy(laserInstance, destroyDelay);
-                }
+                elementalSetCoolTime[i] -= Time.deltaTime;
+                playerUi.elementalSetCoolTime[i] = elementalSetCoolTime[i];
+                playerUi.elementalSetMaxCoolTime[i] = elementalSetMaxCoolTime[i];
             }
+        }
+
+        if (!pv.IsMine)
+        {
+            elementalSet = receiveElemental;
         }
     }
 
@@ -69,8 +71,13 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void SetingElemental(int _slot, int _set)
     {
-        elementalSet[_slot] = _set;
-        playerUi.elementalSet[_slot].sprite = elementals[_set];
+        if (elementalSetCoolTime[_slot] <= 0)
+        {
+            elementalSet[_slot] = _set;
+            playerUi.elementalSet[_slot].sprite = elementals[_set];
+            elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+            elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+        }
     }
 
     public void TakeDamage(float damage)
@@ -89,10 +96,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void UseMeteor(Vector3 _skillPos)
-    {
-        
-    }
 
     [PunRPC]
     private void HandleDestruction()

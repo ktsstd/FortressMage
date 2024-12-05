@@ -26,7 +26,6 @@ public class DarkSpirit : MonsterAI, IPunObservable
         attackRange = 3f;
         CurHp = MaxHp;
         Attacked = false;
-        animator = GetComponent<Animator>();
         MonsterDmg = 50;
 
         StartPosition = transform.position;  // 몬스터의 초기 위치를 저장
@@ -34,6 +33,10 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
     public override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            OnMonsterStun(5f);
+        }
         if (!Attacked && !NoTarget)
         {
             closestTarget = GetClosestTarget();
@@ -46,23 +49,28 @@ public class DarkSpirit : MonsterAI, IPunObservable
         }
 
         float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
-
-        if (distanceTotarget > attackRange + stopDistance)
+        if (canMove && !Attacked)
         {
-            animator.SetBool("StartMove", true);
-            agent.SetDestination(closestTarget.position);
-        }
-
-        else
-        {
-            bool isStartAttack = animator.GetBool("StartAttack");
-            if (!isStartAttack) // 공격시작
+            if (distanceTotarget > attackRange + stopDistance)
             {
-                animator.SetBool("StartAttack", true);
-                animator.SetBool("StartMove", false);
+                animator.SetTrigger("StartMove");
+                agent.SetDestination(closestTarget.position);
+            }
+
+            else
+            {
+                animator.SetTrigger("StartAttack");
                 Attacked = true;
                 agent.ResetPath();
                 StartCoroutine(DarkAttackStart());
+            }
+        }
+        else if(!canMove)
+        {
+            agent.ResetPath();
+            if (Attacked)
+            {
+                StopCoroutine(DarkAttackStart());
             }
         }
     }
@@ -131,10 +139,9 @@ public class DarkSpirit : MonsterAI, IPunObservable
             if (stateInfo.IsName("Spirit of dark_Idle"))
             {
                 DarkDamageTarget(closestTarget);
-                Attacked = false;
-                animator.SetBool("StartMove", true);
-                animator.SetBool("StartAttack", false);
+                // animator.SetBool("StartAttack", false);
                 transform.position = StartPosition;
+                Attacked = false;
                 yield break;
             }
 

@@ -31,6 +31,7 @@ public class IceMagic : PlayerController
     public override void Start()
     {
         base.Start();
+        elementalCode = 2;
     }
 
     public override void Update()

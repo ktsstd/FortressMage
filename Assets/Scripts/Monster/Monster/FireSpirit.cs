@@ -33,25 +33,35 @@ public class FireSpirit : MonsterAI
         if (closestTarget != null)
         {
             float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
-
-            if (sqrDistanceToTarget > attackRange * attackRange)
+            if (canMove)
             {
-                if (!StartAtking)
+                if (sqrDistanceToTarget > attackRange * attackRange)
                 {
-                    agent.SetDestination(closestTarget.position);
+                    if (!StartAtking)
+                    {
+                        agent.SetDestination(closestTarget.position);
+                    }
+                }
+                else
+                {
+                    agent.ResetPath();
+
+                    if (attackTimer <= 0f && !StartAtking)
+                    {
+                        animator.SetTrigger("StartAttack");
+                        StartAtking = true;
+                        StartCoroutine(FireStartAttack());
+                    }
                 }
             }
             else
             {
                 agent.ResetPath();
-
-                if (attackTimer <= 0f && !StartAtking)
+                if (StartAtking)
                 {
-                    animator.SetTrigger("StartAttack");
-                    StartAtking = true;
-                    StartCoroutine(FireStartAttack());
+                    StopCoroutine(FireStartAttack());
                 }
-            }
+            }            
         }
         else
         {

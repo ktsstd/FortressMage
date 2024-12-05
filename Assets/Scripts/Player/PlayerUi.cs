@@ -23,12 +23,19 @@ public class PlayerUi : MonoBehaviour
     public float[] skillsCoolTime;
     public float[] skillsMaxCoolTime;
 
+    public float[] elementalSetCoolTime;
+    public float[] elementalSetMaxCoolTime;
+
     void Update()
     {
         playerHpSlider.value = playerHp / playerMaxHp;
         for (int i = 0; i < 3; i++)
         {
             skills[i].fillAmount = 1 - (skillsCoolTime[i] / skillsMaxCoolTime[i]);
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            elementalSet[i].fillAmount = 1 - (elementalSetCoolTime[i] / elementalSetMaxCoolTime[i]);
         }
         playerLvText.text = "LV. " + playerLv;
     }

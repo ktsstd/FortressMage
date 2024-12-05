@@ -15,10 +15,9 @@ public class Boss : MonsterAI
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
 
-    private Animator animator;
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 30f, 5f, 30f };
+    private float[] BossMonsterSkillCooldowns = { 6f, 6f, 6f };
     public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
     private float AllSkillCooldown = 5f;  // ��ü ��ų ��Ÿ��
@@ -35,16 +34,14 @@ public class Boss : MonsterAI
 
     public override void Start()
     {
+        MaxHp = 200f;
         base.Start();  // �θ� Ŭ������ Start() ȣ��
-        MaxHp = 200f;  // ü�� �ʱ�ȭ
         MonsterDmg = 30;  // ���� ������ �ʱ�ȭ
         attackRange = 6.0f;
         Speed = 1.0f;
-        CurHp = MaxHp;  // ü�� ����
         isBossPatern = false;
         isBossAtking = false;
         isBossUseSkill2 = false;
-        animator = GetComponent<Animator>();
         BossSkill2Obj.SetActive(false);
     }
 
@@ -485,5 +482,14 @@ public class Boss : MonsterAI
         //         playerScript.OnHitPlayer(MonsterDmg);
         //     }
         // }
+    }
+
+    public override void OnMonsterStun(float _time)
+    {
+        
+    }
+    public override void OnMonsterSpeedDown(float _time, float _moveSpeed)
+    {
+        
     }
 }
