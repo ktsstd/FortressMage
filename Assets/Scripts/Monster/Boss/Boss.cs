@@ -10,17 +10,20 @@ public class Boss : MonsterAI
     private Transform CastlePos;
     private Transform ClosetPlayerpos;
     public Transform[] Boss4Pos;
+    private Transform[] tempArray;
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
 
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 6f, 6f, 6f };
+    private float[] BossMonsterSkillCooldowns = { 2f, 0.5f, 4f };
     public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
-    private float AllSkillCooldown = 5f;  // ��ü ��ų ��Ÿ��
+    private float AllSkillCooldown = 1f;  // ��ü ��ų ��Ÿ��
     public float AllSkillCooldownTimer;  // ��ü ��ų ��Ÿ�� Ÿ�̸�
     private float BossObjDmg = 9999f;
+
+    private int randomIndex1, randomIndex2;
 
     // private float S1Speed = 0f;
 
@@ -242,8 +245,26 @@ public class Boss : MonsterAI
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            int spawnPlaceRandom = Random.Range(0, 3);
-            return spawnPlaceRandom;
+            randomIndex1 = Random.Range(0, Boss4Pos.Length);
+            randomIndex2 = Random.Range(0, Boss4Pos.Length);
+
+            while (randomIndex1 == randomIndex2)
+            {
+                randomIndex2 = Random.Range(0, Boss4Pos.Length);
+            }
+
+            tempArray = new Transform[Boss4Pos.Length - 2]; // 두 개를 제외할 것이므로 길이를 -2
+
+            int tempIndex = 0;
+            for (int i = 0; i < Boss4Pos.Length; i++)
+            {
+                // 제외할 인덱스는 건너뛰기
+                if (i != randomIndex1 && i != randomIndex2)
+                {
+                    tempArray[tempIndex] = Boss4Pos[i];
+                    tempIndex++;
+                }
+            }
         }
         return -1;
     }
@@ -354,38 +375,14 @@ public class Boss : MonsterAI
                 isBossPatern = false;
                 isBossAtking = false;
                 int random = spawnPlaceint();
-                if (random == 0)
+                foreach (Transform pos in tempArray)
                 {
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos1.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos2.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos3.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos4.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos5.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos6.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos7.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_4", pos.position, Quaternion.identity);
                 }
-                if (random == 1)
-                {
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos1.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos3.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
-                }
-                if (random == 2)
-                {
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos2.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Pos3.position, Quaternion.identity);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
-                    // PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
-                }
-                // GameObject bossSkillPrefab4 = PhotonNetwork.Instantiate("Additional/Boss_Skill_4", transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
+                PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
                 BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
-                AllSkillCooldownTimer = AllSkillCooldown;
-                // yield return new WaitForSeconds(1f);
-
-                
+                AllSkillCooldownTimer = AllSkillCooldown;                
                 yield break;
             }
             else
