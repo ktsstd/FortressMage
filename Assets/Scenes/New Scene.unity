@@ -205,9 +205,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2031928939}
+      - m_Target: {fileID: 1294188838}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+        m_MethodName: 
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10663,6 +10663,7 @@ MonoBehaviour:
   uiSize1: {fileID: 0}
   uiSize2: {fileID: 0}
   objectToToggle: {fileID: 89070546}
+  quitButton: {fileID: 26874015}
 --- !u!1 &1333974258
 GameObject:
   m_ObjectHideFlags: 0

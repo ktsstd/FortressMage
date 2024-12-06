@@ -7041,7 +7041,7 @@ GameObject:
   - component: {fileID: 913652198}
   - component: {fileID: 913652197}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: QUit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7579,7 +7579,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0fb7b607f5f4154ebe803ce2cecbff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sizeSlider: {fileID: 0}
+  valueText: {fileID: 0}
+  uiSize1: {fileID: 0}
+  uiSize2: {fileID: 0}
   objectToToggle: {fileID: 1355577052}
+  quitButton: {fileID: 913652197}
 --- !u!1 &988378843
 GameObject:
   m_ObjectHideFlags: 0
