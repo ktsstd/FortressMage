@@ -97,8 +97,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, elementalCode);
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                     skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, elementalCode);
-                
-
             }
         }
         else

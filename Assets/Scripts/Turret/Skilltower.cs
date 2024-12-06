@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using System.ComponentModel;
 
-public class Skilltower : MonoBehaviourPun, IPunObservable
+public class Skilltower : MonoBehaviourPun
 {
     public float health = 100f;
 
@@ -22,7 +22,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     public PhotonView pv;
 
     public int[] elementalSet;
-    public int[] receiveElemental;
     public Sprite[] elementals;
     public Sprite[] mixSkills;
 
@@ -49,28 +48,6 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
                 playerUi.elementalSetMaxCoolTime[i] = elementalSetMaxCoolTime[i];
             }
         }
-
-        if (pv.IsMine)
-        {
-            //if (resetTime >= 0) { resetTime -= Time.deltaTime; }
-            //if (resetTime <= 0) { elementalSet = elementalSet; resetTime = 0.5f; }
-        }
-        else
-        {
-            elementalSet = receiveElemental;
-        }
-    }
-
-    public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(elementalSet);
-        }
-        else
-        {
-            receiveElemental = (int[])stream.ReceiveNext();
-        }
     }
 
     [PunRPC]
@@ -78,26 +55,57 @@ public class Skilltower : MonoBehaviourPun, IPunObservable
     {
         if (elementalSetCoolTime[_slot] <= 0)
         {
-            elementalSet[_slot] = _set;
-            playerUi.elementalSet[_slot].sprite = elementals[_set];
-            elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
-            elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+            if (PhotonNetwork.IsMasterClient)
+            {
+                elementalSet[_slot] = _set;
 
-            if ((elementalSet[0] == 1 && elementalSet[1] == 2) || (elementalSet[0] == 2 && elementalSet[1] == 1))
-                playerUi.mixSkill.sprite = mixSkills[0];
-            else if ((elementalSet[0] == 1 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 1))
-                playerUi.mixSkill.sprite = mixSkills[1];
-            else if ((elementalSet[0] == 1 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 1))
-                playerUi.mixSkill.sprite = mixSkills[2];
-            else if ((elementalSet[0] == 2 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 2))
-                playerUi.mixSkill.sprite = mixSkills[3];
-            else if ((elementalSet[0] == 2 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 2))
-                playerUi.mixSkill.sprite = mixSkills[4];
-            else if ((elementalSet[0] == 3 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 3))
-                playerUi.mixSkill.sprite = mixSkills[5];
-            else
-                playerUi.mixSkill.sprite = mixSkills[6];
+                playerUi.elementalSet[_slot].sprite = elementals[_set];
+                elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+                elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+
+                if ((elementalSet[0] == 1 && elementalSet[1] == 2) || (elementalSet[0] == 2 && elementalSet[1] == 1))
+                    playerUi.mixSkill.sprite = mixSkills[0];
+                else if ((elementalSet[0] == 1 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 1))
+                    playerUi.mixSkill.sprite = mixSkills[1];
+                else if ((elementalSet[0] == 1 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 1))
+                    playerUi.mixSkill.sprite = mixSkills[2];
+                else if ((elementalSet[0] == 2 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 2))
+                    playerUi.mixSkill.sprite = mixSkills[3];
+                else if ((elementalSet[0] == 2 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 2))
+                    playerUi.mixSkill.sprite = mixSkills[4];
+                else if ((elementalSet[0] == 3 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 3))
+                    playerUi.mixSkill.sprite = mixSkills[5];
+                else
+                    playerUi.mixSkill.sprite = mixSkills[6];
+
+                pv.RPC("UpdateElemental", RpcTarget.All, _slot, elementalSet[_slot]);
+            }
         }
+    }
+
+    [PunRPC]
+    public void UpdateElemental(int _slot, int _set)
+    {
+        elementalSet[_slot] = _set;
+
+        playerUi.elementalSet[_slot].sprite = elementals[_set];
+        elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+        elementalSetCoolTime[_slot] = elementalSetMaxCoolTime[_slot];
+
+        if ((elementalSet[0] == 1 && elementalSet[1] == 2) || (elementalSet[0] == 2 && elementalSet[1] == 1))
+            playerUi.mixSkill.sprite = mixSkills[0];
+        else if ((elementalSet[0] == 1 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 1))
+            playerUi.mixSkill.sprite = mixSkills[1];
+        else if ((elementalSet[0] == 1 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 1))
+            playerUi.mixSkill.sprite = mixSkills[2];
+        else if ((elementalSet[0] == 2 && elementalSet[1] == 3) || (elementalSet[0] == 3 && elementalSet[1] == 2))
+            playerUi.mixSkill.sprite = mixSkills[3];
+        else if ((elementalSet[0] == 2 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 2))
+            playerUi.mixSkill.sprite = mixSkills[4];
+        else if ((elementalSet[0] == 3 && elementalSet[1] == 4) || (elementalSet[0] == 4 && elementalSet[1] == 3))
+            playerUi.mixSkill.sprite = mixSkills[5];
+        else
+            playerUi.mixSkill.sprite = mixSkills[6];
     }
 
 
