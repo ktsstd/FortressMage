@@ -14,14 +14,14 @@ public class Boss : MonsterAI
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
 
-    public GameObject Demoobj;
+    // public GameObject Demoobj;
 
     // private ParticleSystem
 
     private float[] BossMonsterSkillCooldowns = { 2f, 0.5f, 4f };
     public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
-    private float AllSkillCooldown = 500000f;  // ��ü ��ų ��Ÿ��
+    private float AllSkillCooldown = 3f;  // ��ü ��ų ��Ÿ��
     public float AllSkillCooldownTimer;  // ��ü ��ų ��Ÿ�� Ÿ�̸�
     private float BossObjDmg = 9999f;
 
@@ -46,28 +46,28 @@ public class Boss : MonsterAI
         isBossAtking = false;
         isBossUseSkill2 = false;
 
-        // DEMO
-        Demoobj = GameObject.Find("TEST").transform.GetChild(1).gameObject;
-        AllSkillCooldownTimer = AllSkillCooldown;
-        StartCoroutine(DemoBoss());
+        // # DEMO
+        // Demoobj = GameObject.Find("TEST").transform.GetChild(1).gameObject;
+        // AllSkillCooldownTimer = AllSkillCooldown;
+        // StartCoroutine(DemoBoss());
 
         BossSkill2Obj.SetActive(false);
     }
 
-    private IEnumerator DemoBoss()
-    {
-        StartCoroutine(BossSkill4());
-        yield return new WaitForSeconds(5f);
-        GameObject[] DemoplayerObjs = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject Demoplayer in DemoplayerObjs)
-        {
-            PlayerController DemoPlayerScripts = Demoplayer.GetComponent<PlayerController>();
-            DemoPlayerScripts.OnPlayerBlind();
-        }
-        yield return new WaitForSeconds(4f);
-        Demoobj.SetActive(true);
-
-    }
+    // # DEMO
+    // private IEnumerator DemoBoss()
+    // {
+    //     StartCoroutine(BossSkill4());
+    //     yield return new WaitForSeconds(5f);
+    //     GameObject[] DemoplayerObjs = GameObject.FindGameObjectsWithTag("Player");
+    //     foreach (GameObject Demoplayer in DemoplayerObjs)
+    //     {
+    //         PlayerController DemoPlayerScripts = Demoplayer.GetComponent<PlayerController>();
+    //         DemoPlayerScripts.OnPlayerBlind();
+    //     }
+    //     yield return new WaitForSeconds(4f);
+    //     Demoobj.SetActive(true);
+    // }
 
     public override void Update()
     {
@@ -128,7 +128,7 @@ public class Boss : MonsterAI
             AllSkillCooldownTimer -= Time.deltaTime;
         }
 
-        if (AllSkillCooldownTimer <= 0f)
+        if (AllSkillCooldownTimer <= 0f && !isBossUseSkill2)
         {
             agent.ResetPath();
             StartCoroutine(BossPaternStart());
@@ -226,11 +226,16 @@ public class Boss : MonsterAI
         Vector3 currentPosition = transform.position;
         foreach (GameObject playerObj in players)
         {
-            float distancetoPlayer = Vector3.Distance(currentPosition, playerObj.transform.position);
-            if (distancetoPlayer < shortestDistance)
+            PlayerController playerscriptpos = playerObj.GetComponent<PlayerController>();
+            if(playerscriptpos.isDie) continue;
+            else
             {
-                shortestDistance = distancetoPlayer;
-                playerPos = playerObj;
+                float distancetoPlayer = Vector3.Distance(currentPosition, playerObj.transform.position);
+                if (distancetoPlayer < shortestDistance)
+                {
+                    shortestDistance = distancetoPlayer;
+                    playerPos = playerObj;
+                }
             }
         }
         return playerPos;
@@ -418,31 +423,43 @@ public class Boss : MonsterAI
 
     private IEnumerator BossSkill5()
     {
-        animator.SetTrigger("BossSkill5");
         isBossAtking = true;
-        yield return new WaitForSeconds(0.5f);
         GameObject playerPos = FindPlayerpos();
-        ClosetPlayerpos = playerPos.transform; 
-        while (isBossAtking)
+        ClosetPlayerpos = playerPos.transform;
+        if (ClosetPlayerpos != null)
         {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Idle"))
+            animator.SetTrigger("BossSkill5");
+            yield return new WaitForSeconds(0.5f);
+            while (isBossAtking)
             {
-                isBossPatern = false;
-                isBossAtking = false;
-                PhotonNetwork.Instantiate("Additional/Boss_Skill_5", ClosetPlayerpos.position, Quaternion.Euler(-90, 0, 0));
-                BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
-                AllSkillCooldownTimer = AllSkillCooldown;
-                // yield return new WaitForSeconds(1f);
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("Idle"))
+                {
+                    isBossPatern = false;
+                    isBossAtking = false;
+                    PhotonNetwork.Instantiate("Additional/Boss_Skill_5", ClosetPlayerpos.position, Quaternion.Euler(-90, 0, 0));
+                    BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
+                    AllSkillCooldownTimer = AllSkillCooldown;
+                    // yield return new WaitForSeconds(1f);
 
-                
-                yield break;
-            }
-            else
-            {
-                yield return null;
+                    
+                    yield break;
+                }
+                else
+                {
+                    yield return null;
+                }
             }
         }
+        else
+        {
+            isBossPatern = false;
+            isBossAtking = false;
+            // BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
+            BossMonsterSkillTimers[2] = 999999999f;
+            AllSkillCooldownTimer = AllSkillCooldown;
+        }
+        
         yield break;
     }
     private IEnumerator BossPaternStart()

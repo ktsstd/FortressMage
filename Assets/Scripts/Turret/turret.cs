@@ -121,7 +121,7 @@ public class Turret : MonoBehaviourPun
         return Mathf.Lerp(minLaunchPower, maxLaunchPower, normalizedDistance);
     }
 
-     public void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (health <= 0f)
         {

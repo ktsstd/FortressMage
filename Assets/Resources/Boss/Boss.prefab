@@ -5753,7 +5753,6 @@ MonoBehaviour:
   - {fileID: 724005537860493947}
   Boss4Posx1: {fileID: 8118454619058306659}
   Boss4Posx2: {fileID: 773231046231887064}
-  Demoobj: {fileID: 2769564752559146193, guid: d881b3fcbb5e91d47a5de4717ffd3b44, type: 3}
   BossMonsterSkillTimers:
   - 0
   - 0

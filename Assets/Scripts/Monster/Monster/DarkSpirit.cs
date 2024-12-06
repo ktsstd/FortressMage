@@ -6,12 +6,11 @@ using Photon.Pun;
 
 public class DarkSpirit : MonsterAI, IPunObservable
 {
-    private Animator animator;
     // private ParticleSystem particleSys;
 
     private Transform closestTarget;
 
-    private float stopDistance = 8.0f;
+    private float stopDistance = 5.0f;
 
     private bool Attacked = false;
 
@@ -20,7 +19,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
     public override void Start()
     {
         base.Start();
-        MaxHp = 60f;
+        MaxHp = 600f;
         Speed = 10f;
         defaultspped = Speed;
         attackRange = 3f;
@@ -59,9 +58,9 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
             else
             {
-                animator.SetTrigger("StartAttack");
                 Attacked = true;
                 agent.ResetPath();
+                agent.velocity = Vector3.zero;
                 StartCoroutine(DarkAttackStart());
             }
         }
@@ -133,6 +132,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
     private IEnumerator DarkAttackStart()
     {
+        animator.SetTrigger("StartAttack");
         while(Attacked)
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);

@@ -6159,75 +6159,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &686599413
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2212397020500151998, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: Demoobj
-      value: 
-      objectReference: {fileID: 406787781}
-    - target: {fileID: 2452325775981573976, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: sceneViewId
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2960344207821904364, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_Name
-      value: Boss
-      objectReference: {fileID: 0}
-    - target: {fileID: 2960344207821904364, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -57.56
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4017104485704470020, guid: 8860050867996654b92da52899408da0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8860050867996654b92da52899408da0, type: 3}
 --- !u!1 &687858834
 GameObject:
   m_ObjectHideFlags: 0
@@ -8686,7 +8617,7 @@ MonoBehaviour:
   - {fileID: 1670139047}
   BossSpawnPoint: {fileID: 1746307434}
   TestSpawnObj: {fileID: 285087493}
-  DEMObossObj: {fileID: 1553048346}
+  DEMObossObj: {fileID: 0}
   playerLv: 1
 --- !u!4 &957337575
 Transform:
@@ -15236,11 +15167,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1548005802}
   m_CullTransparentMesh: 1
---- !u!1 &1553048346 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2960344207821904364, guid: 8860050867996654b92da52899408da0, type: 3}
-  m_PrefabInstance: {fileID: 686599413}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1554206612
 GameObject:
   m_ObjectHideFlags: 0
@@ -21808,4 +21734,3 @@ SceneRoots:
   - {fileID: 1700045932}
   - {fileID: 725594224}
   - {fileID: 2054223904}
-  - {fileID: 686599413}

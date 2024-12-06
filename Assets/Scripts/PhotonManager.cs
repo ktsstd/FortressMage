@@ -57,7 +57,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
          // ���� ���� ����
         if (PhotonNetwork.IsConnected == false)
         {
-        PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.ConnectUsingSettings();
         }
     }
 
