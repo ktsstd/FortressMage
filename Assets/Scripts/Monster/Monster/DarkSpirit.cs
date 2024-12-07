@@ -166,7 +166,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
         Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 1.18f, transform.position.z);
         PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.9f);
 
         GoStartTime = 0;
         while(GoStartTime < GoingTime)

@@ -17,7 +17,7 @@ public class StoneWall : MonoBehaviour
         transform.rotation = oriRot;
         transform.position = oriPos;
     }
-    void SelfDestroy()
+    public void SelfDestroy()
     {
         Destroy(gameObject);
     }

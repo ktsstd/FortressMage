@@ -21,7 +21,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public TMP_Text[] readylistText;
     [SerializeField] private TMP_InputField nicknameText;
 
-
+ 
     private List<Player> playerList = new List<Player>();  // �濡 �ִ� �÷��̾� ����Ʈ
     private Dictionary<int, bool> playerReadyState = new Dictionary<int, bool>();
     private Dictionary<int, int> playerSelectedButtonIndex = new Dictionary<int, int>();
@@ -139,7 +139,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             if (playerReadyState.ContainsKey(playerList[i].ActorNumber))
             {
                 bool isPlayerReady = playerReadyState[playerList[i].ActorNumber];
-                readylistText[playerIndex].text = isPlayerReady ? "�غ� �Ϸ�" : "";
+                readylistText[playerIndex].text = isPlayerReady ? "준비완료" : "";
             }
 
             // ���õ� ��ư�� ������ �� ��ư ��Ȱ��ȭ
@@ -235,11 +235,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             // �� ���¸� �ٸ� �÷��̾�鿡�� ����ȭ�մϴ�.
             photonView.RPC("SyncButtonDeactivation", RpcTarget.All, selectedButtonIndex);
-            readyBtn.interactable = true;
+            
         }
-        else if (selectedButtonIndex == -1)
+        readyBtn.interactable = true;
+        if (selectedButtonIndex == -1)
         {
             isConfirmed = false;
+            readyBtn.interactable = false;
             StartCoroutine(FadeInOut());
         }
     }
@@ -278,7 +280,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // �غ� ���¿� ���� �ؽ�Ʈ�� ����
         if (ReadyText != null)
         {
-            ReadyText.text = isReady ? "�غ� �Ϸ�" : "�غ�";
+            ReadyText.text = isReady ? "준비완료" : "준비";
         }
 
         // UI ������Ʈ
