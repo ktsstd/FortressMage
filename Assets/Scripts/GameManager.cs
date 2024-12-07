@@ -280,6 +280,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Instantiate(WindMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }
 
+    public void TestSpawnElite1()
+    {
+        string BossMonster = "EliteMonster/Dragon";
+
+        PhotonNetwork.Instantiate(BossMonster, BossSpawnPoint.position, Quaternion.identity);
+    }
+
     public void TestSpawnBoss()
     {
         string BossMonster = "Boss/Boss";
