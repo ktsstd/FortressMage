@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WindSpirit : MonsterAI
 {
-    private Animator animator;
     public ParticleSystem particleSys;
     private Transform closestTarget;
 
@@ -19,7 +18,6 @@ public class WindSpirit : MonsterAI
         Speed = 5f;
         defaultspped = Speed;
         CurHp = MaxHp;
-        animator = GetComponent<Animator>();
         particleSys = GetComponentInChildren<ParticleSystem>();
         MonsterDmg = 0;
     }

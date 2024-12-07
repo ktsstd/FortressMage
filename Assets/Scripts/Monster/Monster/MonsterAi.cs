@@ -36,6 +36,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     protected Skilltower skilltower;
     protected Turret turretS;
     protected Wall Castle;
+    public AudioClip[] MonsterAudio;
 
     public LayerMask obstacleMask;
 

@@ -9,7 +9,7 @@ public class BossSkill5Dmg : MonoBehaviour
     public GameObject DmgObj;
     private Vector3 Pos1;
     private Vector3 thisPos;
-    private ParticleSystem particleSystem;
+    private ParticleSystem particleSys;
     private ParticleSystem thisparticleSystem;
     private bool isDmg = false;
 
@@ -17,13 +17,13 @@ public class BossSkill5Dmg : MonoBehaviour
     {
         thisPos = transform.position;
         Pos1 = new Vector3(thisPos.x, thisPos.y - 50, thisPos.z);
-        particleSystem = childObj.GetComponent<ParticleSystem>();
+        particleSys = childObj.GetComponent<ParticleSystem>();
         thisparticleSystem = GetComponent<ParticleSystem>();
     }
 
     void Update()
     {
-        if (!particleSystem.isPlaying)
+        if (!particleSys.isPlaying)
         {
             PhotonNetwork.Destroy(gameObject);
         }

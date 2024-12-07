@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class FireSpirit : MonsterAI
 {   
-    Animator animator;
     public bool StartAtking = false;
     public Transform closestTarget;
 
@@ -19,7 +18,6 @@ public class FireSpirit : MonsterAI
         Speed = 5f;
         defaultspped = Speed;
         StartAtking = false;
-        animator = GetComponent<Animator>();
         CurHp = MaxHp;
     }
 

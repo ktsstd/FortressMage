@@ -30,11 +30,11 @@ public class BossSkill4 : MonoBehaviourPunCallbacks
         {
             if (!StartAtk4)
             {
-                alphavalue += 0.1f;
+                alphavalue += 0.02f;
                 Color ColorAlpha = meshrenderer.material.color;
                 ColorAlpha.a = alphavalue;
                 meshrenderer.material.color = ColorAlpha;
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.05f);
             }
         }
 
@@ -44,8 +44,15 @@ public class BossSkill4 : MonoBehaviourPunCallbacks
             Color ColorAlpha = meshrenderer.material.color;
             ColorAlpha.a = 0f;
             meshrenderer.material.color = ColorAlpha;
+            // GameObject bossObj = GameObject.FindWithTag("Enemy");
+            // Boss bossScript = bossObj.GetComponent<Boss>();
+            // if (bossScript == null)
+            // {
+            //     yield break;
+            // }
             foreach (Transform SkillObj in BossSKill4Obj)
             {
+                // bossScript.GetComponent<AudioSource>().PlayOneShot(bossScript.MonsterAudio[1], bossScript.MonsterAudio[1].length);
                 SkillObj.gameObject.SetActive(true);
                 yield return new WaitForSeconds(0.05f);
             }

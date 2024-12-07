@@ -6,7 +6,6 @@ using Photon.Pun;
 
 public class LightSpirit : MonsterAI, IPunObservable
 {
-    private Animator animator;
     // private Transform castleTransform;
     private ParticleSystem particleSys;
     
@@ -25,7 +24,6 @@ public class LightSpirit : MonsterAI, IPunObservable
         defaultspped = Speed;
         CurHp = MaxHp;
         StartAttack = false;
-        animator = GetComponent<Animator>();
         particleSys = GetComponentInChildren<ParticleSystem>();
         MonsterDmg = 50;
     }

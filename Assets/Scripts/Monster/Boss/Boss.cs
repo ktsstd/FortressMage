@@ -10,10 +10,10 @@ public class Boss : MonsterAI
     private Transform CastlePos;
     private Transform ClosetPlayerpos;
     public Transform[] Boss4Pos;
+    public Transform BossSoundPos;
     private Transform[] tempArray;
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
-
     // public GameObject Demoobj;
 
     // private ParticleSystem
@@ -42,9 +42,11 @@ public class Boss : MonsterAI
         MonsterDmg = 30;  // ���� ������ �ʱ�ȭ
         attackRange = 6.0f;
         Speed = 1.0f;
+        AllSkillCooldownTimer = 2f;
         isBossPatern = false;
         isBossAtking = false;
         isBossUseSkill2 = false;
+        
 
         // # DEMO
         // Demoobj = GameObject.Find("TEST").transform.GetChild(1).gameObject;
@@ -403,10 +405,12 @@ public class Boss : MonsterAI
                 isBossPatern = false;
                 isBossAtking = false;
                 int random = spawnPlaceint();
+                GetComponent<AudioSource>().PlayOneShot(MonsterAudio[0], MonsterAudio[0].length);
                 foreach (Transform pos in tempArray)
                 {
                     PhotonNetwork.Instantiate("Additional/Boss_Skill_4", pos.position, Quaternion.identity);
                 }
+                PhotonNetwork.Instantiate("Additional/Boss_Skill_4_Sound", BossSoundPos.position, Quaternion.identity);
                 PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx1.position, Boss4Posx1.rotation);
                 PhotonNetwork.Instantiate("Additional/Boss_Skill_4", Boss4Posx2.position, Boss4Posx2.rotation);
                 BossMonsterSkillTimers[1] = BossMonsterSkillCooldowns[1];
@@ -425,6 +429,15 @@ public class Boss : MonsterAI
     {
         isBossAtking = true;
         GameObject playerPos = FindPlayerpos();
+        if (playerPos == null)
+        {
+            isBossPatern = false;
+            isBossAtking = false;
+            // BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
+            BossMonsterSkillTimers[2] = 999999999f;
+            AllSkillCooldownTimer = AllSkillCooldown;
+            yield break;
+        }
         ClosetPlayerpos = playerPos.transform;
         if (ClosetPlayerpos != null)
         {
@@ -450,14 +463,6 @@ public class Boss : MonsterAI
                     yield return null;
                 }
             }
-        }
-        else
-        {
-            isBossPatern = false;
-            isBossAtking = false;
-            // BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
-            BossMonsterSkillTimers[2] = 999999999f;
-            AllSkillCooldownTimer = AllSkillCooldown;
         }
         
         yield break;

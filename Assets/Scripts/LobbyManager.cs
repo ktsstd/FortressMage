@@ -12,6 +12,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public TMP_Text roomNameText;
     public TMP_Text[] playerTexts;
+    public TMP_Text[] warningTexts;
     public Button exitBtn;
     public TMP_Text messageText;
     public TMP_Text ReadyText;
@@ -21,16 +22,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField nicknameText;
 
 
-    private List<Player> playerList = new List<Player>();  // ¹æ¿¡ ÀÖ´Â ÇÃ·¹ÀÌ¾î ¸®½ºÆ®
+    private List<Player> playerList = new List<Player>();  // ï¿½æ¿¡ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
     private Dictionary<int, bool> playerReadyState = new Dictionary<int, bool>();
     private Dictionary<int, int> playerSelectedButtonIndex = new Dictionary<int, int>();
 
     public Button[] imageButtons;
-    public Image targetImage;  // ¿©·¯ ÀÌ¹ÌÁö ÄÄÆ÷³ÍÆ®¸¦ ¹è¿­·Î °ü¸®
-    public Sprite[] newSprites;  // ±³Ã¼ÇÒ ÀÌ¹ÌÁöµé
+    public Image targetImage;  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Sprite[] newSprites;  // ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private bool isConfirmed = false;
     private bool isReady = false;
+    private bool isFading = false;
 
     void Awake()
     {
@@ -47,22 +49,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    // Æ÷Åæ ·ë¿¡¼­ ÅðÀåÇßÀ» ¶§ È£ÃâµÇ´Â ÄÝ¹éÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ý¹ï¿½ï¿½Ô¼ï¿½
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("New Scene"); // ÅðÀå ÈÄ ¾À ÀüÈ¯
+        SceneManager.LoadScene("New Scene"); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯
     }
 
     void Start()
     { 
         nicknameText.text = PhotonNetwork.NickName;
-        // ¹æ ÀÌ¸§À» ÅØ½ºÆ®¿¡ Ç¥½Ã
+        // ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ Ç¥ï¿½ï¿½
         if (roomNameText != null)
         {
             roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         }
 
-        // ÇÃ·¹ÀÌ¾î ¸ñ·Ï¿¡ ÇöÀç ¹æÀÇ ¸ðµç ÇÃ·¹ÀÌ¾î¸¦ Ãß°¡
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ß°ï¿½
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             playerList.Add(player);
@@ -71,14 +73,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < imageButtons.Length; i++)
         {
-            int buttonIndex = i;  // ¹öÆ° ÀÎµ¦½º¸¦ ÀúÀå
+            int buttonIndex = i;  // ï¿½ï¿½Æ° ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             imageButtons[i].onClick.AddListener(() => OnImageSwitchButtonClick(buttonIndex));
         }
-        // UI ¾÷µ¥ÀÌÆ®
+        // UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         UpdatePlayerListUI();
     }
 
-    // ¹æ¿¡ »õ·Î ÇÃ·¹ÀÌ¾î°¡ ÀÔÀåÇÏ¸é ÀÌ ¸Þ¼­µå°¡ È£ÃâµË´Ï´Ù.
+    // ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½å°¡ È£ï¿½ï¿½Ë´Ï´ï¿½.
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         playerList.Add(newPlayer);
@@ -88,14 +90,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
          if (messageText != null)
         {
-            string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> ´ÔÀÌ ¹æ¿¡ µé¾î¿Ô½À´Ï´Ù!";
-            messageText.text += msg; // ¸Þ½ÃÁö¸¦ °è¼Ó Ãß°¡
+            string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> ï¿½ï¿½ï¿½ï¿½ ï¿½æ¿¡ ï¿½ï¿½ï¿½Ô½ï¿½ï¿½Ï´ï¿½!";
+            messageText.text += msg; // ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         }
 
         SyncButtonStatesWithNewPlayer(newPlayer);
     }
 
-    // ¹æ¿¡¼­ ÇÃ·¹ÀÌ¾î°¡ ³ª°¡¸é ÅØ½ºÆ®¸¦ ÃÊ±âÈ­ÇÒ ¼öµµ ÀÖ½À´Ï´Ù.
+    // ï¿½æ¿¡ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         playerList.Remove(otherPlayer);
@@ -107,18 +109,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         if (messageText != null)
         {
-            string msg = $"\n<color=#ff0000>{otherPlayer.NickName}</color> ´ÔÀÌ ¹æÀ» ³ª°¬½À´Ï´Ù.";
-            messageText.text += msg; // ¸Þ½ÃÁö¸¦ °è¼Ó Ãß°¡
+            string msg = $"\n<color=#ff0000>{otherPlayer.NickName}</color> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.";
+            messageText.text += msg; // ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
         }
 
         if (playerSelectedButtonIndex.ContainsKey(otherPlayer.ActorNumber))
         {
-            playerSelectedButtonIndex.Remove(otherPlayer.ActorNumber);  // ³ª°£ »ç¶÷ÀÇ ¼±ÅÃ »èÁ¦
+            playerSelectedButtonIndex.Remove(otherPlayer.ActorNumber);  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
         UpdateButtonsForRemainingPlayers();
     }
 
-    // ÇÃ·¹ÀÌ¾î ¸®½ºÆ®¸¦ ±â¹ÝÀ¸·Î UI¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ÇÔ¼ö
+    // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     void UpdatePlayerListUI()
     {
         for (int i = 0; i < playerTexts.Length; i++)
@@ -127,44 +129,44 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             readylistText[i].text = "";
         }
 
-        // ¹æ¿¡ ÀÖ´Â ¸ðµç ÇÃ·¹ÀÌ¾îÀÇ ´Ð³×ÀÓÀ» ÅØ½ºÆ®·Î Ãß°¡
+        // ï¿½æ¿¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
         for (int i = 0; i < playerList.Count && i < playerTexts.Length; i++)
         {
             playerTexts[i].text = playerList[i].NickName;
 
-            // ÁØºñ »óÅÂ¸¦ ÇØ´ç ÇÃ·¹ÀÌ¾î ¼ø¼­¿¡ ¸Â°Ô ¾÷µ¥ÀÌÆ®
+            // ï¿½Øºï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ø´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             int playerIndex = i;
             if (playerReadyState.ContainsKey(playerList[i].ActorNumber))
             {
                 bool isPlayerReady = playerReadyState[playerList[i].ActorNumber];
-                readylistText[playerIndex].text = isPlayerReady ? "ÁØºñ ¿Ï·á" : "";
+                readylistText[playerIndex].text = isPlayerReady ? "ï¿½Øºï¿½ ï¿½Ï·ï¿½" : "";
             }
 
-            // ¼±ÅÃµÈ ¹öÆ°ÀÌ ÀÖÀ¸¸é ±× ¹öÆ° ºñÈ°¼ºÈ­
+            // ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
             if (playerSelectedButtonIndex.ContainsKey(playerList[i].ActorNumber))
             {
                 int selectedButtonIndex = playerSelectedButtonIndex[playerList[i].ActorNumber];
                 if (isConfirmed && selectedButtonIndex >= 0 && selectedButtonIndex < imageButtons.Length)
                 {
-                    // È®Á¤ ¹öÆ°À» ´­·¶À¸¸é ±× ¹öÆ°À» ºñÈ°¼ºÈ­ »óÅÂ·Î Ç¥½Ã
-                    imageButtons[selectedButtonIndex].interactable = false;  // ÇØ´ç ¹öÆ° ºñÈ°¼ºÈ­
+                    // È®ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â·ï¿½ Ç¥ï¿½ï¿½
+                    imageButtons[selectedButtonIndex].interactable = false;  // ï¿½Ø´ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
                 }
             }
         }
         CheckAllPlayersReady();
     }
 
-    // ¹æÀåÀÌ ³ª°¬À» ¶§ È£ÃâµÇ´Â ÄÝ¹é ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ý¹ï¿½ ï¿½Ô¼ï¿½
     public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
     {
-        UpdatePlayerListUI(); // »õ·Î¿î ¹æÀå Á¤º¸ °»½Å
+        UpdatePlayerListUI(); // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     private void CheckAllPlayersReady()
     {
         bool allPlayersReady = true;
 
-        // ¸ðµç ÇÃ·¹ÀÌ¾î°¡ ÁØºñ ¿Ï·á »óÅÂÀÎÁö È®ÀÎ
+        // ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Øºï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         foreach (var playerState in playerReadyState)
         {
             if (!playerState.Value)
@@ -174,22 +176,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
         }
 
-        // ¹æÀåÀÌ ÁØºñ ¿Ï·á ¹öÆ°À» °ÔÀÓ ½ÃÀÛ ¹öÆ°À¸·Î º¯°æ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Øºï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (allPlayersReady && PhotonNetwork.IsMasterClient)
         {
-            gameStartBtn.gameObject.SetActive(true);  // °ÔÀÓ ½ÃÀÛ ¹öÆ° È°¼ºÈ­
-            readyBtn.gameObject.SetActive(false);  // ÁØºñ ¹öÆ° ºñÈ°¼ºÈ­
+            gameStartBtn.gameObject.SetActive(true);  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° È°ï¿½ï¿½È­
+            readyBtn.gameObject.SetActive(false);  // ï¿½Øºï¿½ ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
         }
         else
         {
-            gameStartBtn.gameObject.SetActive(false);  // °ÔÀÓ ½ÃÀÛ ¹öÆ° ºñÈ°¼ºÈ­
-            readyBtn.gameObject.SetActive(true);  // ÁØºñ ¹öÆ° È°¼ºÈ­
+            gameStartBtn.gameObject.SetActive(false);  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
+            readyBtn.gameObject.SetActive(true);  // ï¿½Øºï¿½ ï¿½ï¿½Æ° È°ï¿½ï¿½È­
         }
     }
 
     public void OnImageSwitchButtonClick(int imageIndex)
     {
-        if (isConfirmed) return; // È®Á¤µÇ¾úÀ¸¸é ÀÌ¹ÌÁö º¯°æÀ» ¸øÇÏ°Ô ¼³Á¤
+        if (isConfirmed) return; // È®ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         UpdateImage(imageIndex);
     }
@@ -200,12 +202,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
        if (targetImage != null && buttonIndex < newSprites.Length)
     {
-        targetImage.sprite = newSprites[buttonIndex];  // ÇØ´ç ÀÎµ¦½ºÀÇ ÀÌ¹ÌÁö¸¦ Å¸°Ù ÀÌ¹ÌÁö¿¡ º¯°æ
-        playerSelectedButtonIndex[PhotonNetwork.LocalPlayer.ActorNumber] = buttonIndex;  // ¼±ÅÃÇÑ ¹öÆ° ÀÎµ¦½º¸¦ ÀúÀå
+        targetImage.sprite = newSprites[buttonIndex];  // ï¿½Ø´ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        playerSelectedButtonIndex[PhotonNetwork.LocalPlayer.ActorNumber] = buttonIndex;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        // ¼±ÅÃµÈ Ä³¸¯ÅÍ Á¤º¸¸¦ PhotonNetwork.LocalPlayerÀÇ CustomProperties¿¡ ÀúÀå
+        // ï¿½ï¿½ï¿½Ãµï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ PhotonNetwork.LocalPlayerï¿½ï¿½ CustomPropertiesï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable();
-        playerProps.Add("selectedCharacter", buttonIndex);  // ¼±ÅÃµÈ Ä³¸¯ÅÍÀÇ ÀÎµ¦½º¸¦ ÀúÀå
+        playerProps.Add("selectedCharacter", buttonIndex);  // ï¿½ï¿½ï¿½Ãµï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }
     }
@@ -220,31 +222,37 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnConfirmButtonClick()
     {
-        isConfirmed = true;  // È®Á¤ ¹öÆ°À» ´©¸£¸é ÀÌÁ¦ ºñÈ°¼ºÈ­
+        isConfirmed = true;  // È®ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
 
-        int selectedButtonIndex = playerSelectedButtonIndex[PhotonNetwork.LocalPlayer.ActorNumber];
+        int selectedButtonIndex = playerSelectedButtonIndex.ContainsKey(PhotonNetwork.LocalPlayer.ActorNumber) 
+                                ? playerSelectedButtonIndex[PhotonNetwork.LocalPlayer.ActorNumber] 
+                                : -1;
 
-        // È®Á¤ ¹öÆ° Å¬¸¯ ÈÄ ¼±ÅÃµÈ ¹öÆ°¸¸ ºñÈ°¼ºÈ­
+        // È®ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
         if (selectedButtonIndex >= 0 && selectedButtonIndex < imageButtons.Length)
         {
-            imageButtons[selectedButtonIndex].interactable = false;  // ÇØ´ç ¹öÆ°À» ºñÈ°¼ºÈ­ÇÕ´Ï´Ù.
+            imageButtons[selectedButtonIndex].interactable = false;  // ï¿½Ø´ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½Õ´Ï´ï¿½.
 
-            // ÀÌ »óÅÂ¸¦ ´Ù¸¥ ÇÃ·¹ÀÌ¾îµé¿¡°Ô µ¿±âÈ­ÇÕ´Ï´Ù.
+            // ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½Õ´Ï´ï¿½.
             photonView.RPC("SyncButtonDeactivation", RpcTarget.All, selectedButtonIndex);
+            readyBtn.interactable = true;
         }
-
-        readyBtn.interactable = true;
+        else if (selectedButtonIndex == -1)
+        {
+            isConfirmed = false;
+            StartCoroutine(FadeInOut());
+        }
     }
 
     private void SyncButtonStatesWithNewPlayer(Photon.Realtime.Player newPlayer)
     {
-        // °¢ ÇÃ·¹ÀÌ¾î°¡ ¼±ÅÃÇÑ ¹öÆ°À» »õ·Î µé¾î¿Â ÇÃ·¹ÀÌ¾î¿¡°Ô Àü¼Û
+        // ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         foreach (var playerState in playerSelectedButtonIndex)
         {
             int playerActorNumber = playerState.Key;
             int selectedButtonIndex = playerState.Value;
 
-            // ¼±ÅÃµÈ ¹öÆ°À» ºñÈ°¼ºÈ­
+            // ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
             photonView.RPC("SyncButtonDeactivation", newPlayer, selectedButtonIndex);
         }
     }
@@ -252,7 +260,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SyncButtonDeactivation(int buttonIndex)
     {
-        // ¼±ÅÃµÈ ¹öÆ°À» ºñÈ°¼ºÈ­ »óÅÂ·Î ¸¸µê
+        // ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (buttonIndex >= 0 && buttonIndex < imageButtons.Length)
         {
             imageButtons[buttonIndex].interactable = false;
@@ -261,19 +269,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnReadyButtonClick()
     {
-        // ÁØºñ »óÅÂ Åä±Û
+        // ï¿½Øºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         isReady = !isReady;
 
-        // ·ÎÄÃ ÇÃ·¹ÀÌ¾îÀÇ ÁØºñ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ®
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½Øºï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         playerReadyState[PhotonNetwork.LocalPlayer.ActorNumber] = isReady;
 
-        // ÁØºñ »óÅÂ¿¡ µû¶ó ÅØ½ºÆ®¸¦ °»½Å
+        // ï¿½Øºï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (ReadyText != null)
         {
-            ReadyText.text = isReady ? "ÁØºñ ¿Ï·á" : "ÁØºñ";
+            ReadyText.text = isReady ? "ï¿½Øºï¿½ ï¿½Ï·ï¿½" : "ï¿½Øºï¿½";
         }
 
-        // UI ¾÷µ¥ÀÌÆ®
+        // UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         UpdatePlayerListUI();
 
         photonView.RPC("UpdateReadyState", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, isReady);
@@ -295,27 +303,27 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (buttonIndex >= 0 && buttonIndex < imageButtons.Length)
         {
-            // ³ª°£ »ç¶÷ÀÌ ¼±ÅÃÇÑ ¹öÆ°À» È°¼ºÈ­ »óÅÂ·Î ¸¸µé±â
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
             imageButtons[buttonIndex].interactable = true;
         }
     }
 
-    // °ÔÀÓ ½ÃÀÛ ¹öÆ° Å¬¸¯ ½Ã È£ÃâµÇ´Â ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° Å¬ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½
     private void OnGameStartButtonClick()
     {
-        // °ÔÀÓ ½ÃÀÛ ·ÎÁ÷À» ¿©±â¿¡ Ãß°¡
-        PhotonNetwork.LoadLevel("MultiplayScene"); // ¿¹½Ã: "GameScene"·Î ·Îµå
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ß°ï¿½
+        PhotonNetwork.LoadLevel("MultiplayScene"); // ï¿½ï¿½ï¿½ï¿½: "GameScene"ï¿½ï¿½ ï¿½Îµï¿½
     }
 
     public void OnChangeNicknameButtonClick()
     {
         string newNickname = nicknameText.text;
 
-        // ´Ð³×ÀÓÀÌ º¯°æµÇ¸é Æ÷Åæ ³×Æ®¿öÅ©¿¡ ¹Ý¿µ
+        // ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å©ï¿½ï¿½ ï¿½Ý¿ï¿½
         if (!string.IsNullOrEmpty(newNickname) && newNickname != PhotonNetwork.NickName)
         {
-            PhotonNetwork.NickName = newNickname;  // »õ·Î¿î ´Ð³×ÀÓÀ» Æ÷Åæ ³×Æ®¿öÅ©¿¡ ¼³Á¤
-            UpdatePlayerListUI();  // ÇÃ·¹ÀÌ¾î ¸ñ·Ï UI ¾÷µ¥ÀÌÆ®
+            PhotonNetwork.NickName = newNickname;  // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            UpdatePlayerListUI();  // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             PlayerPrefs.SetString("Player", newNickname);
 
             photonView.RPC("UpdateNickname", RpcTarget.All, newNickname);
@@ -325,26 +333,56 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void UpdateNickname(string newNickname)
     {
-        // ´Ð³×ÀÓ º¯°æÀÌ Æ÷Åæ ³×Æ®¿öÅ©¿¡ ¹Ý¿µµÇ¾úÀ¸¹Ç·Î, UI¸¦ °»½Å
-        nicknameText.text = newNickname;  // UI¿¡¼­ ´Ð³×ÀÓ º¯°æ
-        UpdatePlayerListUI();  // ÇÃ·¹ÀÌ¾î ¸ñ·Ï UI ¾÷µ¥ÀÌÆ®
+        // ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å©ï¿½ï¿½ ï¿½Ý¿ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ç·ï¿½, UIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        nicknameText.text = newNickname;  // UIï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        UpdatePlayerListUI();  // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     }
 
     private void UpdateButtonsForRemainingPlayers()
     {
-        // ¸ðµç ¹öÆ°À» È°¼ºÈ­ »óÅÂ·Î ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½Ê±ï¿½È­
         foreach (var button in imageButtons)
         {
             button.interactable = true;
         }
 
-        // ³²¾ÆÀÖ´Â ÇÃ·¹ÀÌ¾îµéÀÇ ¼±ÅÃ »óÅÂ¸¦ ¹Ý¿µÇÏ¿© ¹öÆ° ºñÈ°¼ºÈ­
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ý¿ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½Æ° ï¿½ï¿½È°ï¿½ï¿½È­
         foreach (var playerState in playerSelectedButtonIndex)
         {
             int selectedButtonIndex = playerState.Value;
 
-            // ÀÌ¹Ì ´Ù¸¥ ÇÃ·¹ÀÌ¾î°¡ ¼±ÅÃÇÑ ¹öÆ°À» ºñÈ°¼ºÈ­
+            // ï¿½Ì¹ï¿½ ï¿½Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
             imageButtons[selectedButtonIndex].interactable = false;
         }
+    }
+
+    private IEnumerator FadeInOut()
+    {
+        if(isFading) yield break;
+        isFading = true;
+        float fadevalue = 0f;
+        float fadereturnvalue = 0.6f;
+        Color origColor = warningTexts[0].color;
+        while(fadevalue < fadereturnvalue)
+        {
+            float alphaValue = Mathf.Lerp(0f, 1f, fadevalue / fadereturnvalue);
+            warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, alphaValue);
+            fadevalue += Time.deltaTime;
+            yield return null;
+        }
+        warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, 1f);
+
+        yield return new WaitForSeconds(1f);
+
+        fadevalue = 0f;
+        while (fadevalue < fadereturnvalue)
+        {
+            float alphaValue = Mathf.Lerp(1f, 0f, fadevalue / fadereturnvalue);
+            warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, alphaValue);
+            fadevalue += Time.deltaTime;
+            yield return null;
+        }
+        warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, 0f);
+        isFading = false;
     }
 }

@@ -6,15 +6,11 @@ using Photon.Pun;
 
 public class DarkSpirit : MonsterAI, IPunObservable
 {
-    // private ParticleSystem particleSys;
-
+    private ParticleSystem particleSys;
     private Transform closestTarget;
-
-    private float stopDistance = 5.0f;
-
-    private bool Attacked = false;
-
     private Vector3 StartPosition;  // 몬스터의 초기 위치
+    private float stopDistance = 5.0f;
+    private bool Attacked = false;
 
     public override void Start()
     {
@@ -27,6 +23,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
         Attacked = false;
         MonsterDmg = 50;
 
+        particleSys = GetComponent<ParticleSystem>();
         StartPosition = transform.position;  // 몬스터의 초기 위치를 저장
     }
 
@@ -132,6 +129,8 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
     private IEnumerator DarkAttackStart()
     {
+        Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 5.8f, transform.position.z);
+        PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
         animator.SetTrigger("StartAttack");
         while(Attacked)
         {
@@ -139,9 +138,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
             if (stateInfo.IsName("Spirit of dark_Idle"))
             {
                 DarkDamageTarget(closestTarget);
-                // animator.SetBool("StartAttack", false);
-                transform.position = StartPosition;
-                Attacked = false;
+                StartCoroutine(DarkGoStart());
                 yield break;
             }
 
@@ -150,6 +147,36 @@ public class DarkSpirit : MonsterAI, IPunObservable
                 yield return null;
             }
         }
+    }
+
+    private IEnumerator DarkGoStart()
+    {
+        float currentBaseOffset = agent.baseOffset;
+        float targetBaseOffset = -0.3f;
+        float GoStartTime = 0;
+        float GoingTime = 1f;
+        while(GoStartTime < GoingTime)
+        {
+            agent.baseOffset = Mathf.Lerp(currentBaseOffset, targetBaseOffset, GoStartTime / GoingTime);
+            GoStartTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = StartPosition;
+        Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 1.18f, transform.position.z);
+        PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+
+        yield return new WaitForSeconds(2f);
+
+        GoStartTime = 0;
+        while(GoStartTime < GoingTime)
+        {
+            agent.baseOffset = Mathf.Lerp(targetBaseOffset, currentBaseOffset, GoStartTime / GoingTime);
+            GoStartTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Attacked = false;
     }
 
     private void DarkDamageTarget(Transform CurTarget)

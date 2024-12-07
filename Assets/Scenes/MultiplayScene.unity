@@ -18029,7 +18029,6 @@ MonoBehaviour:
   playerUi: {fileID: 0}
   pv: {fileID: 0}
   elementalSet: 0000000000000000
-  receiveElemental: 0000000000000000
   elementals:
   - {fileID: -983368527, guid: 20157bc776c610d428f044f80818774f, type: 3}
   - {fileID: 1149215082, guid: 20157bc776c610d428f044f80818774f, type: 3}
