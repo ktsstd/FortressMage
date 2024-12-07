@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private bool receiveMoving;
     private bool receiveDie;
 
+    public GameObject SkillEffect;
+
     public Sprite IconImage;
     public Sprite[] skillImages;
     // 방어막 이미지 추가
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public float defaultSpped = 3;
     public float playerSpeed = 3;
     public int elementalCode = 0;
+    public float elementalSetCoolTime = 0;
 
     public bool isMoving = false;
     public bool isStun = false;
@@ -77,6 +80,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         animator.SetBool("IsRun", isMoving);
         if (pv.IsMine)
         {
+            if (elementalSetCoolTime >= 0) { elementalSetCoolTime -= Time.deltaTime; }
             if (!isDie)
             {
                 mousePosition = GetMousePosition();
@@ -85,7 +89,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
                 vignetteEffect.intensity.value = Mathf.Lerp(vignetteEffect.intensity.value, vignetteValue, Time.deltaTime * 5f);
 
-                if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D"))
+                if (aniInfo.IsName("A") || aniInfo.IsName("S") || aniInfo.IsName("D") || aniInfo.IsName("Pray") || aniInfo.IsName("Pray_Loop"))
                     isCasting = true;
                 else
                     isCasting = false;
@@ -94,9 +98,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     Move();
 
                 if (Input.GetKeyDown(KeyCode.Alpha1))
-                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, elementalCode);
+                    MixSkillCasting(0, elementalCode);
                 if (Input.GetKeyDown(KeyCode.Alpha2))
-                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, elementalCode);
+                    MixSkillCasting(1, elementalCode);
+                UseMixSkills();
             }
         }
         else
@@ -114,6 +119,64 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             OnPlayerKnockBack(transform);
         if (Input.GetKeyDown(KeyCode.Keypad2))
             OnPlayerBlind();
+    }
+
+    public void MixSkillCasting(int _slot, int _set)
+    {
+        if (skilltower.canAttack)
+        {
+            if (skilltower.elementalSet[0] == _set || skilltower.elementalSet[1] == _set)
+            {
+                pv.RPC("PlayAnimation", RpcTarget.All, "StopWait");
+                if (skilltower.elementalSet[0] == _set)
+                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, 0);
+                else
+                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, 0);
+                pv.RPC("PlaySkillEffect", RpcTarget.All, false);
+            }
+            else if (skilltower.elementalSet[_slot] == 0)
+            {
+                if (elementalSetCoolTime <= 0)
+                {
+                    pv.RPC("PlayAnimation", RpcTarget.All, "StartWait");
+                    skilltower.pv.RPC("SetingElemental", RpcTarget.All, _slot, _set);
+                    pv.RPC("PlaySkillEffect", RpcTarget.All, true);
+                    elementalSetCoolTime = 3f;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    public void UseMixSkills()
+    {
+        if (skilltower.canUseSkill && skilltower.cooldownTime <= 0)
+        {
+            switch (skilltower.mixSkillNum)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+            }
+
+        }
     }
 
     Vector3 targetPos;
@@ -311,5 +374,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void PlayAnimation(string _ani)
     {
         animator.SetTrigger(_ani);
+    }
+
+    [PunRPC]
+    public void PlaySkillEffect(bool _bool)
+    {
+        SkillEffect.SetActive(_bool);
     }
 }

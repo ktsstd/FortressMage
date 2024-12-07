@@ -22,6 +22,8 @@ public class PlayerUi : MonoBehaviour
     public float playerLv;
     public float playerMaxHp;
     public float playerHp;
+    public float mixCooldown;
+    public float mixMaxCooldown;
     public float[] skillsCoolTime;
     public float[] skillsMaxCoolTime;
 
@@ -40,6 +42,8 @@ public class PlayerUi : MonoBehaviour
             elementalSet[i].fillAmount = 1 - (elementalSetCoolTime[i] / elementalSetMaxCoolTime[i]);
         }
         playerLvText.text = "LV. " + playerLv;
+
+        mixSkillSlider.value = mixCooldown / mixMaxCooldown;
     }
 
     public void StartUISetting(Sprite _icon, Sprite[] _skills)
