@@ -6,6 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
 using Photon.Realtime;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -134,7 +135,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, 0);
                 pv.RPC("PlaySkillEffect", RpcTarget.All, false);
             }
-            else if (skilltower.elementalSet[_slot] == 0)
+            else if (skilltower.elementalSet[_slot] == 0 && skilltower.cooldownTime <= 0)
             {
                 if (elementalSetCoolTime <= 0)
                 {
@@ -162,7 +163,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 case 1:
                     break;
                 case 2:
-
+                    if (Input.GetKeyDown(KeyCode.Space))
+                        skilltower.laserRange.SetActive(true);
+                    if (Input.GetKeyUp(KeyCode.Space))
+                    {
+                        skilltower.laserRange.SetActive(false);
+                        skilltower.pv.RPC("UseMasterLazer", RpcTarget.All, null);
+                    }
                     break;
                 case 3:
 
@@ -264,6 +271,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             playerHp -= _damage;
             playerUi.playerHp = playerHp;
             playerUi.playerMaxHp = playerMaxHp;
+
+            pv.RPC("PlaySkillEffect", RpcTarget.All, false);
             if (playerHp <= 0)
             {
                 isDie = true;

@@ -43,7 +43,7 @@ public class PlayerUi : MonoBehaviour
         }
         playerLvText.text = "LV. " + playerLv;
 
-        mixSkillSlider.value = mixCooldown / mixMaxCooldown;
+        mixSkillSlider.value = 1 - (mixCooldown / mixMaxCooldown);
     }
 
     public void StartUISetting(Sprite _icon, Sprite[] _skills)

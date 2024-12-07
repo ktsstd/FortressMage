@@ -8,8 +8,6 @@ public class Skilltower : MonoBehaviourPun
 {
     public float health = 100f;
 
-    public GameObject Lazer;
-    public Transform LazerPosition;
     public float cooldownTime = 0f;
     public float maxCooldownTime = 20f;
 
@@ -23,6 +21,13 @@ public class Skilltower : MonoBehaviourPun
     public PhotonView pv;
 
     public bool canUseSkill = false;
+    public GameObject lazerPrefab;
+    public GameObject meteorPrefab;
+    public GameObject barricadePrefab;
+
+    public GameObject laserRange;
+    public GameObject meteorRange;
+    public GameObject barricadeRange;
 
     public int[] elementalSet;
     public int mixSkillNum = 0;
@@ -55,6 +60,8 @@ public class Skilltower : MonoBehaviourPun
                 }
             }
         }
+        if (cooldownTime >= 0) { cooldownTime -= Time.deltaTime; }
+
         playerUi.mixCooldown = cooldownTime;
         playerUi.mixMaxCooldown = maxCooldownTime;
 
@@ -85,6 +92,13 @@ public class Skilltower : MonoBehaviourPun
         {
             canUseSkill = false;
         }
+
+        if (!canUseSkill)
+        {
+            laserRange.SetActive(false);
+            meteorRange.SetActive(false);
+            barricadeRange.SetActive(false);
+        }
     }
 
     [PunRPC]
@@ -112,7 +126,7 @@ public class Skilltower : MonoBehaviourPun
             else
                 playerUi.mixSkill.sprite = mixSkills[6];
 
-            pv.RPC("UpdateElemental", RpcTarget.All, _slot, elementalSet[_slot]);
+            pv.RPC("UpdateElemental", RpcTarget.Others, _slot, elementalSet[_slot]);
         }
     }
 
@@ -138,6 +152,24 @@ public class Skilltower : MonoBehaviourPun
             playerUi.mixSkill.sprite = mixSkills[5];
         else
             playerUi.mixSkill.sprite = mixSkills[6];
+    }
+
+    [PunRPC]
+    public void UseMasterLazer()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Instantiate(lazerPrefab);
+            cooldownTime = maxCooldownTime;
+            pv.RPC("UseLazer", RpcTarget.Others, null);
+        }
+    }
+
+    [PunRPC]
+    public void UseLazer()
+    {
+        Instantiate(lazerPrefab);
+        cooldownTime = maxCooldownTime;
     }
 
 

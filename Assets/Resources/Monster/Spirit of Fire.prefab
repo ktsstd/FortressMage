@@ -14960,6 +14960,7 @@ MonoBehaviour:
   canMove: 1
   agent: {fileID: 0}
   animator: {fileID: 0}
+  MonsterAudio: []
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
