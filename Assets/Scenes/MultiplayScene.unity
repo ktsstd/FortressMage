@@ -8806,7 +8806,7 @@ MonoBehaviour:
   - {fileID: 1670139047}
   BossSpawnPoint: {fileID: 1746307434}
   TestSpawnObj: {fileID: 285087493}
-  DEMObossObj: {fileID: 0}
+  DEMObossObj: {fileID: 406787781}
   playerLv: 1
 --- !u!4 &957337575
 Transform:

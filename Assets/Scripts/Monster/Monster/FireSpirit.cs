@@ -11,11 +11,11 @@ public class FireSpirit : MonsterAI
     public override void Start()
     {
         base.Start();
-        attackRange = 8.0f; 
+        attackRange = 3.0f; 
         attackCooldown = 8f;
         MonsterDmg = 20;
         MaxHp = 60f;
-        Speed = 5f;
+        Speed = 4f;
         defaultspped = Speed;
         StartAtking = false;
         CurHp = MaxHp;

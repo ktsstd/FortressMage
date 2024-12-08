@@ -5759,6 +5759,7 @@ MonoBehaviour:
   BossSoundPos: {fileID: 1186415813151140507}
   Boss4Posx1: {fileID: 8118454619058306659}
   Boss4Posx2: {fileID: 773231046231887064}
+  Demoobj: {fileID: 0}
   BossMonsterSkillTimers:
   - 0
   - 0

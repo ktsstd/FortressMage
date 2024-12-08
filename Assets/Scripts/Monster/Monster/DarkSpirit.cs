@@ -15,13 +15,13 @@ public class DarkSpirit : MonsterAI, IPunObservable
     public override void Start()
     {
         base.Start();
-        MaxHp = 600f;
+        MaxHp = 50f;
         Speed = 10f;
         defaultspped = Speed;
         attackRange = 3f;
         CurHp = MaxHp;
         Attacked = false;
-        MonsterDmg = 50;
+        MonsterDmg = 20;
 
         particleSys = GetComponent<ParticleSystem>();
         StartPosition = transform.position;  // 몬스터의 초기 위치를 저장

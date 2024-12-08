@@ -14,7 +14,7 @@ public class Boss : MonsterAI
     private Transform[] tempArray;
     public Transform Boss4Posx1;
     public Transform Boss4Posx2;
-    // public GameObject Demoobj;
+    public GameObject Demoobj;
 
     // private ParticleSystem
 
@@ -46,30 +46,30 @@ public class Boss : MonsterAI
         isBossPatern = false;
         isBossAtking = false;
         isBossUseSkill2 = false;
-        
+
 
         // # DEMO
-        // Demoobj = GameObject.Find("TEST").transform.GetChild(1).gameObject;
-        // AllSkillCooldownTimer = AllSkillCooldown;
-        // StartCoroutine(DemoBoss());
+        Demoobj = GameObject.Find("TEST").transform.GetChild(1).gameObject;
+        AllSkillCooldownTimer = AllSkillCooldown;
+        StartCoroutine(DemoBoss());
 
         BossSkill2Obj.SetActive(false);
     }
 
     // # DEMO
-    // private IEnumerator DemoBoss()
-    // {
-    //     StartCoroutine(BossSkill4());
-    //     yield return new WaitForSeconds(5f);
-    //     GameObject[] DemoplayerObjs = GameObject.FindGameObjectsWithTag("Player");
-    //     foreach (GameObject Demoplayer in DemoplayerObjs)
-    //     {
-    //         PlayerController DemoPlayerScripts = Demoplayer.GetComponent<PlayerController>();
-    //         DemoPlayerScripts.OnPlayerBlind();
-    //     }
-    //     yield return new WaitForSeconds(4f);
-    //     Demoobj.SetActive(true);
-    // }
+    private IEnumerator DemoBoss()
+    {
+        StartCoroutine(BossSkill4());
+        yield return new WaitForSeconds(5f);
+        GameObject[] DemoplayerObjs = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject Demoplayer in DemoplayerObjs)
+        {
+            PlayerController DemoPlayerScripts = Demoplayer.GetComponent<PlayerController>();
+            DemoPlayerScripts.OnPlayerBlind();
+        }
+        yield return new WaitForSeconds(4f);
+        Demoobj.SetActive(true);
+    }
 
     public override void Update()
     {

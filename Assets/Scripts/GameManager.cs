@@ -122,6 +122,14 @@ public class GameManager : MonoBehaviourPunCallbacks
                 players[i].pv.RPC("PlayerLvUp", RpcTarget.All, null);
             }
 
+            Turret[] turret = FindObjectsOfType<Turret>();
+            for (int i = 0; i < turret.Length; i++)
+            {
+                if (turret[i].canAttack == false)
+                {
+                    turret[i].photonView.RPC("ResetHealth", RpcTarget.All, null);
+                }
+            }
 
 
             StartCoroutine(StartTestWave());
@@ -156,21 +164,21 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (Wave == 1)
         {
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 11, 1f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 6, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 11, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 6, 2f));
             StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 1, 0f));
         }
         else if (Wave == 2)
         {
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 16, 1f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 1f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 3, 1f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 5, 1f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 16, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 2f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 3, 3f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 5, 3f));
         }
         else if (Wave == 3)
         {
-            //PhotonNetwork.Instantiate("Boss/Boss", BossSpawnPoint.position, Quaternion.identity);
-            DEMObossObj.SetActive(true);    
+            PhotonNetwork.Instantiate("Boss/Boss", BossSpawnPoint.position, Quaternion.identity);
+            // DEMObossObj.SetActive(true);    
         }
 
         Wave += 1;

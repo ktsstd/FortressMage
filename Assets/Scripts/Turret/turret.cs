@@ -123,6 +123,7 @@ public class Turret : MonoBehaviourPun
 
     public void TakeDamage(float damage)
     {
+        health -= damage;
         if (health <= 0f)
         {
             health = 0f;
@@ -149,7 +150,7 @@ public class Turret : MonoBehaviourPun
         {
             CreateExplosionEffect();
             hasExploded = true;  // 폭발 이펙트를 실행했음을 기록
-        };
+        }
     }
 
     private void CreateExplosionEffect()
@@ -168,6 +169,7 @@ public class Turret : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void ResetHealth()
     {
         health = 100f; // ü���� 100���� ����
