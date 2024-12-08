@@ -105,6 +105,10 @@ MonoBehaviour:
   - UseLazer
   - UseMasterLazer
   - ResetHealth
+  - UseMasterMeteor
+  - UseMeteor
+  - UseBarricade
+  - UseMasterBarricade
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

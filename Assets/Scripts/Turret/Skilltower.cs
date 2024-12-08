@@ -164,11 +164,44 @@ public class Skilltower : MonoBehaviourPun
             pv.RPC("UseLazer", RpcTarget.Others, null);
         }
     }
-
     [PunRPC]
     public void UseLazer()
     {
         Instantiate(lazerPrefab);
+        cooldownTime = maxCooldownTime;
+    }
+
+    [PunRPC]
+    public void UseMasterMeteor(Vector3 _skillPos)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Instantiate(meteorPrefab, _skillPos, Quaternion.Euler(0, 0, 0));
+            cooldownTime = maxCooldownTime;
+            pv.RPC("UseMeteor", RpcTarget.Others, _skillPos);
+        }
+    }
+    [PunRPC]
+    public void UseMeteor(Vector3 _skillPos)
+    {
+        Instantiate(meteorPrefab, _skillPos, Quaternion.Euler(0, 0, 0));
+        cooldownTime = maxCooldownTime;
+    }
+
+    [PunRPC]
+    public void UseMasterBarricade(Vector3 _skillPos)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Instantiate(barricadePrefab, _skillPos, Quaternion.Euler(0, 0, 0));
+            cooldownTime = maxCooldownTime;
+            pv.RPC("UseBarricade", RpcTarget.Others, _skillPos);
+        }
+    }
+    [PunRPC]
+    public void UseBarricade(Vector3 _skillPos)
+    {
+        Instantiate(barricadePrefab, _skillPos, Quaternion.Euler(0, 0, 0));
         cooldownTime = maxCooldownTime;
     }
 

@@ -172,10 +172,28 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     }
                     break;
                 case 3:
-
+                    if (Input.GetKey(KeyCode.Space))
+                    {
+                        skilltower.meteorRange.SetActive(true);
+                        skilltower.meteorRange.transform.position = GetSkillRange(20f);
+                    }
+                    if (Input.GetKeyUp(KeyCode.Space))
+                    {
+                        skilltower.meteorRange.SetActive(false);
+                        skilltower.pv.RPC("UseMasterMeteor", RpcTarget.All, GetSkillRange(20f));
+                    }
                     break;
                 case 4:
-
+                    if (Input.GetKey(KeyCode.Space))
+                    {
+                        skilltower.barricadeRange.SetActive(true);
+                        skilltower.barricadeRange.transform.position = new Vector3(GetSkillRange(20f).x, GetSkillRange(20f).y, 0);
+                    }
+                    if (Input.GetKeyUp(KeyCode.Space))
+                    {
+                        skilltower.barricadeRange.SetActive(false);
+                        skilltower.pv.RPC("UseMasterBarricade", RpcTarget.All, skilltower.barricadeRange.transform.position);
+                    }
                     break;
                 case 5:
                     break;

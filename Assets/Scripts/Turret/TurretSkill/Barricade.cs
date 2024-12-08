@@ -2,26 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireStorm : MonoBehaviour
+public class Barricade : MonoBehaviour
 {
-    Vector3 oriScale;
-    float timeElapsed;
     float damageDelay;
 
-    private void Start()
+    void Start()
     {
-        oriScale = transform.localScale;
-        Invoke("SelfDestroy", 5f);
+        Invoke("SelfDestroy", 10f);
     }
 
-    private void Update()
+    void Update()
     {
         if (damageDelay >= 0)
             damageDelay -= Time.deltaTime;
-
-        timeElapsed += Time.deltaTime;
-        float lerpFactor = timeElapsed / 2f;
-        transform.GetChild(0).localScale = Vector3.Lerp(oriScale * 0.5f, oriScale * 1.5f, lerpFactor);
     }
 
     private void OnTriggerStay(Collider other)
@@ -31,11 +24,19 @@ public class FireStorm : MonoBehaviour
             if (damageDelay <= 0)
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
-                    monster.MonsterDmged(3);
+                {
+                    monster.MonsterDmged(5);
+                    monster.OnMonsterSpeedDown(3f, 2f);
+                }
 
                 damageDelay = 0.5f;
             }
-        }   
+        }
+    }
+
+    void ColliderOn()
+    {
+        GetComponent<SphereCollider>().enabled = true;
     }
 
     void SelfDestroy()

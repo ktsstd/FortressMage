@@ -3993,7 +3993,6 @@ GameObject:
   - component: {fileID: 438894095}
   - component: {fileID: 438894098}
   - component: {fileID: 438894097}
-  - component: {fileID: 438894096}
   m_Layer: 0
   m_Name: 1
   m_TagString: Untagged
@@ -4016,27 +4015,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1227390714}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
---- !u!65 &438894096
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438894094}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &438894097
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9834,7 +9812,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1028043097
 Transform:
   m_ObjectHideFlags: 0
@@ -11990,7 +11968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1227390714
 Transform:
   m_ObjectHideFlags: 0
@@ -18559,8 +18537,8 @@ MonoBehaviour:
   pv: {fileID: 0}
   canUseSkill: 0
   lazerPrefab: {fileID: 6849899217681512056, guid: e23eb38ebe4681e49a50687b0dfe4943, type: 3}
-  meteorPrefab: {fileID: 0}
-  barricadePrefab: {fileID: 0}
+  meteorPrefab: {fileID: 4975223417100298725, guid: 519e421aa534e0042a734e01324516d1, type: 3}
+  barricadePrefab: {fileID: 5058618470779820984, guid: c1b3a3f1e637bb845aaf1a1752818194, type: 3}
   laserRange: {fileID: 1977464891}
   meteorRange: {fileID: 1028043096}
   barricadeRange: {fileID: 1227390713}

@@ -25,7 +25,7 @@ public class IceRoad : MonoBehaviour
             if (damageDelay <= 0)
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
-                    monster.OnMonsterSpeedDown(1f, 3f);
+                    monster.OnMonsterSpeedDown(1f, 2.5f);
 
                 damageDelay = 1f;
             }
