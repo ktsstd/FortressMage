@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using JetBrains.Annotations;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 
@@ -78,6 +79,31 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
         // UI ������Ʈ
         UpdatePlayerListUI();
+        // 본인 준비 상태 초기화
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
+        {
+            { "isReady", false }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        // 기존 플레이어들의 준비 상태 UI 업데이트
+        UpdateAllReadyStates();
+    }
+
+    void UpdateAllReadyStates()
+    {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            bool isPlayerReady = player.CustomProperties.ContainsKey("isReady") && (bool)player.CustomProperties["isReady"];
+            Debug.Log($"{player.NickName} 준비 상태: {isPlayerReady}");
+            
+            // UI 업데이트
+            int index = playerList.IndexOf(player); // 플레이어 UI의 인덱스 계산
+            if (index >= 0 && index < readylistText.Length)
+            {
+                readylistText[index].text = isPlayerReady ? "준비완료" : "";
+            }
+        }
     }
 
     // �濡 ���� �÷��̾ �����ϸ� �� �޼��尡 ȣ��˴ϴ�.
@@ -157,7 +183,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     // ������ ������ �� ȣ��Ǵ� �ݹ� �Լ�
-    public override void OnMasterClientSwitched(Photon.Realtime.Player newMasterClient)
+    public override void OnMasterClientSwitched(Player newMasterClient)
     {
         UpdatePlayerListUI(); // ���ο� ���� ���� ����
     }
@@ -242,7 +268,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             isConfirmed = false;
             readyBtn.interactable = false;
-            StartCoroutine(FadeInOut());
+            StartCoroutine(FadeInOut1());
         }
     }
 
@@ -274,6 +300,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // �غ� ���� ���
         isReady = !isReady;
 
+        // 준비 상태를 Custom Properties에 업데이트
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
+        {
+            { "isReady", isReady }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
         // ���� �÷��̾��� �غ� ���¸� ������Ʈ
         playerReadyState[PhotonNetwork.LocalPlayer.ActorNumber] = isReady;
 
@@ -287,6 +320,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         UpdatePlayerListUI();
 
         photonView.RPC("UpdateReadyState", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, isReady);
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        if (changedProps.ContainsKey("isReady"))
+        {
+            UpdateAllReadyStates(); // 상태를 UI에 반영
+        }
     }
 
     [PunRPC]
@@ -309,12 +350,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             imageButtons[buttonIndex].interactable = true;
         }
     }
-
+        // asdfasdffffffffff
+        // asdfffffffffff
+        // fdasfasdfffffffffffff
+    private bool isStarting = false;
     // ���� ���� ��ư Ŭ�� �� ȣ��Ǵ� �Լ�
     private void OnGameStartButtonClick()
     {
-        // ���� ���� ������ ���⿡ �߰�
-        PhotonNetwork.LoadLevel("MultiplayScene"); // ����: "GameScene"�� �ε�
+        if (!isStarting)
+        {
+            PhotonNetwork.LoadLevel("MultiplayScene");
+            isStarting = true;
+        }
+        else
+        {
+            StartCoroutine(FadeInOut2());
+        }
     }
 
     public void OnChangeNicknameButtonClick()
@@ -358,7 +409,37 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private IEnumerator FadeInOut()
+    private IEnumerator FadeInOut1()
+    {
+        if(isFading) yield break;
+        isFading = true;
+        float fadevalue = 0f;
+        float fadereturnvalue = 0.6f;
+        Color origColor = warningTexts[0].color;
+        while(fadevalue < fadereturnvalue)
+        {
+            float alphaValue = Mathf.Lerp(0f, 1f, fadevalue / fadereturnvalue);
+            warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, alphaValue);
+            fadevalue += Time.deltaTime;
+            yield return null;
+        }
+        warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, 1f);
+
+        yield return new WaitForSeconds(1f);
+
+        fadevalue = 0f;
+        while (fadevalue < fadereturnvalue)
+        {
+            float alphaValue = Mathf.Lerp(1f, 0f, fadevalue / fadereturnvalue);
+            warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, alphaValue);
+            fadevalue += Time.deltaTime;
+            yield return null;
+        }
+        warningTexts[0].color = new Color(origColor.r, origColor.g, origColor.b, 0f);
+        isFading = false;
+    }
+
+    private IEnumerator FadeInOut2()
     {
         if(isFading) yield break;
         isFading = true;

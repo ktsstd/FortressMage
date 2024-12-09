@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
-using System.Security.Cryptography;
 
 public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -11,6 +10,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public Transform skillTower;
     public Transform turret;
     public Transform castle;
+    public Transform parent;
 
     public float attackRange = 2.0f;
     public float attackCooldown = 2f;
@@ -19,6 +19,8 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public float CurHp;
     public float defaultspped;
     public float monsterSlowCurTime;
+
+    public GameObject[] EffectPrefab;
 
     public int MonsterDmg = 10;
 
@@ -106,20 +108,25 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     private Coroutine BurnCoroutine;
-    public void OnMonsterBurned(float _time, int burndmg)
+    public virtual void OnMonsterBurned(float _time, int burndmg)
     {
         if (BurnCoroutine != null)
             StopCoroutine(BurnCoroutine);
 
         BurnCoroutine = StartCoroutine(MonsterBurned(_time, burndmg));
+        EffectPrefab[0].SetActive(true);
     }
 
-    IEnumerator MonsterBurned(float _time, int burndmg) // 스턴 상태 처리
+    IEnumerator MonsterBurned(float _time, int burndmg)
     {
-        while(_time <= 0)
+        while(_time > 0)
         {
             _time -= 1f;
             MonsterDmged(burndmg);
+            if (_time <= 0)
+            {
+                EffectPrefab[0].SetActive(false);
+            }
             yield return new WaitForSeconds(1f);
         }
     }
@@ -137,9 +144,11 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         canMove = false;
         animator.speed = 0f;
+        EffectPrefab[1].SetActive(true);
         yield return new WaitForSeconds(_time);
         canMove = true;
         animator.speed = 1f;
+        EffectPrefab[1].SetActive(false);
     }
 
     public virtual void OnMonsterSpeedDown(float _time, float _moveSpeed)
@@ -167,6 +176,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     IEnumerator MonsterSpeedDowning(float _time, float _moveSpeed) // 이동 속도 감소 처리
     {
         isSlow = true;
+        EffectPrefab[2].SetActive(true);
         monsterSlowCurTime = _time;
         Speed = _moveSpeed;
         while (monsterSlowCurTime > 0)
@@ -200,6 +210,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
             }
             speedCoroutine = null;
             isSlow = false;
+            EffectPrefab[2].SetActive(false);
         }
     }
 

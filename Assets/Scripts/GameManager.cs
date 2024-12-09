@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 
 public class GameManager : MonoBehaviourPunCallbacks
@@ -190,14 +191,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         for (int i = 0; i < count; i++)
         {
             int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-            PhotonNetwork.Instantiate(monsterName, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+            GameObject monster = PhotonNetwork.Instantiate(monsterName, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+
+            PhotonView photonView = monster.GetComponent<PhotonView>();
+
+            photonView.TransferOwnership(PhotonNetwork.LocalPlayer);
+
             if (spawnDelay > 0f)
             {
                 yield return new WaitForSeconds(spawnDelay);
             }
         }
     }
-
+    
     private void ResetTurretHealthOnWave(float wave)
     {
         Turret turret = FindObjectOfType<Turret>();
@@ -238,6 +244,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    // public override void OnMasterClientSwitched(Player newMasterClient)
+    // {
+    //     UpdatePlayerListUI(); // ���ο� ���� ���� ����
+    // }
+
     public void TestButtonOn()
     {
         TestSpawnObj.SetActive(true);
@@ -259,7 +270,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void TestSpawnIce()
     {
         int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
-        string IceMonster = "Monster/MonsterI";
+        string IceMonster = "Monster/Spirit of Ice";
 
         PhotonNetwork.Instantiate(IceMonster, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }

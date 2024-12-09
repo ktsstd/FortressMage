@@ -277,10 +277,11 @@ public class FirstEliteMonster : MonsterAI
                 agent.velocity = Vector3.zero;
                 agent.ResetPath();
                 EliteDamageTarget(closestTarget);
-                StartAtking = false;
                 attackTimer = attackCooldown;
                 Speed = defaultspped;
                 animator.SetBool("EliteSkill2", false);
+                yield return new WaitForSeconds(1.2f); // 2초 대기
+                StartAtking = false;
                 animator.SetBool("StartMove", true);
                 yield break;
             }

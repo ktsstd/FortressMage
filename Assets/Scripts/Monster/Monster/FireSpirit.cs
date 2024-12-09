@@ -154,10 +154,11 @@ public class FireSpirit : MonsterAI
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Spirit of Fire_Move"))
+            // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            // if (stateInfo.IsName("Spirit of Fire_Move"))
+            if (animTime >= 0.7f)
             {
-                Debug.Log("3");
                 FireDamageTarget(closestTarget);
                 StartAtking = false;
                 attackTimer = attackCooldown;

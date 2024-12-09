@@ -5,48 +5,78 @@ using Photon.Pun;
 
 public class IceSpirit : MonsterAI
 {
-    private Transform closestTarget;
-    private float projectileSpeed = 3; // 발사체 속도 설정
+    public Transform closestTarget;
+    public Transform projectilePos;
+
+    private float projectileSpeed; // 발사체 속도 설정
+
+    public bool StartAtking = false;
+    
     private string projectilePrefab = "Projectile/Ice"; // 발사체 프리팹 참조
 
     // Start() 함수: 몬스터 초기 설정
     public override void Start()
     {
-        MaxHp = 60f;
         base.Start(); // MonsterAI 스크립트의 Start() 함수 호출 (기본 AI 로직 유지)
+        StartAtking = false;
+        MaxHp = 60f;
         Speed = 3f; // 몬스터 이동 속도 설정
         defaultspped = Speed;
         AttackCooldown = 8.0f; // 공격 쿨타임 설정
         attackRange = 25.0f; // 공격 범위 설정
-        MaxHp = 20f;
+        projectileSpeed = 1.6f;
         CurHp = MaxHp;
     }
 
     // Update() 함수: 매 프레임마다 호출되는 함수
     public override void Update()
     {
-        closestTarget = GetClosestTarget();
-
-        float distanceToTarget = Vector3.Distance(transform.position, closestTarget.position); // 플레이어와의 거리 계산
-
-        // 공격 범위 밖에 있으면 플레이어를 추적
-        if (distanceToTarget > attackRange)
+        if (!StartAtking && !NoTarget)
         {
-            agent.SetDestination(closestTarget.position); // 플레이어 위치로 이동
+            closestTarget = GetClosestTarget();
+        }
+        
+        if (closestTarget != null)
+        {
+            float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
+            if (canMove)
+            {
+                if (sqrDistanceToTarget > attackRange * attackRange)
+                {
+                    if (!StartAtking)
+                    {
+                        agent.SetDestination(closestTarget.position);
+                    }
+                }
+                else
+                {
+                    agent.ResetPath();
+
+                    if (attackTimer <= 0f && !StartAtking)
+                    {
+                        animator.SetTrigger("StartAttack");
+                        StartAtking = true;
+                        StartCoroutine(IceStartAttack());
+                    }
+                }
+            }
+            else
+            {
+                agent.ResetPath();
+                if (StartAtking)
+                {
+                    StopCoroutine(IceStartAttack());
+                }
+            }            
         }
         else
         {
-            agent.ResetPath(); // 공격 범위 안에 있을 때는 멈춤
-
-            // 공격 쿨타임이 다 지나면 발사체 발사
-            if (attackTimer <= 0f)
-            {
-                LaunchProjectile(); // 발사체 발사
-                attackTimer = attackCooldown; // 쿨타임 리셋
-            }
+            // closestTarget = GetClosestTarget();
+            NoTarget = true;
+            GameObject castleObj = GameObject.FindWithTag("Castle");
+            closestTarget = castleObj.transform;
         }
 
-        // 공격 타이머를 감소시킴 (쿨타임 처리)
         if (attackTimer > 0f)
         {
             attackTimer -= Time.deltaTime;
@@ -58,7 +88,7 @@ public class IceSpirit : MonsterAI
         float closestSqrDistance = Mathf.Infinity;
         Transform closestTarget = null;
 
-        string[] tags = { "skilltower", "turret", "Castle", "Player" };
+        string[] tags = { "skilltower", "turret", "Player" };
 
         foreach (string tag in tags)
         {
@@ -75,34 +105,49 @@ public class IceSpirit : MonsterAI
                 if (tag == "turret")
                 {
                     Turret towerScript = target.GetComponent<Turret>();
-                    if (towerScript != null && towerScript.canAttack)
+                    if (towerScript != null)
                     {
-                        if (sqrDistanceToTarget < closestSqrDistance)
+                        if (!towerScript.canAttack) continue;
+                        else
                         {
-                            closestSqrDistance = sqrDistanceToTarget;
-                            closestTarget = target;
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
                         }
                     }
                 }
-
                 if (tag == "Player")
                 {
                     PlayerController playerScript = target.GetComponent<PlayerController>();
-                    if (playerScript != null && !playerScript.isDie)
+                    if (playerScript != null)
                     {
-                        if (sqrDistanceToTarget < closestSqrDistance)
+                        if (playerScript.isDie) continue;
+                        else
                         {
-                            closestSqrDistance = sqrDistanceToTarget;
-                            closestTarget = target;
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
                         }
                     }
                 }
-                else if (tag == "Castle" || tag == "skilltower")
+                if (tag == "skilltower")
                 {
-                    if (sqrDistanceToTarget < closestSqrDistance)
+                    Skilltower skilltowerScript = target.GetComponent<Skilltower>();
+                    if (skilltowerScript != null)
                     {
-                        closestSqrDistance = sqrDistanceToTarget;
-                        closestTarget = target;
+                        if (!skilltowerScript.canAttack) continue;
+                        else
+                        {
+                            if (sqrDistanceToTarget < closestSqrDistance)
+                            {
+                                closestSqrDistance = sqrDistanceToTarget;
+                                closestTarget = target;
+                            }
+                        }
                     }
                 }
             }
@@ -111,10 +156,35 @@ public class IceSpirit : MonsterAI
         return closestTarget;
     }
 
+    private IEnumerator IceStartAttack()
+    {
+        yield return new WaitForSeconds(1f);
+        while(StartAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (!stateInfo.IsName("Spirit of Ice_Idle+Walk"))
+            {
+                if (animTime >= 0.67f)
+                {
+                    StartAtking = false;
+                    attackTimer = attackCooldown;
+                    LaunchProjectile();
+                    yield break;
+                }
+                else
+                {
+                    yield return null;
+                }
+            }
+        }
+        yield break;
+    }
+
     private void LaunchProjectile()
     {
         // 발사체를 PhotonNetwork.Instantiate를 사용하여 생성
-        GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab, projectilePos.position, Quaternion.identity);
 
         // 생성된 발사체에서 Projectile 스크립트를 가져옴
         Projectile projectileScript = projectile.GetComponent<Projectile>();

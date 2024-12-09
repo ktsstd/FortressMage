@@ -5,14 +5,15 @@ using Photon.Pun;
 public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
 {
     private Vector3 targetPosition; // 목표 위치
-    private float launchHeight = 5f; // 포물선의 최대 높이
-    private float flightDuration = 2; // 비행에 걸리는 총 시간
+    private float launchHeight = 5.5f; // 포물선의 최대 높이
+    private float flightDuration;
     private int MonsterDmg;
 
     // 초기화 메서드: 목표 위치와 투사체 속도를 설정
     public void Initialize(Vector3 target, float projectileSpeed, int damage)
     {
         targetPosition = target; // 목표 위치 설정
+        // targetPosition.y += 2;
         flightDuration = projectileSpeed; // 입력받은 속도로 초기화
         MonsterDmg = damage;
         StartCoroutine(Fly()); // 비행 코루틴 시작

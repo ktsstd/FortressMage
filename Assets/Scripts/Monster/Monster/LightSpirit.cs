@@ -133,9 +133,10 @@ public class LightSpirit : MonsterAI, IPunObservable
             yield return new WaitForSeconds(3f);
             animator.SetBool("StartAttack", true);
             particleSys.Play();
-            Animator LightAnim = GetComponent<Animator>();
+            // Animator LightAnim = GetComponent<Animator>();
             // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            float animTime = LightAnim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            // float animTime = LightAnim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             if (animTime >= 1.0f)
             {
                 LightDamageTarget(closestTarget);

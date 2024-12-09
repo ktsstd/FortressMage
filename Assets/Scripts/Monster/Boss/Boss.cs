@@ -38,8 +38,9 @@ public class Boss : MonsterAI
 
     public override void Start()
     {
-        MaxHp = 200f;
         base.Start();  // �θ� Ŭ������ Start() ȣ��
+        MaxHp = 200f;
+        CurHp = MaxHp;
         MonsterDmg = 30;  // ���� ������ �ʱ�ȭ
         attackRange = 6.0f;
         Speed = 1.0f;

@@ -15875,6 +15875,7 @@ GameObject:
   - component: {fileID: 1554206613}
   - component: {fileID: 1554206615}
   - component: {fileID: 1554206614}
+  - component: {fileID: 1554206616}
   m_Layer: 0
   m_Name: DoorPos
   m_TagString: Castle
@@ -15890,8 +15891,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554206612}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.54, y: 0.599, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.418, y: 0.11100002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15934,6 +15935,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+--- !u!65 &1554206616
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554206612}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.062944464, y: 1.8852284, z: 1.1491505}
+  m_Center: {x: -0.027022768, y: 0.442614, z: -0.0035305023}
 --- !u!1 &1564117787
 GameObject:
   m_ObjectHideFlags: 0
@@ -17681,7 +17703,7 @@ Transform:
   m_GameObject: {fileID: 1703417500}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -6.54, y: -0.599, z: 0}
+  m_LocalPosition: {x: -6.418, y: -0.11100002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18681,6 +18703,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22aee11e7afbd96479ed8d313b998b1f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1770064733}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22aee11e7afbd96479ed8d313b998b1f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1770064736}
   m_SourcePrefab: {fileID: 100100000, guid: 22aee11e7afbd96479ed8d313b998b1f, type: 3}
 --- !u!1 &1770064731 stripped
 GameObject:
@@ -18786,6 +18811,27 @@ CapsuleCollider:
   m_Height: 2.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!95 &1770064736
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770064731}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50060fd64e713ba469e4b6505b547ae0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1797328426
 GameObject:
   m_ObjectHideFlags: 0
@@ -21747,7 +21793,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBC1B\uACE0\n\uC218\uC815\uD568"
+  m_text: "\uC5BC\uC74C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 102f3bea3e562ce4c83b7e06a33ceca7, type: 2}
   m_sharedMaterial: {fileID: -326488895927979930, guid: 102f3bea3e562ce4c83b7e06a33ceca7, type: 2}
@@ -22021,7 +22067,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 957337574}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: TestSpawnIce
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
