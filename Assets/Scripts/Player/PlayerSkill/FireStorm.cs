@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FireStorm : MonoBehaviour
 {
+    public int damage;
+
     Vector3 oriScale;
     float timeElapsed;
     float damageDelay;
@@ -31,7 +33,9 @@ public class FireStorm : MonoBehaviour
             if (damageDelay <= 0)
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
-                    monster.MonsterDmged(3);
+                    monster.MonsterDmged(damage);
+
+                Debug.Log(damage);
 
                 damageDelay = 0.5f;
             }

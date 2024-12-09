@@ -400,7 +400,7 @@ MonoBehaviour:
   playerLv: 1
   playerMaxHp: 100
   playerHp: 100
-  playerAtk: 10
+  playerAtk: 15
   defaultSpped: 3
   playerSpeed: 3
   elementalCode: 0

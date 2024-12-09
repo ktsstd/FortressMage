@@ -126,9 +126,11 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
             {
                 if (Input.GetKeyDown(KeyCode.D))
                 {
+
                     pv.RPC("UsePhoenix", RpcTarget.All, null);
                     pv.RPC("PlayAnimation", RpcTarget.All, "Phoenix");
                     skillCooltimeD = skillMaxCooltimeD;
+                    playerAtk += 15;
                 }
             }
         }
@@ -136,7 +138,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
 
     void OffPhoenix()
     {
-        // 공격력 정상화시키기
+        playerAtk -= 15;
         skillEffectD.SetActive(false);
     }
 
@@ -144,29 +146,31 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseFireBall", RpcTarget.All, null);
+            pv.RPC("UseFireBall", RpcTarget.All, (int)playerAtk);
         }
     }
     public void OnUseSkillS()
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseFireStorm", RpcTarget.All, null);
+            pv.RPC("UseFireStorm", RpcTarget.All, (int)(playerAtk / 5));
         }
     }
 
     [PunRPC]
-    void UseFireBall()
+    void UseFireBall(int _damage)
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0,180,0));
         GameObject fire = Instantiate(fireballPrefab, transform.position + Vector3.up / 2, fireRot);
         fire.GetComponent<FireBall>().targetPos = skillPosA;
+        fire.GetComponent<FireBall>().damage = _damage;
     }
 
     [PunRPC]
-    void UseFireStorm()
+    void UseFireStorm(int _damage)
     {
         GameObject fire = Instantiate(firestormPrefab, skillPosS, transform.rotation);
+        fire.GetComponent<FireStorm>().damage = _damage;
     }
 
     [PunRPC]

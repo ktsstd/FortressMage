@@ -6,7 +6,7 @@ public class FireBall : MonoBehaviour
 {
     public GameObject fireRoad;
     public Vector3 targetPos;
-    public float damage;
+    public int damage;
 
     float summonDelay = 0.2f;
     bool isExplosion = false;
@@ -55,7 +55,8 @@ public class FireBall : MonoBehaviour
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
-                    monster.MonsterDmged(15);
+                    monster.MonsterDmged(damage);
+                    Debug.Log(damage);
                 }
             }
         }

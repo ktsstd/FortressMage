@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private PostProcessVolume postProcessVolume;
     private Vignette vignetteEffect;
-    private float vignetteValue = 0f;
+    private float vignetteValue = 0.1f;
 
     private new Camera camera;
     public PlayerUi playerUi;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public float playerLv = 1;
     public float playerMaxHp = 100;
     public float playerHp = 100;
-    public float playerAtk = 10;
+    public float playerAtk = 15;
     public float defaultSpped = 3;
     public float playerSpeed = 3;
     public int elementalCode = 0;
@@ -424,7 +424,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         vignetteValue = 1f;
         yield return new WaitForSeconds(6f);
-        vignetteValue = 0f;
+        vignetteValue = 0.1f;
     }
 
     #endregion
