@@ -708,6 +708,7 @@ MonoBehaviour:
   defaultSpped: 3
   playerSpeed: 3
   elementalCode: 0
+  elementalSetCoolTime: 0
   isMoving: 0
   isStun: 0
   isCasting: 0

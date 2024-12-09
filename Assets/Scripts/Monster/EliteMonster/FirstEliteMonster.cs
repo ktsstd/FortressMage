@@ -11,12 +11,15 @@ public class FirstEliteMonster : MonsterAI
     public Transform closestTarget;
 
     private float MaxHp40Per;
+    private float stopDistance = 7f;
 
     private bool isShielded = false;
 
     public override void Start()
     {
         base.Start();
+        attackCooldown = 5.0f;
+        attackTimer = attackCooldown; 
         attackRange = 5.0f;    
         MaxHp = 200f;
         CurHp = MaxHp;
@@ -38,28 +41,34 @@ public class FirstEliteMonster : MonsterAI
             {
                 if (sqrDistanceToTarget > attackRange * attackRange)
                 {
-                    if (!StartAtking)
+                    if (!closestTarget.CompareTag("Obstacle"))
                     {
-                        animator.SetBool("StartMove", true);
-                        agent.SetDestination(closestTarget.position);
+                        if (!StartAtking)
+                        {
+                            animator.SetBool("StartMove", true);
+                            agent.SetDestination(closestTarget.position);
+                        }
+                    }
+                    else
+                    {
+                        if (!StartAtking)
+                        {
+                            agent.ResetPath();
+                            StartAtking = true;
+                            animator.SetBool("StartMove", false);
+                            animator.SetBool("EliteSkill2", true);
+                            StartCoroutine(EliteMonster1Skill2());
+                        }
                     }
                 }
                 else
                 {
                     agent.ResetPath();
-                    if(closestTarget.CompareTag("Obstacle") && attackTimer <= 0f && !StartAtking)
+                    if (!StartAtking)
                     {
                         StartAtking = true;
-                        animator.SetBool("EliteSkill2", true);
                         animator.SetBool("StartMove", false);
-                        StartCoroutine(EliteMonster1Skill2());
-                    }
-
-                    else if (!closestTarget.CompareTag("Obstacle") && attackTimer <= 0f && !StartAtking)
-                    {
-                        StartAtking = true;
                         animator.SetTrigger("EliteSkill1");
-                        animator.SetBool("StartMove", false);
                         StartCoroutine(EliteMonster1Skill1());
                     }
                 }
@@ -247,32 +256,35 @@ public class FirstEliteMonster : MonsterAI
     private IEnumerator EliteMonster1Skill2()
     {
         defaultspped = Speed;
-        Speed = 6f;
+        Speed = 12f;
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
-            float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
-            if (canMove)
+            if (!canMove)
             {
-                if (sqrDistanceToTarget > attackRange * attackRange)
-                {
-                    agent.SetDestination(closestTarget.position);
-                }
-                else
-                {
-                    animator.SetBool("EliteSkill2", false);
-                    agent.ResetPath();
-                    EliteDamageTarget(closestTarget);
-                    StartAtking = false;
-                    attackTimer = attackCooldown;
-                    Speed = defaultspped;
-                    yield break;
-                }
+                agent.ResetPath();
+                yield return null;
+                continue;
+            }
+            float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
+            
+            if (sqrDistanceToTarget > attackRange + stopDistance)
+            {
+                agent.SetDestination(closestTarget.position);
             }
             else
             {
-                yield return null;
+                agent.velocity = Vector3.zero;
+                agent.ResetPath();
+                EliteDamageTarget(closestTarget);
+                StartAtking = false;
+                attackTimer = attackCooldown;
+                Speed = defaultspped;
+                animator.SetBool("EliteSkill2", false);
+                animator.SetBool("StartMove", true);
+                yield break;
             }
+            yield return null;
         }
         yield break;
     }
@@ -281,10 +293,11 @@ public class FirstEliteMonster : MonsterAI
     {
         agent.ResetPath();
         isShielded = true;
-        animator.SetTrigger("EltieSkill1");
+        CurShield = MonsterShield;
+        // animator.SetTrigger("EltieSkill1");
         yield return new WaitForSeconds(2f); // 2초 대기
         Debug.Log("Shield");
-        CurShield = MonsterShield;
+        
     }
 
     public override void MonsterDmged(int playerdamage)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dd9cfc68fceef804b8e81ea5b2ef4d62
+guid: 65be9f662c99ebd40848b1d70626ac6c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Skill-2
-      takeName: Knight_Dragon
-      internalID: 2107657989560951597
+      name: Take 001
+      takeName: Take 001
+      internalID: 1827226128182048838
       firstFrame: 0
-      lastFrame: 58
+      lastFrame: 12
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
