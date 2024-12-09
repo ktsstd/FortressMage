@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 {
                     players[i].pv.RPC("StandUp", RpcTarget.All, null);
                 }
-
+                players[i].pv.RPC("PlayerRecovery", RpcTarget.All, null);
                 players[i].pv.RPC("PlayerLvUp", RpcTarget.All, null);
             }
 

@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    int playerCode = 0;
     public virtual void Update()
     {
         animator.SetBool("IsRun", isMoving);
@@ -103,6 +104,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                     MixSkillCasting(1, elementalCode);
                 UseMixSkills();
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    PlayerController[] allPlayer = FindObjectsOfType<PlayerController>();
+                    virtualCamera.Follow = allPlayer[playerCode].transform;
+                    virtualCamera.LookAt = allPlayer[playerCode].transform;
+                    playerCode++;
+
+                    playerUi.playerLvText.text = playerCode + " Tlqkf " + allPlayer.Length;
+
+                    if (playerCode >= allPlayer.Length)
+                        playerCode = 0;
+                }
             }
         }
         else
@@ -306,6 +322,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             pv.RPC("PlayAnimation", RpcTarget.All, "StandUp");
     }
 
+    [PunRPC]
+    public void PlayerRecovery()
+    {
+        if (pv.IsMine)
+        {
+            playerHp += 50;
+            if (playerHp > playerMaxHp)
+                playerHp = playerMaxHp;
+            playerUi.playerHp = playerHp;
+            playerUi.playerMaxHp = playerMaxHp;
+        }
+    }
+
     public void ReSpawn()
     {
         if (pv.IsMine)
@@ -314,6 +343,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             playerHp = playerMaxHp;
             playerUi.playerHp = playerHp;
             playerUi.playerMaxHp = playerMaxHp;
+
+            virtualCamera.Follow = transform;
+            virtualCamera.LookAt = transform;
         }
     }
 
