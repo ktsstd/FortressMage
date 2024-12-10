@@ -43,6 +43,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     protected Skilltower skilltower;
     protected Turret turretS;
     protected Wall Castle;
+    public AudioSource soundClip;
     public AudioClip[] MonsterAudio;
 
     public LayerMask obstacleMask;
@@ -55,6 +56,8 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         turret = GameObject.FindWithTag("turret")?.transform;
         castle = GameObject.FindWithTag("Castle")?.transform;
         player = GameObject.FindWithTag("Player")?.transform;
+
+        soundClip = GetComponent<AudioSource>();
 
         DmgTextPos = transform.position;
         DmgTextPos.x += 2;
@@ -408,7 +411,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
             {
                 thisskinrenderers.enabled = false;
             }
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.05f);
             foreach(MeshRenderer thisrenderers in thisrenderer)
             {
                 thisrenderers.enabled = true;

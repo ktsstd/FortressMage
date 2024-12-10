@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using Photon.Pun;
 
 public class Boss : MonsterAI
@@ -407,7 +406,7 @@ public class Boss : MonsterAI
                 isBossPatern = false;
                 isBossAtking = false;
                 int random = spawnPlaceint();
-                GetComponent<AudioSource>().PlayOneShot(MonsterAudio[0], MonsterAudio[0].length);
+                // GetComponent<AudioSource>().PlayOneShot(MonsterAudio[0], MonsterAudio[0].length);
                 foreach (Transform pos in tempArray)
                 {
                     PhotonNetwork.Instantiate("Additional/Boss_Skill_4", pos.position, Quaternion.identity);

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FireSpirit : MonsterAI
@@ -157,9 +156,10 @@ public class FireSpirit : MonsterAI
             // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             // if (stateInfo.IsName("Spirit of Fire_Move"))
-            if (animTime >= 0.7f)
+            if (animTime >= 0.65f)
             {
                 FireDamageTarget(closestTarget);
+                soundClip.PlayOneShot(MonsterAudio[0]);
                 StartAtking = false;
                 attackTimer = attackCooldown;
                 yield break;

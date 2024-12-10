@@ -12,7 +12,7 @@ public class IceSpirit : MonsterAI
 
     public bool StartAtking = false;
     
-    private string projectilePrefab = "Projectile/Ice"; // 발사체 프리팹 참조
+    private string projectilePrefab = "Projectile/SnowBall"; // 발사체 프리팹 참조
 
     // Start() 함수: 몬스터 초기 설정
     public override void Start()
@@ -169,6 +169,7 @@ public class IceSpirit : MonsterAI
                 {
                     StartAtking = false;
                     attackTimer = attackCooldown;
+                    soundClip.PlayOneShot(MonsterAudio[0]);
                     LaunchProjectile();
                     yield break;
                 }

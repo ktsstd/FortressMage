@@ -1,13 +1,30 @@
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using System.Runtime.CompilerServices;
+using UnityEngine.Analytics;
+using Unity.VisualScripting;
 
 public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
 {
     private Vector3 targetPosition; // 목표 위치
+    private ParticleSystem ParticleSys;
+    private MeshRenderer Mrenderer;
+    private SphereCollider Scollider;
+    public AudioClip IceSound;
+    private AudioSource audioSource;
+
     private float launchHeight = 5.5f; // 포물선의 최대 높이
     private float flightDuration;
     private int MonsterDmg;
+
+    void Start()
+    {
+        ParticleSys = GetComponentInChildren<ParticleSystem>();
+        Mrenderer = GetComponent<MeshRenderer>();
+        Scollider = GetComponent<SphereCollider>();
+        audioSource = GetComponent<AudioSource>();
+    }
 
     // 초기화 메서드: 목표 위치와 투사체 속도를 설정
     public void Initialize(Vector3 target, float projectileSpeed, int damage)
@@ -54,6 +71,20 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
         // 목표 위치에 도달했을 때 투사체 위치 업데이트
         transform.position = targetPosition;
 
+        StartCoroutine(DestroyEffect());
+        
+    }
+
+    private bool isDestroying = false;
+    private IEnumerator DestroyEffect()
+    {
+        if(isDestroying) yield break;
+        isDestroying = true;
+        Mrenderer.enabled = false;
+        Scollider.enabled = false;
+        ParticleSys.Play();
+        audioSource.PlayOneShot(IceSound);
+        yield return new WaitForSeconds(1.5f);
         photonView.RPC("DestroyObj", RpcTarget.All);
     }
     
@@ -87,6 +118,7 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
             if (playerScript != null)
             {
                 playerScript.OnHitPlayer(MonsterDmg);
+                StartCoroutine(DestroyEffect());
             }
         }
         if (other.CompareTag("skilltower"))
@@ -95,6 +127,7 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
             if (skillTowerScript != null)
             {
                 skillTowerScript.TakeDamage(MonsterDmg);
+                StartCoroutine(DestroyEffect());
             }
         }
         if (other.CompareTag("Castle"))
@@ -103,6 +136,7 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
             if (castleScript != null)
             {
                 castleScript.TakeDamage(MonsterDmg);
+                StartCoroutine(DestroyEffect());
             }
         }
         if (other.CompareTag("turret"))
@@ -111,12 +145,12 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
             if (towerScript != null)
             {
                 towerScript.TakeDamage(MonsterDmg);
+                StartCoroutine(DestroyEffect());
             }
         }
-
         if (other.CompareTag("Obstacle"))
         {
-            PhotonNetwork.Destroy(gameObject);
+            StartCoroutine(DestroyEffect());
         }
     }
 }
