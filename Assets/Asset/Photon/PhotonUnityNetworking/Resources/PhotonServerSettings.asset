@@ -110,6 +110,14 @@ MonoBehaviour:
   - UseBarricade
   - UseMasterBarricade
   - PlayerRecovery
+  - UseCoolTimeBuff
+  - UseShield
+  - UseMasterMixSkillCoolTimeSet
+  - UseMixSkillCoolTimeSet
+  - UseMasterCoolTimeBuff
+  - UseCoolSet
+  - UseAtkUpBuff
+  - UseMasterAtkUpBuff
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ElectricShot : MonoBehaviour
 {
+    public int damage;
+
     void Start()
     {
         Invoke("SelfDestroy", 0.5f);
@@ -15,9 +17,8 @@ public class ElectricShot : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out MonsterAI monster))
             {
-                monster.MonsterDmged(10);
+                monster.MonsterDmged(damage);
             }
-            Debug.Log("¹ø°³");
         }
     }
     void SelfDestroy()

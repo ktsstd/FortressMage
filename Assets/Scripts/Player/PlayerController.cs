@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private PostProcessVolume postProcessVolume;
     private Vignette vignetteEffect;
+    private ChromaticAberration chromaticAberrationEffect;
     private float vignetteValue = 0.1f;
 
     private new Camera camera;
@@ -42,10 +43,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public float playerMaxHp = 100;
     public float playerHp = 100;
     public float playerAtk = 15;
+    public float defaultAtk = 15;
     public float defaultSpped = 3;
     public float playerSpeed = 3;
     public int elementalCode = 0;
     public float elementalSetCoolTime = 0;
+    public float skillMaxCooltimeA = 10f;
+    public float skillMaxCooltimeS = 10f;
+    public float skillMaxCooltimeD = 10f;
+    public int shield = 0;
 
     public bool isMoving = false;
     public bool isStun = false;
@@ -59,6 +65,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         camera = Camera.main;
         postProcessVolume = FindObjectOfType<PostProcessVolume>();
         postProcessVolume.profile.TryGetSettings(out vignetteEffect);
+        postProcessVolume.profile.TryGetSettings(out chromaticAberrationEffect);
         pv = GetComponent<PhotonView>();
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
         playerUi = FindObjectOfType<PlayerUi>();
@@ -177,6 +184,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 case 0:
                     break;
                 case 1:
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        skilltower.pv.RPC("UseMasterCoolTimeBuff", RpcTarget.All, null);
+                    }
                     break;
                 case 2:
                     if (Input.GetKeyDown(KeyCode.Space))
@@ -212,8 +223,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     }
                     break;
                 case 5:
+
                     break;
                 case 6:
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        skilltower.pv.RPC("UseMasterAtkUpBuff", RpcTarget.All, null);
+                    }
                     break;
             }
 
@@ -302,15 +318,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (pv.IsMine)
         {
-            playerHp -= _damage;
+            if (shield > 0)
+            {
+                shield--;
+            }
+            else
+            {
+                playerHp -= _damage;
+                pv.RPC("PlaySkillEffect", RpcTarget.All, false);
+            }
             playerUi.playerHp = playerHp;
             playerUi.playerMaxHp = playerMaxHp;
 
-            pv.RPC("PlaySkillEffect", RpcTarget.All, false);
             if (playerHp <= 0)
             {
+                if (!isDie)
+                    pv.RPC("PlayAnimation", RpcTarget.All, "Die");
+
                 isDie = true;
-                pv.RPC("PlayAnimation", RpcTarget.All, "Die");
             }
         }
     }
@@ -359,6 +384,60 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         playerLv++;
         playerUi.playerLv = playerLv;
     }
+
+    #region Player Buff
+
+    [PunRPC]
+    public void UseCoolTimeBuff()
+    {
+        if (pv.IsMine)
+        {
+            skillMaxCooltimeA /= 2;
+            skillMaxCooltimeD /= 2;
+            skillMaxCooltimeS /= 2;
+            playerUi.isCooltimeBuff = true;
+            chromaticAberrationEffect.intensity.value = 0.5f;
+            Invoke("OffCoolTimeBuff", 10f);
+        }
+    }
+    public void OffCoolTimeBuff()
+    {
+        skillMaxCooltimeA *= 2;
+        skillMaxCooltimeD *= 2;
+        skillMaxCooltimeS *= 2;
+        playerUi.isCooltimeBuff = false;
+        chromaticAberrationEffect.intensity.value = 0f;
+    }
+
+    [PunRPC]
+    public void UseAtkUpBuff()
+    {
+        if (pv.IsMine)
+        {
+            playerAtk += defaultAtk;
+            playerUi.isAktBuff = true;
+            chromaticAberrationEffect.intensity.value = 0.5f;
+            Invoke("OffAtkUpBuff", 10f);
+        }
+    }
+    public void OffAtkUpBuff()
+    {
+        playerAtk -= defaultAtk;
+        playerUi.isAktBuff = false;
+        chromaticAberrationEffect.intensity.value = 0f;
+    }
+
+    [PunRPC]
+    public void UseShield()
+    {
+        if (pv.IsMine)
+        {
+            shield = 4;
+        }
+    }
+
+
+    #endregion
 
     #region Player Crowd Control
 

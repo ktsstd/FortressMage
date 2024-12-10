@@ -11,18 +11,14 @@ public class EarthMagic : PlayerController
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
-    private float skillMaxCooltimeA = 3f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
-    private float skillMaxCooltimeS = 5f;
 
     public GameObject skillRangeD;
     private Vector3 skillPosD;
     private float skillCooltimeD;
-    private float skillMaxCooltimeD = 20f;
-
 
     public GameObject stonePrefab;
     public GameObject earthquakePrefab;
@@ -32,6 +28,11 @@ public class EarthMagic : PlayerController
     {
         base.Start();
         elementalCode = 4;
+        playerAtk = 20;
+        defaultAtk = 20;
+        skillMaxCooltimeA = 4f;
+        skillMaxCooltimeS = 6f;
+        skillMaxCooltimeD = 20f;
     }
 
     public override void Update()
@@ -152,14 +153,14 @@ public class EarthMagic : PlayerController
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseStoneShoot", RpcTarget.All, null);
+            pv.RPC("UseStoneShoot", RpcTarget.All, (int)playerAtk);
         }
     }
     public void OnUseSkillS()
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseEarthquake", RpcTarget.All, null);
+            pv.RPC("UseEarthquake", RpcTarget.All, (int)(playerAtk / 4));
         }
     }
     public void OnUseStoneWall()
@@ -172,18 +173,20 @@ public class EarthMagic : PlayerController
     }
 
     [PunRPC]
-    void UseStoneShoot()
+    void UseStoneShoot(int _damage)
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(90, 0, 0));
         GameObject fire = Instantiate(stonePrefab, transform.position + Vector3.up / 2, fireRot);
         fire.GetComponent<Stone>().targetPos = skillPosA;
+        fire.GetComponent<Stone>().damage = _damage;
     }
 
     [PunRPC]
-    void UseEarthquake()
+    void UseEarthquake(int _damage)
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0));
         GameObject fire = Instantiate(earthquakePrefab, skillPosS, fireRot);
+        fire.GetComponent<Earthquake>().damage = _damage;
     }
     [PunRPC]
     void UseStoneWall(Vector3 _position, Quaternion _rotation)

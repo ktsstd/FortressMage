@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TempestFury : MonoBehaviour
 {
+    public int damage;
+
     void Start()
     {
         Invoke("ColliderOn", 0.5f);
@@ -16,7 +18,7 @@ public class TempestFury : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out MonsterAI monster))
             {
-                monster.MonsterDmged(30);
+                monster.MonsterDmged(damage);
             }
         }
     }

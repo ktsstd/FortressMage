@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShockWave : MonoBehaviour
 {
+    public int damage;
+
     void Start()
     {
         Invoke("ColliderOn", 0.5f);
@@ -16,9 +18,9 @@ public class ShockWave : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out MonsterAI monster))
             {
-                monster.MonsterDmged(20);
+                monster.MonsterDmged(damage);
+                monster.OnMonsterStun(0.5f);
             }
-            Debug.Log("¹ø°³");
         }
     }
 

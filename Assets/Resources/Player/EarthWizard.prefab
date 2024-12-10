@@ -705,10 +705,15 @@ MonoBehaviour:
   playerMaxHp: 100
   playerHp: 100
   playerAtk: 10
+  defaultAtk: 15
   defaultSpped: 3
   playerSpeed: 3
   elementalCode: 0
   elementalSetCoolTime: 0
+  skillMaxCooltimeA: 10
+  skillMaxCooltimeS: 10
+  skillMaxCooltimeD: 10
+  shield: 0
   isMoving: 0
   isStun: 0
   isCasting: 0

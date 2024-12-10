@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class IceBullet : MonoBehaviour
 {
+    public int damage;
+
     public Vector3 targetPos;
 
     bool isExplosion = false;
@@ -59,9 +61,8 @@ public class IceBullet : MonoBehaviour
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
-                    monster.MonsterDmged(5);
+                    monster.MonsterDmged(damage);
                 }
-                Debug.Log("¾óÀ½");
             }
         }
     }

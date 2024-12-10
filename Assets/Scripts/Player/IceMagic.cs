@@ -10,18 +10,15 @@ public class IceMagic : PlayerController
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
-    private float skillMaxCooltimeA = 3f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
-    private float skillMaxCooltimeS = 5f;
 
     public GameObject skillRangeD;
     private Vector3 skillTargetPosD;
     private Vector3 skillSummonPosD;
     private float skillCooltimeD;
-    private float skillMaxCooltimeD = 10f;
 
     public GameObject blizzardPrefab;
     public GameObject frozenawlPrefab;
@@ -32,6 +29,11 @@ public class IceMagic : PlayerController
     {
         base.Start();
         elementalCode = 2;
+        playerAtk = 10;
+        defaultAtk = 10;
+        skillMaxCooltimeA = 4f;
+        skillMaxCooltimeS = 6f;
+        skillMaxCooltimeD = 20f;
     }
 
     public override void Update()
@@ -153,7 +155,7 @@ public class IceMagic : PlayerController
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseFrozenAwl", RpcTarget.All, null);
+            pv.RPC("UseFrozenAwl", RpcTarget.All, (int)playerAtk);
         }
     }
 
@@ -166,11 +168,12 @@ public class IceMagic : PlayerController
     }
 
     [PunRPC]
-    void UseFrozenAwl()
+    void UseFrozenAwl(int _damage)
     {
         Quaternion fireRot = transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0));
         GameObject ice = Instantiate(frozenawlPrefab, transform.position + Vector3.up / 2, fireRot);
         ice.GetComponent<FrozenAwl>().targetPos = skillPosA;
+        ice.GetComponent<FrozenAwl>().damage = _damage;
     }
 
     [PunRPC]
@@ -194,13 +197,13 @@ public class IceMagic : PlayerController
         int numberOfObjects = 10;
         for (int i = 0; i < numberOfObjects; i++)
         {
-
             float angle = i * Mathf.PI * 2 / numberOfObjects;
 
             Vector3 spawnPosition = new Vector3(Mathf.Cos(angle) * 1f, 0, Mathf.Sin(angle) * 1f) + skillSummonPosD;
 
             GameObject iceBullet = Instantiate(iceBulletPrefab[Random.Range(0, 6)], spawnPosition, transform.rotation * Quaternion.Euler(new Vector3(0, 180, 0)));
             iceBullet.GetComponent<IceBullet>().targetPos = GetAttackPoint(skillTargetPosD, i);
+            iceBullet.GetComponent<IceBullet>().damage = (int)(playerAtk / 2);
 
             yield return new WaitForSeconds(0.3f);
         }

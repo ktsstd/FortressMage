@@ -155,6 +155,27 @@ public class Skilltower : MonoBehaviourPun
     }
 
     [PunRPC]
+    public void UseMasterCoolTimeBuff()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            cooldownTime = maxCooldownTime;
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            foreach (PlayerController player in players)
+            {
+                player.pv.RPC("UseCoolTimeBuff", RpcTarget.All, null);
+            }
+            pv.RPC("UseCoolSet", RpcTarget.Others, null);
+        }
+    }
+
+    [PunRPC]
+    public void UseCoolSet()
+    {
+        cooldownTime = maxCooldownTime;
+    }
+
+    [PunRPC]
     public void UseMasterLazer()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -205,6 +226,20 @@ public class Skilltower : MonoBehaviourPun
         cooldownTime = maxCooldownTime;
     }
 
+    [PunRPC]
+    public void UseMasterAtkUpBuff()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            cooldownTime = maxCooldownTime;
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            foreach (PlayerController player in players)
+            {
+                player.pv.RPC("UseAtkUpBuff", RpcTarget.All, null);
+            }
+            pv.RPC("UseCoolSet", RpcTarget.Others, null);
+        }
+    }
 
     public void TakeDamage(float damage)
     {
