@@ -7,13 +7,15 @@ public class FirstEliteMonster : MonsterAI
 {
     private int MonsterShield = 60;
     private int CurShield = 0;
-    public bool StartAtking = false;
-    public Transform closestTarget;
-
     private float MaxHp40Per;
     private float stopDistance = 7f;
 
+    private bool StartAtking = false;
     private bool isShielded = false;
+
+    private Transform closestTarget;
+
+    public ParticleSystem[] ParticleSys;    
 
     public override void Start()
     {
@@ -64,7 +66,7 @@ public class FirstEliteMonster : MonsterAI
                 else
                 {
                     agent.ResetPath();
-                    if (!StartAtking)
+                    if (!StartAtking && attackTimer <= 0f)
                     {
                         StartAtking = true;
                         animator.SetBool("StartMove", false);
@@ -236,11 +238,15 @@ public class FirstEliteMonster : MonsterAI
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Idle"))
+            ParticleSys[0].Play();
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            // if (stateInfo.IsName("Idle"))
+            if (animTime >= 0.9f)
             {
-                EliteDamageTarget(closestTarget);
                 StartAtking = false;
+                ParticleSys[0].Play();
+                EliteDamageTarget(closestTarget);
                 attackTimer = attackCooldown;
                 yield break;
             }
@@ -275,12 +281,13 @@ public class FirstEliteMonster : MonsterAI
             else
             {
                 agent.velocity = Vector3.zero;
+                ParticleSys[1].Play();
                 agent.ResetPath();
                 EliteDamageTarget(closestTarget);
                 attackTimer = attackCooldown;
                 Speed = defaultspped;
                 animator.SetBool("EliteSkill2", false);
-                yield return new WaitForSeconds(1.2f); // 2초 대기
+                // yield return new WaitForSeconds(1.2f); // 2초 대기
                 StartAtking = false;
                 animator.SetBool("StartMove", true);
                 yield break;
@@ -294,6 +301,7 @@ public class FirstEliteMonster : MonsterAI
     {
         agent.ResetPath();
         isShielded = true;
+        ParticleSys[2].Play();
         CurShield = MonsterShield;
         // animator.SetTrigger("EltieSkill1");
         yield return new WaitForSeconds(2f); // 2초 대기
@@ -309,7 +317,7 @@ public class FirstEliteMonster : MonsterAI
             CurShield -= playerdamage;
             if (CurShield <= 0)
             {
-                
+                ParticleSys[2].Stop();
             }
         }
 

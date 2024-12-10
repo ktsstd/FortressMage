@@ -5731,6 +5731,7 @@ MonoBehaviour:
   turret: {fileID: 0}
   castle: {fileID: 0}
   parent: {fileID: 0}
+  DmgTextPos: {x: 0, y: 0, z: 0}
   attackRange: 2
   attackCooldown: 2
   attackTimer: 0
@@ -5749,6 +5750,8 @@ MonoBehaviour:
   isSlow: 0
   canMove: 1
   agent: {fileID: 0}
+  thisrenderer: []
+  thisskinrenderer: []
   animator: {fileID: 0}
   MonsterAudio:
   - {fileID: 8300000, guid: dc12a723cf821464c85efbe40b5a520f, type: 3}
@@ -5756,6 +5759,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+  fading: 0
   Boss4Pos:
   - {fileID: 4589420800508721669}
   - {fileID: 9138635153462425037}

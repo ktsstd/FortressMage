@@ -11,6 +11,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public Transform turret;
     public Transform castle;
     public Transform parent;
+    public Vector3 DmgTextPos;
 
     public float attackRange = 2.0f;
     public float attackCooldown = 2f;
@@ -31,8 +32,11 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool canMove = true;
 
     private List<(float slowtime, float slowmoveSpeed)> slowEffects = new List<(float, float)>();
+    // private List<(float slowtime, float slowmoveSpeed)> slowEffects = new List<(float, float)>();
 
     public NavMeshAgent agent;
+    public MeshRenderer[] thisrenderer;
+    public SkinnedMeshRenderer[] thisskinrenderer;
     public Animator animator;
     protected PlayerController playerController;
     protected Skilltower skilltower;
@@ -51,6 +55,10 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         castle = GameObject.FindWithTag("Castle")?.transform;
         player = GameObject.FindWithTag("Player")?.transform;
 
+        DmgTextPos = transform.position;
+        DmgTextPos.x += 2;
+        DmgTextPos.y += 2;
+
         NoTarget = false;
         hasBuffed = false;
         hasHealed = false;
@@ -67,6 +75,9 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         obstacleMask = 1 << LayerMask.NameToLayer("Obstacle");
+
+        thisrenderer = GetComponentsInChildren<MeshRenderer>(true);
+        thisskinrenderer = GetComponentsInChildren<SkinnedMeshRenderer>(true);
     }
 
     public virtual void Update()
@@ -339,10 +350,44 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!photonView.IsMine) return;
 
         CurHp -= playerDamage;
+        // GameObject DmgTextObj = PhotonNetwork.Instantiate("Additional/DmgText", DmgTextPos, transform.rotation);
+        // DmgTextObj.transform.SetParent(GameObject.Find("DmgCanvas").transform, false);
+        // DmgText DmgTextScript = DmgTextObj.GetComponent<DmgText>();
+        // string playerdamageText = playerDamage.ToString();
+        // DmgTextScript.ShowDamageMessage(playerdamageText);
+        StartCoroutine(MonsterFadeInOut());
 
         if (CurHp <= 0)
         {
             MonsterDied();
+        }
+    }
+    
+    public bool fading = false;
+    public virtual IEnumerator MonsterFadeInOut()
+    {
+        if (!fading)
+        {
+            fading = true;
+            foreach(MeshRenderer thisrenderers in thisrenderer)
+            {
+                thisrenderers.enabled = false;
+            }
+            foreach(SkinnedMeshRenderer thisskinrenderers in thisskinrenderer)
+            {
+                thisskinrenderers.enabled = false;
+            }
+            yield return new WaitForSeconds(0.15f);
+            foreach(MeshRenderer thisrenderers in thisrenderer)
+            {
+                thisrenderers.enabled = true;
+            }
+            foreach(SkinnedMeshRenderer thisskinrenderers in thisskinrenderer)
+            {
+                thisskinrenderers.enabled = true;
+            }
+            fading = false;
+            yield break;
         }
     }
 

@@ -14,7 +14,7 @@ public class LightSpirit : MonsterAI, IPunObservable
     private float stopDistance = 2.0f;
     // private float fadeDuration = 8.0f;
 
-    private bool StartAttack = false;
+    private bool StartAtking = false;
 
     public override void Start()
     {
@@ -23,51 +23,58 @@ public class LightSpirit : MonsterAI, IPunObservable
         Speed = 5f;
         defaultspped = Speed;
         CurHp = MaxHp;
-        StartAttack = false;
+        StartAtking = false;
         particleSys = GetComponentInChildren<ParticleSystem>();
         MonsterDmg = 50;
     }
 
     public override void Update()
     {
-        bool isAtking = animator.GetBool("StartAttack");
-        if (!isAtking && !StartAttack)
-        {
-            if (!NoTarget)
-            {
-                closestTarget = GetClosestTarget();
-            }
 
-            else
-            {
-                NoTarget = true;
-                GameObject castleObj = GameObject.FindWithTag("Castle");
-                closestTarget = castleObj.transform;
-            }
+        if (!StartAtking && !NoTarget)
+        {
+            closestTarget = GetClosestTarget();
+        }
+
+        if (closestTarget != null)
+        {
             float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
             if (canMove)
             {
                 if (distanceTotarget > attackRange + stopDistance)
                 {
-                    agent.SetDestination(closestTarget.position);
+                    if (!StartAtking)
+                    {
+                        agent.SetDestination(closestTarget.position);
+                    }
                 }
-                else if (distanceTotarget <= attackRange + stopDistance && distanceTotarget > attackRange)
+                else
                 {
                     agent.ResetPath();
-                    StartAttack = true;
-                    StartCoroutine(LightAttackStart());
+                    if (!StartAtking)
+                    {
+                        animator.SetTrigger("StartAttack");
+                        StartAtking = true;
+                        StartCoroutine(LightAttackStart());
+                    }
                 }
             }
             else
             {
-                StopCoroutine(LightAttackStart());
+                agent.ResetPath();
+                if (StartAtking)
+                {
+                    StopCoroutine(LightAttackStart());
+                }
             }
         }
-
         else
         {
-            agent.ResetPath();
+            NoTarget = true;
+            GameObject castleObj = GameObject.FindWithTag("Castle");
+            closestTarget = castleObj.transform;
         }
+        
     }
 
     private Transform GetClosestTarget()
@@ -128,14 +135,10 @@ public class LightSpirit : MonsterAI, IPunObservable
 
     private IEnumerator LightAttackStart()
     {
-        while(StartAttack)
+        yield return new WaitForSeconds(0.5f);
+        while(StartAtking)
         {
-            yield return new WaitForSeconds(3f);
-            animator.SetBool("StartAttack", true);
             particleSys.Play();
-            // Animator LightAnim = GetComponent<Animator>();
-            // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            // float animTime = LightAnim.GetCurrentAnimatorStateInfo(0).normalizedTime;
             float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             if (animTime >= 1.0f)
             {

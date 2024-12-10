@@ -113,5 +113,10 @@ public class Projectile : MonoBehaviourPunCallbacks, IPunObservable
                 towerScript.TakeDamage(MonsterDmg);
             }
         }
+
+        if (other.CompareTag("Obstacle"))
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }

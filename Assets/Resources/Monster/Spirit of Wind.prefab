@@ -659,6 +659,7 @@ MonoBehaviour:
   turret: {fileID: 0}
   castle: {fileID: 0}
   parent: {fileID: 0}
+  DmgTextPos: {x: 0, y: 0, z: 0}
   attackRange: 2
   attackCooldown: 2
   attackTimer: 0
@@ -677,11 +678,14 @@ MonoBehaviour:
   isSlow: 0
   canMove: 1
   agent: {fileID: 0}
+  thisrenderer: []
+  thisskinrenderer: []
   animator: {fileID: 0}
   MonsterAudio: []
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+  fading: 0
   particleSys: {fileID: 0}
   skillCooltime: 0
 --- !u!54 &121269681147340264
