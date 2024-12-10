@@ -2821,7 +2821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &378964726
 Transform:
   m_ObjectHideFlags: 0
@@ -5256,6 +5256,10 @@ PrefabInstance:
       value: Special_Turret
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 22aee11e7afbd96479ed8d313b998b1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 22aee11e7afbd96479ed8d313b998b1f, type: 3}
       propertyPath: m_TagString
       value: skilltower
       objectReference: {fileID: 0}
@@ -5358,6 +5362,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
@@ -12153,6 +12161,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
       propertyPath: m_TagString
       value: turret
       objectReference: {fileID: 0}
@@ -14670,7 +14682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1877106928
 Transform:
   m_ObjectHideFlags: 0

@@ -10225,11 +10225,11 @@ PrefabInstance:
     - target: {fileID: 5694059874591286030, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: eed6571ddbeac3943825439311afda3a, type: 2}
+      objectReference: {fileID: 2100000, guid: 00ebf6bf5d47e4c4faae050d56e49e83, type: 2}
     - target: {fileID: 6877476350376008592, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b802fa49929d6fb4286dc0967411b17d, type: 2}
+      objectReference: {fileID: 2100000, guid: e68e79adba1096d43ba1a73cc06a22b6, type: 2}
     - target: {fileID: 8144394004440419581, guid: 5181b097dd7c51b4489b421f9a662e51, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -20005,7 +20005,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
