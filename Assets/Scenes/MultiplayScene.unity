@@ -10286,7 +10286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933d4bdeb849fbc43b891b9fd50a6399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7988073349238284095, guid: d595d24e4ddc0ff469ce1d7f2441f8cd, type: 3}
+  projectilePrefab: {fileID: 2366151302111340034, guid: 8cf2685855b578241865c0b32f28f56f, type: 3}
   firePoint: {fileID: 725594226}
   minLaunchPower: 10
   maxLaunchPower: 50
@@ -25574,7 +25574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933d4bdeb849fbc43b891b9fd50a6399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7988073349238284095, guid: d595d24e4ddc0ff469ce1d7f2441f8cd, type: 3}
+  projectilePrefab: {fileID: 2366151302111340034, guid: 8cf2685855b578241865c0b32f28f56f, type: 3}
   firePoint: {fileID: 1700045934}
   minLaunchPower: 10
   maxLaunchPower: 50
