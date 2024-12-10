@@ -241,6 +241,21 @@ public class Skilltower : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    public void UseMasterShield()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            cooldownTime = maxCooldownTime;
+            PlayerController[] players = FindObjectsOfType<PlayerController>();
+            foreach (PlayerController player in players)
+            {
+                player.pv.RPC("UseShield", RpcTarget.All, null);
+            }
+            pv.RPC("UseCoolSet", RpcTarget.Others, null);
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         health -= damage;

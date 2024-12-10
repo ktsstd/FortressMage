@@ -223,8 +223,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     }
                     break;
                 case 5:
-
-                    break;
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        skilltower.pv.RPC("UseMasterShield", RpcTarget.All, null);
+                    }
+                        break;
                 case 6:
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
@@ -321,6 +324,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             if (shield > 0)
             {
                 shield--;
+                playerUi.shield = shield;
             }
             else
             {
@@ -433,6 +437,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if (pv.IsMine)
         {
             shield = 4;
+            playerUi.shield = shield;
         }
     }
 
