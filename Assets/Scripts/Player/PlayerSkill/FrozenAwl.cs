@@ -6,7 +6,7 @@ public class FrozenAwl : MonoBehaviour
 {
     public GameObject IceRoad;
     public Vector3 targetPos;
-    public float damage;
+    public int damage;
 
     float summonDelay = 0.2f;
     bool isExplosion = false;
@@ -55,8 +55,8 @@ public class FrozenAwl : MonoBehaviour
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
-                    monster.MonsterDmged(10);
-                    monster.OnMonsterSpeedDown(3f, 0.5f);
+                    monster.MonsterDmged(damage);
+                    monster.OnMonsterSpeedDown(2f, 1f);
                 }
             }
         }

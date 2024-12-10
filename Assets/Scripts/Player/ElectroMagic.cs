@@ -10,17 +10,14 @@ public class ElectroMagic : PlayerController
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
-    private float skillMaxCooltimeA = 2f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
-    private float skillMaxCooltimeS = 5f;
 
     public GameObject skillRangeD;
     private Vector3 skillPosD;
     private float skillCooltimeD;
-    private float skillMaxCooltimeD = 20f;
 
     public GameObject electricshotPrefab;
     public GameObject shockwavePrefab;
@@ -30,6 +27,11 @@ public class ElectroMagic : PlayerController
     {
         base.Start();
         elementalCode = 3;
+        playerAtk = 10;
+        defaultAtk = 10;
+        skillMaxCooltimeA = 2f;
+        skillMaxCooltimeS = 6f;
+        skillMaxCooltimeD = 20f;
     }
 
     public override void Update()
@@ -117,7 +119,7 @@ public class ElectroMagic : PlayerController
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[1]) - transform.position);
                     skillCooltimeS = skillMaxCooltimeS;
                     pv.RPC("PlayAnimation", RpcTarget.All, "ShockWave");
-                    pv.RPC("UseShockWave", RpcTarget.All, skillPosS);
+                    pv.RPC("UseShockWave", RpcTarget.All, (int)(playerAtk * 2) ,skillPosS);
                 }
             }
         }
@@ -141,7 +143,7 @@ public class ElectroMagic : PlayerController
                     skillPosD = new Vector3(GetSkillRange(skillRanges[2]).x, 0.1f, GetSkillRange(skillRanges[2]).z);
                     transform.rotation = Quaternion.LookRotation(GetSkillRange(skillRanges[2]) - transform.position);
                     pv.RPC("PlayAnimation", RpcTarget.All, "TempestFury");
-                    pv.RPC("UseTempestFury", RpcTarget.All, skillPosD);
+                    pv.RPC("UseTempestFury", RpcTarget.All, (int)(playerAtk * 5), skillPosD);
                 }
             }
         }
@@ -151,25 +153,28 @@ public class ElectroMagic : PlayerController
     {
         if (pv.IsMine)
         {
-            pv.RPC("UseElectricShot", RpcTarget.All, null);
+            pv.RPC("UseElectricShot", RpcTarget.All, (int)(playerAtk));
         }
     }
 
     [PunRPC]
-    void UseElectricShot()
+    void UseElectricShot(int _damage)
     {
         GameObject fire = Instantiate(electricshotPrefab, skillPosA, transform.rotation);
+        fire.GetComponent<ElectricShot>().damage = _damage;
     }
 
     [PunRPC]
-    void UseShockWave(Vector3 _skillPos)
+    void UseShockWave(int _damage, Vector3 _skillPos)
     {
         GameObject fire = Instantiate(shockwavePrefab, _skillPos, transform.rotation);
+        fire.GetComponent<ShockWave>().damage = _damage;
     }
 
     [PunRPC]
-    void UseTempestFury(Vector3 _skillPos)
+    void UseTempestFury(int _damage, Vector3 _skillPos)
     {
         GameObject fire = Instantiate(tempestfuryPrefab, _skillPos, transform.rotation);
+        fire.GetComponent<TempestFury>().damage = _damage;
     }
 }

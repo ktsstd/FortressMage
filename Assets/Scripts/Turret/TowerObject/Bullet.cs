@@ -9,15 +9,37 @@ public class Bullet : MonoBehaviourPun
     public float explosionRadius = 3f; // 범위 공격 반경
     public LayerMask enemyLayer;       // 적이 속한 레이어
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
+    public Transform target;
 
     // 발사체가 생성될 때 필요한 데미지와 폭발 반경을 설정하는 함수
-    public void Initialize(float bulletDamage, float bulletExplosionRadius)
+    public void Initialize(float bulletDamage, float bulletExplosionRadius, Transform targetTransform)
     {
         damage = bulletDamage;  // Turret이나 다른 시스템에서 전달된 데미지 값
         explosionRadius = bulletExplosionRadius;  // 폭발 반경 설정
+        target = targetTransform;
     }
 
-     private void OnTriggerEnter(Collider collision)
+    void Update()
+    {
+        if (target != null)
+        {
+            // 목표물의 방향으로 회전
+            RotateTowardsTarget();
+        }
+    }
+
+    private void RotateTowardsTarget()
+    {
+        // 목표물로 향하는 방향 계산
+        Vector3 direction = target.position - transform.position;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2f);
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
     {
         // 적 또는 바닥에 충돌 시 폭발 처리
         if (collision.gameObject.CompareTag("Enemy") || 

@@ -11,16 +11,13 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     public GameObject skillRangeA;
     private Vector3 skillPosA;
     private float skillCooltimeA;
-    private float skillMaxCooltimeA = 3f;
 
     public GameObject skillRangeS;
     private Vector3 skillPosS;
     private float skillCooltimeS;
-    private float skillMaxCooltimeS = 10f;
 
     public GameObject skillEffectD;
     private float skillCooltimeD;
-    private float skillMaxCooltimeD = 30f;
 
     public GameObject fireballPrefab;
     public GameObject firestormPrefab;
@@ -30,6 +27,11 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     {
         base.Start();
         elementalCode = 1;
+        playerAtk = 15;
+        defaultAtk = 15;
+        skillMaxCooltimeA = 4f;
+        skillMaxCooltimeS = 8f;
+        skillMaxCooltimeD = 30f;
     }
     public override void Update()
     {
@@ -118,7 +120,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         }
     }
 
-    void PlayerSkillD() // 지금은 이펙트만 실행시키고 공격력 동기화는 레벨 만들때 처리 동기화처리는 OnPhotonSerializeView에서 하면 될듯
+    void PlayerSkillD()
     {
         if (pv.IsMine)
         {
@@ -130,7 +132,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
                     pv.RPC("UsePhoenix", RpcTarget.All, null);
                     pv.RPC("PlayAnimation", RpcTarget.All, "Phoenix");
                     skillCooltimeD = skillMaxCooltimeD;
-                    playerAtk += 15;
+                    playerAtk += defaultAtk;
                 }
             }
         }
@@ -138,7 +140,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
 
     void OffPhoenix()
     {
-        playerAtk -= 15;
+        playerAtk -= defaultAtk;
         skillEffectD.SetActive(false);
     }
 

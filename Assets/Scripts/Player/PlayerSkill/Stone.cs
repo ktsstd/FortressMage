@@ -5,7 +5,7 @@ using UnityEngine;
 public class Stone : MonoBehaviour
 {
     public Vector3 targetPos;
-    public float damage;
+    public int damage;
 
     float summonDelay = 0.2f;
     bool isExplosion = false;
@@ -60,7 +60,7 @@ public class Stone : MonoBehaviour
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
-                    monster.MonsterDmged(20);
+                    monster.MonsterDmged(damage);
                 }
             }
         }

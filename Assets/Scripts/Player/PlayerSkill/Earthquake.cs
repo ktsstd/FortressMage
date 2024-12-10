@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Earthquake : MonoBehaviour
 {
+    public int damage;
+
     public GameObject[] stones;
 
     void Start()
@@ -45,8 +47,8 @@ public class Earthquake : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out MonsterAI monster))
             {
-                monster.MonsterDmged(10);
-                monster.OnMonsterSpeedDown(1f, 3f);
+                monster.MonsterDmged(damage);
+                monster.OnMonsterSpeedDown(1f, 2f);
             }
         }
     }

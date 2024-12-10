@@ -6,7 +6,7 @@ using TMPro;
 public class GoldManager : MonoBehaviour
 {
     public int goldAmount = 0; // 현재 보유하고 있는 골드
-    public TextMeshProUGUI goldText;
+    public TMP_Text[] goldText;
 
     private void Start()
     {
@@ -33,9 +33,9 @@ public class GoldManager : MonoBehaviour
 
     private void UpdateGoldUI()
     {
-        if (goldText != null)
-        {
-            goldText.text = "Gold: " + goldAmount; // UI 텍스트 업데이트
+        foreach(TMP_Text text in goldText)
+            {
+            text.text = "Gold: " + goldAmount; // 각 텍스트 요소에 골드 금액을 업데이트
         }
     }
 }
