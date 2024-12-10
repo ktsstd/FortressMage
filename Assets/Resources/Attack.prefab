@@ -133,7 +133,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   explosionEffectPrefab: {fileID: 8240002111957047943, guid: 64cbfae635153864bb64bd5a2959e340, type: 3}
+  target: {fileID: 0}
 --- !u!114 &5727044606155997311
 MonoBehaviour:
   m_ObjectHideFlags: 0
