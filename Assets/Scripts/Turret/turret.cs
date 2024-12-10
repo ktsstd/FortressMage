@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.UI;
+using TMPro;
 
 public class Turret : MonoBehaviourPun
 {
@@ -36,8 +37,6 @@ public class Turret : MonoBehaviourPun
 
         animator = GetComponent<Animator>();
     }
-
-
     private IEnumerator FireContinuously()
     {
         while (canAttack)
@@ -96,7 +95,7 @@ public class Turret : MonoBehaviourPun
             Bullet bullet = projectile.GetComponent<Bullet>();
             if (bullet != null)
             {
-                bullet.Initialize(damage, explosionRadius);
+                bullet.Initialize(damage, explosionRadius, target);
             }
         }
     }

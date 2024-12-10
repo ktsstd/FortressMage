@@ -285,6 +285,7 @@ public class Skilltower : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void ResetHealth()
     {
         health = 100f; // ü���� 100���� ����
