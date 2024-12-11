@@ -19,12 +19,13 @@ public class IceSpirit : MonsterAI
     {
         base.Start(); // MonsterAI 스크립트의 Start() 함수 호출 (기본 AI 로직 유지)
         StartAtking = false;
-        MaxHp = 60f;
+        MaxHp = 25f;
         Speed = 3f; // 몬스터 이동 속도 설정
         defaultspped = Speed;
         AttackCooldown = 8.0f; // 공격 쿨타임 설정
         attackRange = 25.0f; // 공격 범위 설정
         projectileSpeed = 1.6f;
+        MonsterDmg = 10;
         CurHp = MaxHp;
     }
 

@@ -26,7 +26,7 @@ public class FirstEliteMonster : MonsterAI
         MaxHp = 200f;
         CurHp = MaxHp;
         MaxHp40Per = MaxHp * 0.4f;
-        MonsterDmg = 10;
+        MonsterDmg = 20;
     }
 
     public override void Update()
@@ -306,6 +306,7 @@ public class FirstEliteMonster : MonsterAI
                 ParticleSys[0].Play();
                 agent.ResetPath();
                 EliteDamageTarget(closestTarget);
+                StartCoroutine(EliteDmgUp());
                 attackTimer = 0.5f;
                 Speed = defaultspped;
                 animator.SetBool("EliteSkill2", false);
@@ -316,6 +317,13 @@ public class FirstEliteMonster : MonsterAI
             yield return null;
         }
         yield break;
+    }
+
+    private IEnumerator EliteDmgUp()
+    {
+        MonsterDmg += MonsterDmg;
+        yield return new WaitForSeconds(20f);
+        MonsterDmg += MonsterDmg;
     }
 
     private bool ShieldAni = false;

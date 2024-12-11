@@ -34,7 +34,7 @@ public class BossSkill5Dmg : MonoBehaviour
         {
             if (isDmg) return;
             Vector3 soundPosition = transform.position;
-            soundManager.PlayMonster(15, 1f, soundPosition);
+            soundManager.PlayMonster(16, 1f, soundPosition);
             Instantiate(DmgObj, Pos1, Quaternion.identity);
             isDmg = true;
         }

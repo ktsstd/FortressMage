@@ -6,7 +6,6 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using JetBrains.Annotations;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 

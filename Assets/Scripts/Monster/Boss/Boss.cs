@@ -18,8 +18,8 @@ public class Boss : MonsterAI
 
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 100f, 100f, 100f };
-    public float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
+    private float[] BossMonsterSkillCooldowns = { 2f, 2f, 2f };
+    private float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
     private float AllSkillCooldown = 3f;  // ��ü ��ų ��Ÿ��
     public float AllSkillCooldownTimer;  // ��ü ��ų ��Ÿ�� Ÿ�̸�
@@ -78,6 +78,8 @@ public class Boss : MonsterAI
         
         if (closestTarget != null)
         {
+            GameObject castleObj = GameObject.FindWithTag("Castle");
+            closestTarget = castleObj.transform;
             float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
 
             if (sqrDistanceToTarget > attackRange * attackRange)
@@ -109,11 +111,6 @@ public class Boss : MonsterAI
                     }
                 }
             }
-        }
-        else
-        {
-            GameObject castleObj = GameObject.FindWithTag("Castle");
-            closestTarget = castleObj.transform;
         }
 
         for (int i = 0; i < BossMonsterSkillTimers.Length; i++)
@@ -436,7 +433,6 @@ public class Boss : MonsterAI
         {
             isBossPatern = false;
             isBossAtking = false;
-            // BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
             BossMonsterSkillTimers[2] = 999999999f;
             AllSkillCooldownTimer = AllSkillCooldown;
             yield break;
@@ -454,8 +450,8 @@ public class Boss : MonsterAI
                     isBossPatern = false;
                     isBossAtking = false;
                     PhotonNetwork.Instantiate("Additional/Boss_Skill_5", ClosetPlayerpos.position, Quaternion.Euler(-90, 0, 0));
-                    Vector3 soundPosition = transform.position;
-                    soundManager.PlayMonster(15, 1f, soundPosition);
+                    // Vector3 soundPosition = transform.position;
+                    soundManager.PlayMonster(15, 1f, closestTarget.position);
                     BossMonsterSkillTimers[2] = BossMonsterSkillCooldowns[2];
                     AllSkillCooldownTimer = AllSkillCooldown;
                     // yield return new WaitForSeconds(1f);
@@ -472,6 +468,7 @@ public class Boss : MonsterAI
         
         yield break;
     }
+
     private IEnumerator BossPaternStart()
     {
         if (!isBossPatern && PhotonNetwork.IsMasterClient)

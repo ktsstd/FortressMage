@@ -13,7 +13,7 @@ public class FireSpirit : MonsterAI
         attackRange = 3.0f; 
         attackCooldown = 8f;
         MonsterDmg = 20;
-        MaxHp = 60f;
+        MaxHp = 40f;
         Speed = 4f;
         defaultspped = Speed;
         StartAtking = false;

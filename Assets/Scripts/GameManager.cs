@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEditor.MPE;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public GameObject[] characterPrefabs;
     public Transform[] spawnPoint;
+    public TMP_Text WaveText; 
     public TMP_Text NickText;
 
     public Transform[] monsterSpawnPoint;
@@ -20,9 +22,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     // public GameObject bossMonster;
     public GameObject TestSpawnObj;
     public GameObject DEMObossObj;
+    public GameObject WaveTextImg;
 
     private int[] maxMonsterCount = { 5, 5, 5, 6, 7 };
-    private float Wave = 1;
+    private int totalmonsterCount;
+    private float Wave = 0;
 
     private bool isStartWave = false;
 
@@ -45,10 +49,31 @@ public class GameManager : MonoBehaviourPunCallbacks
             // 캐릭터를 선택된 스폰 포인트에서 스폰
             SpawnCharacter(selectedCharacterIndex, selectedSpawnPoint.position);
         }
-
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("Spawning with MasterClient");
+            // StartCoroutine(StartSpawnMonster());
+            photonView.RPC("StartWaveTimer", RpcTarget.All);
+        }
         if (NickText != null)
         {
             NickText.text = PhotonNetwork.LocalPlayer.NickName;
+        }
+    }
+
+    [PunRPC]
+    void StartWaveTimer()
+    {
+        StartCoroutine(WaveTimer());
+    }
+
+    void Update()
+    {
+        if (isStartWave)
+        {
+            MonsterAI[] monsters = FindObjectsOfType<MonsterAI>(); 
+            totalmonsterCount = monsters.Length;
+            WaveText.text = "Wave: " + Wave.ToString() + "\nCurMonster: " + totalmonsterCount;
         }
     }
 
@@ -97,8 +122,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("Spawning with MasterClient");
             // StartCoroutine(StartSpawnMonster());
-            StartCoroutine(StartTestWave());
-            isStartWave = true;
+            StartCoroutine(WaveTimer());
         }
         else
         {
@@ -131,16 +155,15 @@ public class GameManager : MonoBehaviourPunCallbacks
                     turret[i].photonView.RPC("ResetHealth", RpcTarget.All, null);
                 }
             }
-
-
-            StartCoroutine(StartTestWave());
+            isStartWave = false;
+            StartCoroutine(WaveTimer());
         }
     }
 
     private bool isMonsterAlive()
     {
         MonsterAI[] monsters = FindObjectsOfType<MonsterAI>(); // 모든 MonsterAI 오브젝트 찾기
-        int totalmonsterCount = monsters.Length;
+        totalmonsterCount = monsters.Length;
         if (totalmonsterCount > 0)
         {
             return true;
@@ -151,11 +174,29 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    private IEnumerator WaveTimer()
+    {
+        Wave += 1;
+        if (Wave == 9)
+        {
+            // 승리
+        }
+        for (int remainTimer = 15; remainTimer > 0; remainTimer --)
+        {
+            WaveText.text = "next: Wave " + Wave.ToString() + "\nTime: " + remainTimer + "seconds";
+            yield return new WaitForSeconds(1f);
+        }
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartCoroutine(StartTestWave());
+        }
+        isStartWave = true;
+    }
+
     private IEnumerator StartTestWave()
     {
         // { "Monster/Spirit of Fire", "Monster/MonsterI", "Monster/Spirit of Light", "Monster/Spirit of Dark",
         // "Monster/Spirit of Wind", "Monster/EliteMonster1", "Monster/EliteMonsetr2" }
-        yield return new WaitForSeconds(15f);
 
         if (isTurretDestroyedAtWave.ContainsKey((int)Wave - 2) && isTurretDestroyedAtWave[(int)Wave - 2])
         {
@@ -165,25 +206,65 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (Wave == 1)
         {
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 11, 1.5f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 6, 2f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 1, 0f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 5, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 3, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 2, 2f));            
         }
         else if (Wave == 2)
         {
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 16, 1.5f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 2f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 3, 3f));
-            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 5, 3f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 7, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 5, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 3, 2f));  
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 2, 3f));
         }
         else if (Wave == 3)
+        {
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 10, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 8, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 4, 2f));  
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 3, 3f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 1, 2.5f));
+        }
+        else if (Wave == 4)
+        {
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 12, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 9, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 2f));  
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 3, 3f));
+            StartCoroutine(SpawnMonsters("EliteMonster/Dragon", 1, 2f));
+        }
+        else if (Wave == 5)
+        {
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 15, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 11, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 2f));  
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 4, 3f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Wind", 2, 3f));
+            StartCoroutine(SpawnMonsters("EliteMonster/Dragon", 1, 2f));
+        }
+        else if (Wave == 6)
+        {
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 17, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 13, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 5, 2f));  
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 4, 3f));
+            StartCoroutine(SpawnMonsters("EliteMonster/EBs", 1, 2f));
+        }
+        else if (Wave == 7)
+        {
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Fire", 20, 1));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Ice", 16, 1.5f));
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Light", 8, 2f));  
+            StartCoroutine(SpawnMonsters("Monster/Spirit of Dark", 6, 3f));
+            StartCoroutine(SpawnMonsters("EliteMonster/Dragon", 1, 2f));
+            StartCoroutine(SpawnMonsters("EliteMonster/EBs", 1, 2f));
+        }
+        else if (Wave == 8)
         {
             PhotonNetwork.Instantiate("Boss/Boss", BossSpawnPoint.position, Quaternion.identity);
             // DEMObossObj.SetActive(true);    
         }
-
-        Wave += 1;
-        Debug.Log(Wave);
+        yield break;
     }
 
     private IEnumerator SpawnMonsters(string monsterName, int count, float spawnDelay)
@@ -301,9 +382,18 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void TestSpawnElite1()
     {
-        string BossMonster = "EliteMonster/Dragon";
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string EliteMonster1 = "EliteMonster/Dragon";
 
-        PhotonNetwork.Instantiate(BossMonster, BossSpawnPoint.position, Quaternion.identity);
+        PhotonNetwork.Instantiate(EliteMonster1, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
+    }
+
+    public void TestSpawnElite2()
+    {
+        int spawnPointRandom = Random.Range(0, monsterSpawnPoint.Length);
+        string EliteMonster2 = "EliteMonster/EBs";
+
+        PhotonNetwork.Instantiate(EliteMonster2, monsterSpawnPoint[spawnPointRandom].position, Quaternion.identity);
     }
 
     public void TestSpawnBoss()

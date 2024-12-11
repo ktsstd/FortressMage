@@ -95,7 +95,20 @@ public class WindSpirit : MonsterAI
                     }
                 }
 
-                else if (tag == "Castle" || tag == "skilltower")
+                if (tag == "skilltower")
+                {
+                    Skilltower skilltowerScript = target.GetComponent<Skilltower>();
+                    if (skilltowerScript != null && skilltowerScript.canAttack)
+                    {
+                        if (sqrDistanceToTarget < closestSqrDistance)
+                        {
+                            closestSqrDistance = sqrDistanceToTarget;
+                            closestTarget = target;
+                        }
+                    }
+                }
+
+                if (tag == "Castle")
                 {
                     if (sqrDistanceToTarget < closestSqrDistance)
                     {

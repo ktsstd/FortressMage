@@ -18,13 +18,13 @@ public class LightSpirit : MonsterAI, IPunObservable
     public override void Start()
     {
         base.Start();
-        MaxHp = 60f;
+        MaxHp = 30f;
         Speed = 5f;
         defaultspped = Speed;
         CurHp = MaxHp;
         StartAtking = false;
         particleSys = GetComponentInChildren<ParticleSystem>();
-        MonsterDmg = 50;
+        MonsterDmg = 20;
     }
 
     public override void Update()
