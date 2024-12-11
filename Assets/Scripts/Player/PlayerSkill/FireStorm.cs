@@ -10,10 +10,17 @@ public class FireStorm : MonoBehaviour
     float timeElapsed;
     float damageDelay;
 
+    private AudioSource audioSource;
+    public AudioClip audioClip;
+
     private void Start()
     {
         oriScale = transform.localScale;
         Invoke("SelfDestroy", 5f);
+
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+        audioSource.PlayOneShot(audioClip, 0.5f);
     }
 
     private void Update()

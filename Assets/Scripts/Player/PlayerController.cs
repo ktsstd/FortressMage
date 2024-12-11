@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public bool isCasting = false;
     public bool isDie = false;
 
+    public AudioSource audioSource;
+    public AudioClip[] audioClip;
+
     public virtual void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -70,10 +73,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
         playerUi = FindObjectOfType<PlayerUi>();
         skilltower = FindObjectOfType<Skilltower>();
+        audioSource = GetComponent<AudioSource>();
         if (pv.IsMine)
         {
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
+            // gameObject.AddComponent<AudioListener>();
 
             PlayerUiSetting();
 
@@ -387,6 +392,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         playerLv++;
         playerUi.playerLv = playerLv;
+    }
+
+    public void WalkSound()
+    {
+        int randomValue = Random.Range(0, 3);
+        switch (randomValue)
+        {
+            case 0:
+                audioSource.PlayOneShot(audioClip[0], 0.5f);
+                break;
+            case 1:
+                audioSource.PlayOneShot(audioClip[1]);
+                break;
+            case 2:
+                audioSource.PlayOneShot(audioClip[2]);
+                break;
+        }
     }
 
     #region Player Buff
