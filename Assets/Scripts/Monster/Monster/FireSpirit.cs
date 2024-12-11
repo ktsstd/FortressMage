@@ -150,6 +150,7 @@ public class FireSpirit : MonsterAI
 
     private IEnumerator FireStartAttack()
     {
+        Vector3 soundPosition = closestTarget.position;
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
@@ -159,7 +160,7 @@ public class FireSpirit : MonsterAI
             if (animTime >= 0.65f)
             {
                 FireDamageTarget(closestTarget);
-                soundClip.PlayOneShot(MonsterAudio[0]);
+                soundManager.PlayMonster(7, 1.0f, soundPosition);
                 StartAtking = false;
                 attackTimer = attackCooldown;
                 yield break;

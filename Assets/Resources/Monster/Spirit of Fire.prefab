@@ -15218,6 +15218,7 @@ MonoBehaviour:
   soundClip: {fileID: 0}
   MonsterAudio:
   - {fileID: 8300000, guid: 878adcd673e55a54f888e5b37757f0f8, type: 3}
+  soundManager: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

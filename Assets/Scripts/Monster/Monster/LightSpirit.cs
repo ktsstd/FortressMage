@@ -8,7 +8,6 @@ public class LightSpirit : MonsterAI, IPunObservable
 {
     // private Transform castleTransform;
     private ParticleSystem particleSys;
-    
     private Transform closestTarget;
 
     private float stopDistance = 2.0f;
@@ -135,34 +134,34 @@ public class LightSpirit : MonsterAI, IPunObservable
 
     private IEnumerator LightAttackStart()
     {
+        Vector3 soundPosition = transform.position;
+        bool soundPlayed1 = false;
+        bool soundPlayed2 = false;
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
             particleSys.Play();
-            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            if (animTime >= 1.0f)
+            if (!soundPlayed1)
             {
+                soundManager.PlayMonster(2, 1.0f, soundPosition);
+                soundPlayed1 = true;
+            }
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (animTime >= 0.63f && !soundPlayed2)
+            {
+                soundPosition = transform.position;
+                soundManager.PlayMonster(3, 1.0f, soundPosition);
+                soundPlayed2 = true;
+                yield return new WaitForSeconds(0.2f);
                 LightDamageTarget(closestTarget);
+                yield return new WaitForSeconds(1f);
                 photonView.RPC("MonsterDied", RpcTarget.All);
             }
-            // if (stateInfo.IsName("Spirit of Light_Animation_Move"))
-            // {
-            //     LightDamageTarget(closestTarget);
-            //     photonView.RPC("MonsterDied", RpcTarget.All);
-            // }
-
             else
             {
                 yield return null;
             }
         }
-        // yield return new WaitForSeconds(3f);
-        // animator.SetBool("StartAttack", true);
-        // particleSys.Play();
-        // yield return new WaitForSeconds(2f);
-        // LightDamageTarget(closestTarget);
-        // yield return new WaitForSeconds(2f);
-        // photonView.RPC("MonsterDied", RpcTarget.All);
         yield break;
     }
 
