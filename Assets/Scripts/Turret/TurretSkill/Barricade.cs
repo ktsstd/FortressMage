@@ -6,9 +6,17 @@ public class Barricade : MonoBehaviour
 {
     float damageDelay;
 
+    private AudioSource audioSource;
+    public AudioClip audioClip;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         Invoke("SelfDestroy", 10f);
+
+        audioSource.PlayOneShot(audioClip, 0.2f);
     }
 
     void Update()

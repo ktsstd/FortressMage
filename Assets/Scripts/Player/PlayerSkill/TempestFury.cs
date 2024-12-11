@@ -6,10 +6,18 @@ public class TempestFury : MonoBehaviour
 {
     public int damage;
 
+    private AudioSource audioSource;
+    public AudioClip audioClip;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         Invoke("ColliderOn", 0.5f);
         Invoke("SelfDestroy", 1.5f);
+
+        audioSource.PlayOneShot(audioClip, 0.5f);
     }
 
     private void OnTriggerEnter(Collider other)

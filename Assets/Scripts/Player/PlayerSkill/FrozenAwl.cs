@@ -12,6 +12,17 @@ public class FrozenAwl : MonoBehaviour
     bool isExplosion = false;
     bool isDestroy = false;
 
+    private AudioSource audioSource;
+    public AudioClip[] audioClip;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
+        audioSource.PlayOneShot(audioClip[0], 0.2f);
+    }
+
     void Update()
     {
         if (targetPos != null && !isDestroy)
@@ -32,6 +43,7 @@ public class FrozenAwl : MonoBehaviour
                 transform.GetChild(0).gameObject.SetActive(false);
                 transform.GetChild(1).gameObject.SetActive(true);
                 Invoke("SelfDestroy", 1f);
+                audioSource.PlayOneShot(audioClip[1], 0.2f);
                 isDestroy = true;
             }
         }

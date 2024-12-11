@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private bool receiveDie;
 
     public GameObject SkillEffect;
+    public GameObject CoolDownEffect;
+    public GameObject ShieldEffect;
+    public GameObject AtkUpEffect;
 
     public Sprite IconImage;
     public Sprite[] skillImages;
@@ -74,11 +77,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         playerUi = FindObjectOfType<PlayerUi>();
         skilltower = FindObjectOfType<Skilltower>();
         audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
         if (pv.IsMine)
         {
             virtualCamera.Follow = transform;
             virtualCamera.LookAt = transform;
-            // gameObject.AddComponent<AudioListener>();
 
             PlayerUiSetting();
 
@@ -330,6 +333,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             {
                 shield--;
                 playerUi.shield = shield;
+                if (shield == 0)
+                {
+                    pv.RPC("PlayShieldEffect", RpcTarget.All, false);
+                    audioSource.PlayOneShot(audioClip[8]);
+                }
             }
             else
             {
@@ -342,7 +350,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             if (playerHp <= 0)
             {
                 if (!isDie)
+                {
                     pv.RPC("PlayAnimation", RpcTarget.All, "Die");
+                    audioSource.PlayOneShot(audioClip[3], 0.5f);
+                }
 
                 isDie = true;
             }
@@ -411,6 +422,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    public void DieSound()
+    {
+        audioSource.PlayOneShot(audioClip[4], 0.5f);
+    }
+
     #region Player Buff
 
     [PunRPC]
@@ -433,6 +449,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         skillMaxCooltimeS *= 2;
         playerUi.isCooltimeBuff = false;
         chromaticAberrationEffect.intensity.value = 0f;
+        PlayCoolDownEffect(false);
     }
 
     [PunRPC]
@@ -451,6 +468,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         playerAtk -= defaultAtk;
         playerUi.isAktBuff = false;
         chromaticAberrationEffect.intensity.value = 0f;
+        PlayAtkUpEffect(false);
     }
 
     [PunRPC]
@@ -545,5 +563,36 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void PlaySkillEffect(bool _bool)
     {
         SkillEffect.SetActive(_bool);
+        audioSource.clip = audioClip[5];
+        if (_bool)
+            audioSource.Play();
+        else
+            audioSource.Stop();
     }
+
+    [PunRPC]
+    public void PlayCoolDownEffect(bool _bool)
+    {
+        CoolDownEffect.SetActive(_bool);
+        if (pv.IsMine)
+            audioSource.PlayOneShot(audioClip[6]);
+    }
+
+    [PunRPC]
+    public void PlayShieldEffect(bool _bool)
+    {
+        ShieldEffect.SetActive(_bool);
+        if (pv.IsMine)
+            audioSource.PlayOneShot(audioClip[7]);
+    }
+
+    [PunRPC]
+    public void PlayAtkUpEffect(bool _bool)
+    {
+        AtkUpEffect.SetActive(_bool);
+        if (pv.IsMine)
+            audioSource.PlayOneShot(audioClip[9]);
+    }
+
+
 }

@@ -22,6 +22,8 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     public GameObject fireballPrefab;
     public GameObject firestormPrefab;
 
+    public AudioClip phoenix;
+
 
     public override void Start()
     {
@@ -179,7 +181,7 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
     void UsePhoenix()
     {
         skillEffectD.SetActive(true);
-        // 공격력 증가 처리하기
+        audioSource.PlayOneShot(phoenix, 0.05f);
         Invoke("OffPhoenix", 15f);
     }
 }

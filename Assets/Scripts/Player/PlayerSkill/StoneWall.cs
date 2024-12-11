@@ -6,9 +6,18 @@ public class StoneWall : MonoBehaviour
 {
     public Quaternion oriRot;
     public Vector3 oriPos;
+
+    private AudioSource audioSource;
+    public AudioClip audioClip;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         Invoke("SelfDestroy", 10f);
+
+        audioSource.PlayOneShot(audioClip, 0.3f);
     }
 
     void Update()

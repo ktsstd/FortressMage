@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour
 {
+    private AudioSource audioSource;
+    public AudioClip[] audioClip;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         Invoke("ColliderOn", 2f);
         Invoke("SelfDestroy", 3.5f);
+
+        audioSource.PlayOneShot(audioClip[0], 0.2f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -26,6 +34,7 @@ public class Meteor : MonoBehaviour
     void ColliderOn()
     {
         GetComponent<SphereCollider>().enabled = true;
+        audioSource.PlayOneShot(audioClip[1], 0.3f);
     }
 
     void SelfDestroy()

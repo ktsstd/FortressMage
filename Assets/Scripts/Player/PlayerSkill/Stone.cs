@@ -7,6 +7,9 @@ public class Stone : MonoBehaviour
     public Vector3 targetPos;
     public int damage;
 
+    private AudioSource audioSource;
+    public AudioClip[] audioClip;
+
     float summonDelay = 0.2f;
     bool isExplosion = false;
     bool isDestroy = false;
@@ -15,7 +18,11 @@ public class Stone : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         oriScale = transform.localScale;
+        audioSource.PlayOneShot(audioClip[0], 0.3f);
     }
 
     void Update()
@@ -37,6 +44,7 @@ public class Stone : MonoBehaviour
                 transform.GetChild(0).gameObject.SetActive(false);
                 transform.GetChild(1).gameObject.SetActive(true);
                 Invoke("SelfDestroy", 1.5f);
+                audioSource.PlayOneShot(audioClip[1], 0.5f);
                 isDestroy = true;
             }
         }

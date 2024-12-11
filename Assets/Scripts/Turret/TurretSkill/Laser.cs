@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
+    private AudioSource audioSource;
+    public AudioClip audioClip;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
+        Invoke("SoundOn", 2f);
         Invoke("ColliderOn", 2.5f);
         Invoke("SelfDestroy", 3f);
     }
@@ -21,6 +27,10 @@ public class Laser : MonoBehaviour
         }
     }
 
+    void SoundOn()
+    {
+        audioSource.PlayOneShot(audioClip, 0.2f);
+    }
 
     void ColliderOn()
     {

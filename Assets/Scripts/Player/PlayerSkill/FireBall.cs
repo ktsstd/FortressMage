@@ -19,7 +19,7 @@ public class FireBall : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.spatialBlend = 1.0f;
-        audioSource.PlayOneShot(audioClip[0]);
+        audioSource.PlayOneShot(audioClip[0], 0.5f);
     }
 
     void Update()
@@ -42,7 +42,7 @@ public class FireBall : MonoBehaviour
                 transform.GetChild(0).gameObject.SetActive(false);
                 transform.GetChild(1).gameObject.SetActive(true);
                 Invoke("SelfDestroy", 1.5f);
-                audioSource.PlayOneShot(audioClip[1]);
+                audioSource.PlayOneShot(audioClip[1], 0.5f);
                 isDestroy = true;
             }
         }

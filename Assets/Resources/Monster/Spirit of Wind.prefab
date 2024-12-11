@@ -667,6 +667,7 @@ MonoBehaviour:
   CurHp: 0
   defaultspped: 0
   monsterSlowCurTime: 0
+  monsterBurnCurTime: 0
   EffectPrefab:
   - {fileID: 5318182267532403982}
   - {fileID: 8893091922262025226}
@@ -681,7 +682,9 @@ MonoBehaviour:
   thisrenderer: []
   thisskinrenderer: []
   animator: {fileID: 0}
+  soundClip: {fileID: 0}
   MonsterAudio: []
+  soundManager: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

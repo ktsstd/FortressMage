@@ -14770,7 +14770,7 @@ MonoBehaviour:
   damage: 0
   audioClip:
   - {fileID: 8300000, guid: 9dcaceacf7d33e34aa85ff393ecbdd91, type: 3}
-  - {fileID: 8300000, guid: 2c19295a6c738a64fb33a4fd87b57091, type: 3}
+  - {fileID: 8300000, guid: 15a321b7e462c044a857da8ccf6c84f9, type: 3}
 --- !u!54 &6406168589818269022
 Rigidbody:
   m_ObjectHideFlags: 0

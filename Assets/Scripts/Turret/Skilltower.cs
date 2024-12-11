@@ -164,6 +164,7 @@ public class Skilltower : MonoBehaviourPun
             foreach (PlayerController player in players)
             {
                 player.pv.RPC("UseCoolTimeBuff", RpcTarget.All, null);
+                player.pv.RPC("PlayCoolDownEffect", RpcTarget.All, true);
             }
             pv.RPC("UseCoolSet", RpcTarget.Others, null);
         }
@@ -236,6 +237,7 @@ public class Skilltower : MonoBehaviourPun
             foreach (PlayerController player in players)
             {
                 player.pv.RPC("UseAtkUpBuff", RpcTarget.All, null);
+                player.pv.RPC("PlayAtkUpEffect", RpcTarget.All, true);
             }
             pv.RPC("UseCoolSet", RpcTarget.Others, null);
         }
@@ -251,6 +253,7 @@ public class Skilltower : MonoBehaviourPun
             foreach (PlayerController player in players)
             {
                 player.pv.RPC("UseShield", RpcTarget.All, null);
+                player.pv.RPC("PlayShieldEffect", RpcTarget.All, true);
             }
             pv.RPC("UseCoolSet", RpcTarget.Others, null);
         }

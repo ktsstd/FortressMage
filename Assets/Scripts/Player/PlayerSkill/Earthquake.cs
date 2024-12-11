@@ -9,8 +9,15 @@ public class Earthquake : MonoBehaviour
 
     public GameObject[] stones;
 
+    private AudioSource audioSource;
+    public AudioClip[] audioClip;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
+        audioSource.PlayOneShot(audioClip[0], 0.3f);
         Invoke("SelfDestroy", 3f);
         StartCoroutine("StonesActiveOn");
     }
@@ -18,12 +25,16 @@ public class Earthquake : MonoBehaviour
     IEnumerator StonesActiveOn()
     {
         stones[0].SetActive(true);
+        audioSource.PlayOneShot(audioClip[1], 0.3f);
         yield return new WaitForSeconds(0.5f);
         stones[1].SetActive(true);
+        audioSource.PlayOneShot(audioClip[1], 0.3f);
         yield return new WaitForSeconds(0.5f);
         stones[2].SetActive(true);
+        audioSource.PlayOneShot(audioClip[1], 0.3f);
         yield return new WaitForSeconds(0.5f);
         stones[3].SetActive(true);
+        audioSource.PlayOneShot(audioClip[1], 0.3f);
     }
 
     void Update()

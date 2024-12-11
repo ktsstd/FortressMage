@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class IceRoad : MonoBehaviour
 {
+    private AudioSource audioSource;
+
     float damageDelay;
     float summonTime;
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         if (gameObject.name == "IceRoad")
+        {
             summonTime = 3.1f;
+            audioSource.Stop();
+        }
         else
             summonTime = 5.1f;
 

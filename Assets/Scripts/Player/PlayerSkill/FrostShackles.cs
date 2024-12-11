@@ -8,8 +8,13 @@ public class FrostShackles : MonoBehaviour
     GameObject childObject;
     int count = 0;
 
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.spatialBlend = 1.0f;
+
         childObject = transform.GetChild(0).gameObject;
         Invoke("SelfDestroy", 4f);
     }
