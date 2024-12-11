@@ -34,7 +34,7 @@ public class Meteor : MonoBehaviour
     void ColliderOn()
     {
         GetComponent<SphereCollider>().enabled = true;
-        audioSource.PlayOneShot(audioClip[1], 0.3f);
+        audioSource.PlayOneShot(audioClip[1], 0.2f);
     }
 
     void SelfDestroy()
