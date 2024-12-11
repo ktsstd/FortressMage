@@ -45,6 +45,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     protected Wall Castle;
     public AudioSource soundClip;
     public AudioClip[] MonsterAudio;
+    public SoundManager soundManager;
 
     public LayerMask obstacleMask;
 
@@ -56,6 +57,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         turret = GameObject.FindWithTag("turret")?.transform;
         castle = GameObject.FindWithTag("Castle")?.transform;
         player = GameObject.FindWithTag("Player")?.transform;
+        soundManager = FindObjectOfType<SoundManager>();
 
         soundClip = GetComponent<AudioSource>();
 

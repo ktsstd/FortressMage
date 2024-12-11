@@ -235,16 +235,19 @@ public class FirstEliteMonster : MonsterAI
 
     private IEnumerator EliteMonster1Skill1()
     {
+        Vector3 soundPosition = transform.position;
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
-            ParticleSys[0].Play();
             float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             // if (stateInfo.IsName("Idle"))
-            if (animTime >= 0.9f)
+            if (animTime >= 0.8f)
             {
+                soundManager.PlayMonster(4, 1.0f, soundPosition);
+                yield return new WaitForSeconds(0.2f);
                 StartAtking = false;
+                ParticleSys[0].transform.position = closestTarget.position;
                 ParticleSys[0].Play();
                 EliteDamageTarget(closestTarget);
                 attackTimer = attackCooldown;
@@ -261,6 +264,7 @@ public class FirstEliteMonster : MonsterAI
 
     private IEnumerator EliteMonster1Skill2()
     {
+        bool isPlaying = false;
         defaultspped = Speed;
         Speed = 12f;
         yield return new WaitForSeconds(0.5f);
@@ -273,23 +277,44 @@ public class FirstEliteMonster : MonsterAI
                 continue;
             }
             float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
+            Vector3 soundPosition = closestTarget.position;
             
             if (sqrDistanceToTarget > attackRange + stopDistance)
             {
-                agent.SetDestination(closestTarget.position);
+                if (closestTarget.CompareTag("Obstacle"))
+                {
+                    soundClip.clip = MonsterAudio[0];
+                    soundClip.loop = true;
+                    if (!isPlaying)
+                    {
+                        soundClip.Play();
+                        isPlaying = true;
+                    }
+                    agent.SetDestination(closestTarget.position);
+                }
+                else
+                {
+                    agent.ResetPath();
+                    attackTimer = 0.5f;
+                    Speed = defaultspped;
+                    animator.SetBool("EliteSkill2", false);
+                    StartAtking = false;
+                    soundClip.Stop();
+                }
             }
             else
             {
                 agent.velocity = Vector3.zero;
+                soundManager.PlayMonster(5, 1.0f, soundPosition);
+                ParticleSys[1].transform.position = closestTarget.position;
                 ParticleSys[1].Play();
                 agent.ResetPath();
                 EliteDamageTarget(closestTarget);
-                attackTimer = attackCooldown;
+                attackTimer = 0.5f;
                 Speed = defaultspped;
                 animator.SetBool("EliteSkill2", false);
-                // yield return new WaitForSeconds(1.2f); // 2초 대기
                 StartAtking = false;
-                animator.SetBool("StartMove", true);
+                soundClip.Stop();
                 yield break;
             }
             yield return null;
