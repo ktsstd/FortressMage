@@ -163,13 +163,14 @@ public class IceSpirit : MonsterAI
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            Vector3 soundPosition = transform.position;
             if (!stateInfo.IsName("Spirit of Ice_Idle+Walk"))
             {
                 if (animTime >= 0.67f)
                 {
                     StartAtking = false;
                     attackTimer = attackCooldown;
-                    soundClip.PlayOneShot(MonsterAudio[0]);
+                    soundManager.PlayMonster(0, 1.0f, soundPosition);
                     LaunchProjectile();
                     yield break;
                 }

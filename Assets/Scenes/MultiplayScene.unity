@@ -10345,15 +10345,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2366151302111340034, guid: 8cf2685855b578241865c0b32f28f56f, type: 3}
   firePoint: {fileID: 725594226}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
   minLaunchPower: 10
   maxLaunchPower: 50
   fireRate: 1
   maxFireRate: 0.2
   explosionRadius: 3
   fireRateIncreaseAmount: 0.2
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 256
   detectionRadius: 20
   health: 100
   damage: 20
@@ -19956,6 +19956,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4812969594714404595, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 5030659675218028360, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
       propertyPath: m_Name
       value: Map
@@ -19976,6 +19980,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 734798912537594109, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1113732147}
+    - targetCorrespondingSourceObject: {fileID: 3489166859687355574, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1418698332}
   m_SourcePrefab: {fileID: 100100000, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
 --- !u!4 &1308150094 stripped
 Transform:
@@ -21224,6 +21231,45 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415073908}
   m_CullTransparentMesh: 1
+--- !u!1 &1418698330 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3489166859687355574, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
+  m_PrefabInstance: {fileID: 1308150093}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1418698332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418698330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1418698333}
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1418698333 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1622027004073581686, guid: 2480a179069b9264aa0d620686e031f8, type: 3}
+  m_PrefabInstance: {fileID: 1308150093}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418698330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb43771b58bf59d4890de2e57a50e3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1423229635
 GameObject:
   m_ObjectHideFlags: 0
@@ -24187,8 +24233,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f300efb15f67e274197fee28e015f188, type: 3}
   - {fileID: 8300000, guid: 0114a31669b4b9b47abad58473f40122, type: 3}
   - {fileID: 8300000, guid: f636b10743d4e1e48ac5307655fc0878, type: 3}
-  - {fileID: 8300000, guid: 039779ef4dd39f0489770914791b5ca8, type: 3}
+  - {fileID: 8300000, guid: ee1965ea554a6e84b8afe12dd8eb3020, type: 3}
   - {fileID: 8300000, guid: 26ee0725f4f235b4787b01d2eaa21563, type: 3}
+  - {fileID: 8300000, guid: ee1965ea554a6e84b8afe12dd8eb3020, type: 3}
+  - {fileID: 8300000, guid: 5a91050f33cc6364c9fbb5501e6432a1, type: 3}
+  - {fileID: 8300000, guid: 0c0645e140a001043b433c567de59868, type: 3}
+  - {fileID: 8300000, guid: f08d34105294ffc4091ebf2482e3ccb9, type: 3}
+  - {fileID: 8300000, guid: 35ac62a3a5e4ba241982ad081bf758b1, type: 3}
+  - {fileID: 8300000, guid: 83be7c0f15d30984cb4404b7bec27e8f, type: 3}
+  - {fileID: 8300000, guid: dc12a723cf821464c85efbe40b5a520f, type: 3}
+  - {fileID: 8300000, guid: 61e27aafcf37a6549a673d35bf6369f7, type: 3}
+  - {fileID: 8300000, guid: 8ff545f5d264f294c90e18da106e7605, type: 3}
 --- !u!82 &1623593277
 AudioSource:
   m_ObjectHideFlags: 0
@@ -25840,15 +25895,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 2366151302111340034, guid: 8cf2685855b578241865c0b32f28f56f, type: 3}
   firePoint: {fileID: 1700045934}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
   minLaunchPower: 10
   maxLaunchPower: 50
   fireRate: 1
   maxFireRate: 0.2
   explosionRadius: 3
   fireRateIncreaseAmount: 0.2
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 256
   detectionRadius: 20
   health: 100
   damage: 20

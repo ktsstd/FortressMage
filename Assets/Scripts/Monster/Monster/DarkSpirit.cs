@@ -9,8 +9,12 @@ public class DarkSpirit : MonsterAI, IPunObservable
     private ParticleSystem particleSys;
     private Transform closestTarget;
     private Vector3 StartPosition;  // 몬스터의 초기 위치
-    private float stopDistance = 5.0f;
+
+    private Vector3 SEffectpos;
+
+    private float stopDistance = 0.8f;
     private bool Attacked = false;
+    private bool isMoveStart = false;
 
     public override void Start()
     {
@@ -21,6 +25,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
         attackRange = 3f;
         CurHp = MaxHp;
         Attacked = false;
+        isMoveStart = false;
         MonsterDmg = 20;
 
         particleSys = GetComponent<ParticleSystem>();
@@ -29,10 +34,6 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            OnMonsterStun(5f);
-        }
         if (!Attacked && !NoTarget)
         {
             closestTarget = GetClosestTarget();
@@ -50,6 +51,11 @@ public class DarkSpirit : MonsterAI, IPunObservable
             if (distanceTotarget > attackRange + stopDistance)
             {
                 animator.SetTrigger("StartMove");
+                if (!isMoveStart)
+                {
+                    soundManager.PlayMonster(10, 1.0f, transform.position);
+                    isMoveStart = true;
+                }
                 agent.SetDestination(closestTarget.position);
             }
 
@@ -129,24 +135,42 @@ public class DarkSpirit : MonsterAI, IPunObservable
 
     private IEnumerator DarkAttackStart()
     {
-        Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 5.8f, transform.position.z);
-        PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+        Vector3 soundPosition = closestTarget.position;
         animator.SetTrigger("StartAttack");
+        yield return new WaitForSeconds(0.5f);
         while(Attacked)
         {
             AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Spirit of dark_Idle"))
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (stateInfo.IsName("Spirit of dark_attack"))
             {
-                DarkDamageTarget(closestTarget);
-                StartCoroutine(DarkGoStart());
-                yield break;
-            }
+                if (animTime >= 0.3)
+                {
+                    soundManager.PlayMonster(9, 1.0f, soundPosition);
+                    yield return new WaitForSeconds(0.3f);
+                    DarkDamageTarget(closestTarget);
+                    Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 2.5f, transform.position.z);
+                    SEffectpos = EffectPos;
+                    PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+                    yield return new WaitForSeconds(2f);
+                    StartCoroutine(DarkGoStart());
+                    yield break;
+                }
 
+                else
+                {
+                    yield return null;
+                }
+            }
             else
             {
                 yield return null;
             }
         }
+    }
+    void SoundStart()
+    {
+        soundManager.PlayMonster(11, 1.0f, SEffectpos);
     }
 
     private IEnumerator DarkGoStart()
@@ -155,16 +179,17 @@ public class DarkSpirit : MonsterAI, IPunObservable
         float targetBaseOffset = -0.3f;
         float GoStartTime = 0;
         float GoingTime = 1f;
+        Invoke("SoundStart", 0.7f);
         while(GoStartTime < GoingTime)
         {
             agent.baseOffset = Mathf.Lerp(currentBaseOffset, targetBaseOffset, GoStartTime / GoingTime);
             GoStartTime += Time.deltaTime;
             yield return null;
         }
-
         transform.position = StartPosition;
         Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 1.18f, transform.position.z);
         PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+        soundManager.PlayMonster(11, 1.0f, EffectPos);
 
         yield return new WaitForSeconds(1.9f);
 
@@ -177,6 +202,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
         }
 
         Attacked = false;
+        isMoveStart = false;
     }
 
     private void DarkDamageTarget(Transform CurTarget)

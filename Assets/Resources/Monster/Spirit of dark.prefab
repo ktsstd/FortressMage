@@ -512,7 +512,9 @@ MonoBehaviour:
   thisrenderer: []
   thisskinrenderer: []
   animator: {fileID: 0}
+  soundClip: {fileID: 0}
   MonsterAudio: []
+  soundManager: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

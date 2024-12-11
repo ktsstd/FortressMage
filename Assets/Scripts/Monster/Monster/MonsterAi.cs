@@ -10,7 +10,6 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public Transform skillTower;
     public Transform turret;
     public Transform castle;
-    public Transform parent;
     public Vector3 DmgTextPos;
 
     public float attackRange = 2.0f;

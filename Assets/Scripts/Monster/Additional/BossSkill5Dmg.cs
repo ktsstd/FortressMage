@@ -11,6 +11,7 @@ public class BossSkill5Dmg : MonoBehaviour
     private Vector3 thisPos;
     private ParticleSystem particleSys;
     private ParticleSystem thisparticleSystem;
+    private SoundManager soundManager;
     private bool isDmg = false;
 
     void Start()
@@ -19,6 +20,7 @@ public class BossSkill5Dmg : MonoBehaviour
         Pos1 = new Vector3(thisPos.x, thisPos.y - 50, thisPos.z);
         particleSys = childObj.GetComponent<ParticleSystem>();
         thisparticleSystem = GetComponent<ParticleSystem>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
 
     void Update()
@@ -30,7 +32,9 @@ public class BossSkill5Dmg : MonoBehaviour
 
         if (!thisparticleSystem.isPlaying)
         {
-            if (isDmg) return;           
+            if (isDmg) return;
+            Vector3 soundPosition = transform.position;
+            soundManager.PlayMonster(15, 1f, soundPosition);
             Instantiate(DmgObj, Pos1, Quaternion.identity);
             isDmg = true;
         }

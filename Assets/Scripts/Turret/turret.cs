@@ -9,18 +9,19 @@ public class Turret : MonoBehaviourPun
 {
     public GameObject projectilePrefab;
     public Transform firePoint;
-    public float minLaunchPower = 10f;
-    public float maxLaunchPower = 50f;
-    public float fireRate = 1f;
-    public float maxFireRate = 0.2f;
-    public float explosionRadius = 3f;
-    public float fireRateIncreaseAmount = 0.2f;
     public LayerMask targetLayer;
-    public float detectionRadius = 10f;
-    public float health = 100f;
 
-    public float damage = 2f;
-    public float increaseAmount = 5f;
+    public float minLaunchPower;
+    public float maxLaunchPower;
+    public float fireRate;
+    public float maxFireRate;
+    public float explosionRadius;
+    public float fireRateIncreaseAmount;
+    public float detectionRadius;
+    public float health;
+
+    public float damage;
+    public float increaseAmount;
     
     public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
     private Animator animator; // Animator 컴포넌트 참조
@@ -35,6 +36,19 @@ public class Turret : MonoBehaviourPun
             StartCoroutine(FireContinuously());
         }
 
+        minLaunchPower = 10f;
+        maxLaunchPower = 50f;
+        fireRate = 1f;
+        maxFireRate = 0.2f;
+        explosionRadius = 3f;
+        fireRateIncreaseAmount = 0.2f;
+        detectionRadius = 20f;
+        health = 100f;
+
+        damage = 2f;
+        increaseAmount = 5f;
+
+        canAttack = true;
         animator = GetComponent<Animator>();
     }
     private IEnumerator FireContinuously()

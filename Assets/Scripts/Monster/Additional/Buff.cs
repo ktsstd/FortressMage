@@ -13,12 +13,10 @@ public class Buff : MonoBehaviour
         MonsterAI monster = other.GetComponent<MonsterAI>();
         if (monster != null)
         {
-            Debug.Log("Particle collided with: " + other.name);  // 디버그 로그 출력
             ApplyBuff(monster);
         }
         else
         {
-            Debug.Log("No MonsterAI found on: " + other.name);  // MonsterAI를 찾을 수 없는 경우
         }
         Debug.Log(other.name);  
     }

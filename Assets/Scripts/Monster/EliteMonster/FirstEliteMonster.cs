@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class FirstEliteMonster : MonsterAI
 {
-    private int MonsterShield = 60;
+    private int MonsterShield = 100;
     private int CurShield = 0;
     private float MaxHp40Per;
     private float stopDistance = 7f;
@@ -15,7 +15,7 @@ public class FirstEliteMonster : MonsterAI
 
     private Transform closestTarget;
 
-    public ParticleSystem[] ParticleSys;    
+    public ParticleSystem[] ParticleSys; 
 
     public override void Start()
     {
@@ -41,37 +41,34 @@ public class FirstEliteMonster : MonsterAI
             float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
             if (canMove)
             {
-                if (sqrDistanceToTarget > attackRange * attackRange)
+                if (sqrDistanceToTarget > attackRange * attackRange && !closestTarget.CompareTag("Obstacle"))
                 {
-                    if (!closestTarget.CompareTag("Obstacle"))
+                    if (!StartAtking)
                     {
-                        if (!StartAtking)
-                        {
-                            animator.SetBool("StartMove", true);
-                            agent.SetDestination(closestTarget.position);
-                        }
-                    }
-                    else
-                    {
-                        if (!StartAtking)
-                        {
-                            agent.ResetPath();
-                            StartAtking = true;
-                            animator.SetBool("StartMove", false);
-                            animator.SetBool("EliteSkill2", true);
-                            StartCoroutine(EliteMonster1Skill2());
-                        }
+                        animator.SetBool("StartMove", true);
+                        agent.SetDestination(closestTarget.position);
                     }
                 }
-                else
+                else if (sqrDistanceToTarget <= attackRange * attackRange && !closestTarget.CompareTag("Obstacle"))
                 {
                     agent.ResetPath();
+                    animator.SetBool("StartMove", false);
                     if (!StartAtking && attackTimer <= 0f)
                     {
                         StartAtking = true;
-                        animator.SetBool("StartMove", false);
                         animator.SetTrigger("EliteSkill1");
                         StartCoroutine(EliteMonster1Skill1());
+                    }
+                }
+                else if (closestTarget.CompareTag("Obstacle"))
+                {
+                    agent.ResetPath();
+                    if (!StartAtking)
+                    {
+                        StartAtking = true;
+                        animator.SetBool("StartMove", false);
+                        animator.SetBool("EliteSkill2", true);
+                        StartCoroutine(EliteMonster1Skill2());
                     }
                 }
             }
@@ -247,8 +244,7 @@ public class FirstEliteMonster : MonsterAI
                 soundManager.PlayMonster(4, 1.0f, soundPosition);
                 yield return new WaitForSeconds(0.2f);
                 StartAtking = false;
-                ParticleSys[0].transform.position = closestTarget.position;
-                ParticleSys[0].Play();
+                PhotonNetwork.Instantiate("Additional/EliteAttack", closestTarget.position, Quaternion.identity);
                 EliteDamageTarget(closestTarget);
                 attackTimer = attackCooldown;
                 yield break;
@@ -306,8 +302,8 @@ public class FirstEliteMonster : MonsterAI
             {
                 agent.velocity = Vector3.zero;
                 soundManager.PlayMonster(5, 1.0f, soundPosition);
-                ParticleSys[1].transform.position = closestTarget.position;
-                ParticleSys[1].Play();
+                ParticleSys[0].transform.position = closestTarget.position;
+                ParticleSys[0].Play();
                 agent.ResetPath();
                 EliteDamageTarget(closestTarget);
                 attackTimer = 0.5f;
@@ -322,16 +318,48 @@ public class FirstEliteMonster : MonsterAI
         yield break;
     }
 
+    private bool ShieldAni = false;
+    private bool soundPlayed1 = false;
     private IEnumerator EliteMonsterShield(int MonsterShield)
     {
-        agent.ResetPath();
+        if (isShielded) yield break;
         isShielded = true;
-        ParticleSys[2].Play();
-        CurShield = MonsterShield;
-        // animator.SetTrigger("EltieSkill1");
-        yield return new WaitForSeconds(2f); // 2초 대기
-        Debug.Log("Shield");
-        
+        ShieldAni = false;
+
+        while(!ShieldAni)
+        {
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            agent.ResetPath();
+            StartAtking = true;
+            if (stateInfo.IsName("Shield"))
+            {
+                Vector3 soundPosition = transform.position;
+                if (!soundPlayed1)
+                {
+                    soundManager.PlayMonster(6, 0.6f, soundPosition);
+                    soundPlayed1 = true;
+                }                
+                if (animTime >= 0.8f)
+                {
+                    CurShield = MonsterShield;
+                    ParticleSys[1].Play();
+                    ShieldAni = true;
+                    yield return new WaitForSeconds(0.5f);
+                    StartAtking = false;
+                }
+            }
+            else
+            {
+                if (animTime >= 1f)
+                {
+                    animator.SetTrigger("EliteShiled");
+                    StartAtking = true;
+                    yield return new WaitForSeconds(0.5f);
+                }
+            }
+            yield return null;
+        }
     }
 
     public override void MonsterDmged(int playerdamage)
@@ -342,7 +370,7 @@ public class FirstEliteMonster : MonsterAI
             CurShield -= playerdamage;
             if (CurShield <= 0)
             {
-                ParticleSys[2].Stop();
+                ParticleSys[1].Stop();
             }
         }
 

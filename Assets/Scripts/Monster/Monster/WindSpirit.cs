@@ -7,8 +7,10 @@ public class WindSpirit : MonsterAI
     public ParticleSystem particleSys;
     private Transform closestTarget;
 
+    private bool StartAtking = false;
+
     private float stopDistance = 20.0f;
-    private float skillCooldown = 10f;
+    private float skillCooldown = 6f;
     public float skillCooltime;
 
     public override void Start()
@@ -46,11 +48,12 @@ public class WindSpirit : MonsterAI
             else
             {
                 agent.ResetPath();
-                if (skillCooltime <= 0)
+                if (skillCooltime <= 0 && !StartAtking)
                 {
+                    StartAtking = true;
+                    particleSys.Play();       
                     animator.SetTrigger("StartAttack");
-                    skillCooltime = skillCooldown;
-                    particleSys.Play();
+                    StartCoroutine(WindStartAttack());
                 }
             }
         }
@@ -106,41 +109,31 @@ public class WindSpirit : MonsterAI
         return closestTarget;
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     MonsterAI monster = other.GetComponent<MonsterAI>();
-    //     if (monster != null)
-    //     {
-    //         ApplyBuff(monster);
-    //     }
-    // }
+    private IEnumerator WindStartAttack()
+    {
 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     MonsterAI monster = other.GetComponent<MonsterAI>();
-    //     if (monster != null)
-    //     {
-    //         RemoveBuff(monster);
-    //     }
-    // }
-
-    // private void ApplyBuff(MonsterAI monster)
-    // {
-    //     monster.Speed *= speedBuff; // 몬스터 속도 증가
-    //     monster.AttackCooldown -= attackCooldownReduction; // 공격 쿨타임 감소
-
-    //     // 쿨타임이 0 미만이 되지 않도록 방지
-    //     if (monster.AttackCooldown < 0)
-    //     {
-    //         monster.AttackCooldown = 0;
-    //     }
-    // }
-
-    // private void RemoveBuff(MonsterAI monster)
-    // {
-    //     monster.Speed /= speedBuff; // 원래 속도로 복구
-    //     monster.AttackCooldown += attackCooldownReduction; // 원래 쿨타임으로 복구
-
-    //     Debug.Log($"{monster.name}이 버프 장판에서 나갔다");
-    // }
+        yield return new WaitForSeconds(0.5f);
+        while(StartAtking)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            Vector3 soundPosition = transform.position;
+            if (!stateInfo.IsName("Idle"))
+            {
+                if (animTime >= 0.4f)
+                {
+                    StartAtking = false;
+                    skillCooltime = skillCooldown;
+                    yield return new WaitForSeconds(0.4f);
+                    soundManager.PlayMonster(8, 1.0f, soundPosition);
+                    yield break;
+                }
+                else
+                {
+                    yield return null;
+                }
+            }
+        }
+        yield break;
+    }
 }
