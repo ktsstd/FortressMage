@@ -32,7 +32,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool canMove = true;
 
     private List<(float slowtime, float slowmoveSpeed)> slowEffects = new List<(float, float)>();
-    private List<(float burntime, int burnvalue)> burnEffects = new List<(float, int)>();
+    private List<(int burntime, int burnvalue)> burnEffects = new List<(int, int)>();
 
     public NavMeshAgent agent;
     public MeshRenderer[] thisrenderer;
@@ -123,7 +123,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
     
-    public virtual void OnMonsterBurned(float _time, int _burnValue)
+    public virtual void OnMonsterBurned(int _time, int _burnValue)
     {
         if (monsterBurnCurTime > 0)
         {
@@ -137,7 +137,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     private Coroutine BurnCoroutine;
-    public void OnMonsterBurningStart(float _time, int _burnValue)
+    public void OnMonsterBurningStart(int _time, int _burnValue)
     {
         if (BurnCoroutine != null)
             StopCoroutine(BurnCoroutine);
@@ -145,7 +145,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         BurnCoroutine = StartCoroutine(MonsterBurning(_time, _burnValue));
     }
 
-    IEnumerator MonsterBurning(float _time, int _burnValue) // 이동 속도 감소 처리
+    IEnumerator MonsterBurning(int _time, int _burnValue) // 이동 속도 감소 처리
     {
         EffectPrefab[0].SetActive(true);
         monsterBurnCurTime = _time;
@@ -153,20 +153,21 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         while (monsterBurnCurTime > 0)
         {
             yield return null;
-            monsterBurnCurTime -= Time.deltaTime;
+            monsterBurnCurTime -= 1;
             MonsterDmged(burnDmgValue);
 
-            for (int i = 0; i < slowEffects.Count; i++)
+            for (int i = 0; i < burnEffects.Count; i++)
             {
                 var remaineffect = burnEffects[i];
-                slowEffects[i] = (remaineffect.burntime - Time.deltaTime, remaineffect.burnvalue);
+                burnEffects[i] = (remaineffect.burntime - 1, remaineffect.burnvalue);
             }
+            yield return new WaitForSeconds(1);
         }
         // yield return new WaitForSeconds(_time);
-        if (slowEffects.Count > 0)
+        if (burnEffects.Count > 0)
         {
             var nextBurnEffect = burnEffects[0];
-            slowEffects.RemoveAt(0);
+            burnEffects.RemoveAt(0);
 
             OnMonsterBurningStart(nextBurnEffect.burntime, nextBurnEffect.burnvalue);
         }
