@@ -253,7 +253,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
             }
             else
             {
-                Speed -= _moveSpeed;
+                Speed += _moveSpeed;
             }
             speedCoroutine = null;
             isSlow = false;

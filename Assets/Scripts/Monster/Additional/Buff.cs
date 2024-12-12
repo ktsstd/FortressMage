@@ -17,6 +17,7 @@ public class Buff : MonoBehaviour
         }
         else
         {
+
         }
         Debug.Log(other.name);  
     }
@@ -31,7 +32,7 @@ public class Buff : MonoBehaviour
             {
                 float SlowedSpeed = monsterObj.defaultspped;
                 SlowedSpeed -= monsterObj.Speed;
-                monsterObj.Speed = (monsterObj.defaultspped * speedBuff) - SlowedSpeed;
+                monsterObj.Speed = (monsterObj.defaultspped * speedBuff) + SlowedSpeed;
             }
             else
             {
