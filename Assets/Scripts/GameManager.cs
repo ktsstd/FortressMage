@@ -160,6 +160,16 @@ public class GameManager : MonoBehaviourPunCallbacks
                 }
             }
             isStartWave = false;
+
+            Skilltower[] skilltower = FindObjectsOfType<Skilltower>();
+            for (int i = 0; i < turret.Length; i++)
+            {
+                if (turret[i].canAttack == false)
+                {
+                    turret[i].photonView.RPC("ResetHealth", RpcTarget.All, null);
+                }
+            }
+            isStartWave = false;
             photonView.RPC("StartWaveTimer", RpcTarget.All);
         }
     }

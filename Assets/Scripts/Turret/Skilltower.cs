@@ -41,6 +41,10 @@ public class Skilltower : MonoBehaviourPun
 
     public Image barImage;
 
+    public AudioClip destructionSound;
+    private AudioSource audioSource;
+    public AudioClip rebuildSound;
+
     //private float resetTime = 0.5f;
 
     private void Start()
@@ -51,6 +55,8 @@ public class Skilltower : MonoBehaviourPun
 
         maxHealth = 100f;
         health = maxHealth;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -303,10 +309,20 @@ public class Skilltower : MonoBehaviourPun
         {
             CreateExplosionEffect();
             hasExploded = true;  // 폭발 이펙트를 실행했음을 기록
+            PlayDestructionSound();
         };
     }
 
-    private void CreateExplosionEffect()
+    private void PlayDestructionSound()
+    {
+        if (destructionSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(destructionSound);
+        }
+    }
+
+
+        private void CreateExplosionEffect()
     {
         if (explosionEffectPrefab != null)
         {
@@ -326,13 +342,18 @@ public class Skilltower : MonoBehaviourPun
     [PunRPC]
     public void ResetHealth()
     {
-        health = 100f; // ü���� 100���� ����
+        health = maxHealth; // ü���� 100���� ����
         canAttack = true; // ���� �����ϰ� ����
         hasExploded = false;
         if (animator != null)
         {
             animator.ResetTrigger("DestroyTrigger"); // "DestroyTrigger" 초기화
             animator.SetTrigger("RebuildTrigger");   // 재구축 애니메이션 트리거
+        }
+
+        if (rebuildSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(rebuildSound); // 포탑 재생성 사운드 재생
         }
 
         if (barImage != null)
