@@ -361,6 +361,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         yield return new WaitForSeconds(3);
+        PhotonNetwork.LeaveRoom();
         DefeatScene();
     }
 
