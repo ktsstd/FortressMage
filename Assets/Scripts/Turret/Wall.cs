@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class Wall : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -9,7 +10,10 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
     public AudioClip audioClip;
     bool playEvent = false;
 
-    public float health = 100f;
+    public Image barImage;
+
+    public float health;
+    public float maxHealth;
     Animator animator;
     private void Start()
     {
@@ -17,6 +21,9 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
         audioSource.spatialBlend = 1.0f;
 
         animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
+
+        maxHealth = 100f;
+        health = maxHealth;
     }
 
     public void TakeDamage(float damage)
@@ -29,6 +36,18 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
             audioSource.PlayOneShot(audioClip, 0.5f);
             playEvent = true;
         }
+
+        if (barImage != null)
+        {
+            float healthPercentage = health / maxHealth;
+            photonView.RPC("UpdateHealthBar", RpcTarget.AllBuffered, healthPercentage);
+        }
+    }
+
+    [PunRPC]
+    private void UpdateHealthBar(float healthPercentage)
+    {
+        barImage.fillAmount = healthPercentage;
     }
 
     [PunRPC]
