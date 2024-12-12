@@ -26,8 +26,8 @@ public class SecondEliteMonster : MonsterAI
         base.Start();
         thisanimator = GetComponentInChildren<Animator>();
         isEliteMonsterPatern = false;
-        MaxHp = 60f;
-        Speed = 4f;
+        MaxHp = 450f;
+        Speed = 6f;
         attackRange = 1f;
         defaultspped = Speed;
         CurHp = MaxHp;

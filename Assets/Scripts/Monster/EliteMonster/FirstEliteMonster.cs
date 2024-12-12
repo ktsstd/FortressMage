@@ -23,7 +23,7 @@ public class FirstEliteMonster : MonsterAI
         attackCooldown = 5.0f;
         attackTimer = attackCooldown; 
         attackRange = 5.0f;    
-        MaxHp = 200f;
+        MaxHp = 400f;
         CurHp = MaxHp;
         MaxHp40Per = MaxHp * 0.4f;
         MonsterDmg = 20;
@@ -63,10 +63,10 @@ public class FirstEliteMonster : MonsterAI
                 else if (closestTarget.CompareTag("Obstacle"))
                 {
                     agent.ResetPath();
+                    animator.SetBool("StartMove", false);
                     if (!StartAtking)
                     {
                         StartAtking = true;
-                        animator.SetBool("StartMove", false);
                         animator.SetBool("EliteSkill2", true);
                         StartCoroutine(EliteMonster1Skill2());
                     }
@@ -233,6 +233,7 @@ public class FirstEliteMonster : MonsterAI
     private IEnumerator EliteMonster1Skill1()
     {
         Vector3 soundPosition = transform.position;
+        bool ParticleStart = false;
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {
@@ -242,11 +243,16 @@ public class FirstEliteMonster : MonsterAI
             if (animTime >= 0.8f)
             {
                 soundManager.PlayMonster(4, 1.0f, soundPosition);
-                PhotonNetwork.Instantiate("Additional/EliteAttack", closestTarget.position, Quaternion.identity);
+                if (!ParticleStart)
+                {
+                    PhotonNetwork.Instantiate("Additional/EliteAttack", closestTarget.position, Quaternion.identity);
+                    ParticleStart = true;
+                }
                 yield return new WaitForSeconds(0.2f);
                 StartAtking = false;
                 EliteDamageTarget(closestTarget);
                 attackTimer = attackCooldown;
+                ParticleStart = false;
                 yield break;
             }
 
@@ -387,7 +393,7 @@ public class FirstEliteMonster : MonsterAI
             CurHp -= playerdamage;
             if (CurHp <= MaxHp40Per && !isShielded)
             {
-                StartCoroutine(EliteMonsterShield(MonsterShield));
+                photonView.RPC("ShieldPStart", RpcTarget.All);
             }
         }
         
@@ -395,5 +401,11 @@ public class FirstEliteMonster : MonsterAI
         {
             MonsterDied();
         }
+    }
+
+    [PunRPC]
+    private void ShieldPStart()
+    {
+        StartCoroutine(EliteMonsterShield(MonsterShield));
     }
 }
