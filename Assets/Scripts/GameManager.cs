@@ -194,7 +194,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (Wave == 9)
         {
             for (int remainTimer = 5; remainTimer > 0; remainTimer --)
-            WaveText.text = "Victory!";
+            WaveText.text = "Victory!\n" + remainTimer;
             yield return new WaitForSeconds(1f);
         }
         for (int remainTimer = 15; remainTimer > 0; remainTimer --)
@@ -207,7 +207,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine(StartTestWave());
+            if (Wave != 9)
+            {
+                StartCoroutine(StartTestWave());
+            }
+            else
+            {
+                photonView.RPC("VictoryScene", RpcTarget.All);
+            }
         }
         isStartWave = true;
     }
@@ -344,10 +351,26 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    // public override void OnMasterClientSwitched(Player newMasterClient)
-    // {
-    //     UpdatePlayerListUI(); // ���ο� ���� ���� ����
-    // }
+    public IEnumerator VictoryEvent()
+    {
+        EndImage[1].gameObject.SetActive(true);
+
+        float timeElapsed = 0f;
+        Color color = EndImage[0].color;
+
+        while (timeElapsed < 1)
+        {
+            timeElapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(0, 1, timeElapsed / 1);
+            color.a = alpha;
+            EndImage[1].color = color;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(5);
+        PhotonNetwork.LeaveRoom();
+        VictoryScene();
+    }
 
     public IEnumerator DefeatEvent()
     {
@@ -450,6 +473,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
 
+    [PunRPC]
     public void VictoryScene()
     {
         SceneManager.LoadScene("VictoryScene");

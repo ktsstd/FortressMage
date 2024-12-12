@@ -386,6 +386,8 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!photonView.IsMine) return;
 
         CurHp -= playerDamage;
+        Vector3 soundPosition = transform.position;
+        soundManager.PlayMonster(20, 0.4f, soundPosition);
         // GameObject DmgTextObj = PhotonNetwork.Instantiate("Additional/DmgText", DmgTextPos, transform.rotation);
         // DmgTextObj.transform.SetParent(GameObject.Find("DmgCanvas").transform, false);
         // DmgText DmgTextScript = DmgTextObj.GetComponent<DmgText>();
