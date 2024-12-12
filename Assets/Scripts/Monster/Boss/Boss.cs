@@ -547,8 +547,14 @@ public class Boss : MonsterAI
         {
             animator.SetTrigger("BossDie");
             isBossAtking = true;
-            isBossPatern = true;             
+            isBossPatern = true;
+            Invoke("IsBossDie", 3f);
         }
+    }
+
+    public void IsBossDie()
+    {
+        photonView.RPC("MonsterDied", RpcTarget.All, null);
     }
 
     public override void OnMonsterStun(float _time)

@@ -914,11 +914,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b7737d6d8be941e43b2c94a0d3ccb86a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1c6256ce38f7f814dbd8af12f89cff1a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.172
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

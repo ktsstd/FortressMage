@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                photonView.RPC("VictoryScene", RpcTarget.All);
+                photonView.RPC("VictoryEvents", RpcTarget.All);
             }
         }
         isStartWave = true;
@@ -349,6 +349,12 @@ public class GameManager : MonoBehaviourPunCallbacks
                 Debug.Log($"Skilltower destroyed at Wave {wave}");
             }
         }
+    }
+
+    [PunRPC]
+    public void VictoryEvents()
+    {
+        StartCoroutine("VictoryEvent");
     }
 
     public IEnumerator VictoryEvent()
