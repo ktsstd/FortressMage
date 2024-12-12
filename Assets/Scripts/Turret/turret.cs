@@ -32,6 +32,9 @@ public class Turret : MonoBehaviourPun
 
     public Image barImage;
 
+    public AudioClip destructionSound;
+    private AudioSource audioSource;
+
     private void Start()
     {
         if (PhotonNetwork.IsMasterClient) // ȣ��Ʈ�� �ڵ� ���� ����
@@ -55,6 +58,8 @@ public class Turret : MonoBehaviourPun
 
         canAttack = true;
         animator = GetComponent<Animator>();
+
+        audioSource = GetComponent<AudioSource>();
     }
     private IEnumerator FireContinuously()
     {
@@ -175,6 +180,7 @@ public class Turret : MonoBehaviourPun
         {
             CreateExplosionEffect();
             hasExploded = true;  // 폭발 이펙트를 실행했음을 기록
+            PlayDestructionSound();
         }
     }
 
@@ -191,6 +197,14 @@ public class Turret : MonoBehaviourPun
 
             // 1초 후 이펙트 제거
             Destroy(explosion, 1f);
+        }
+    }
+
+    private void PlayDestructionSound()
+    {
+        if (destructionSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(destructionSound);
         }
     }
 
