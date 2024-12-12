@@ -56,6 +56,7 @@ public class FireSpirit : MonsterAI
                 agent.ResetPath();
                 if (StartAtking)
                 {
+                    StartAtking = false;
                     StopCoroutine(FireStartAttack());
                 }
             }            

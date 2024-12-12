@@ -56,6 +56,7 @@ public class FirstEliteMonster : MonsterAI
                     if (!StartAtking && attackTimer <= 0f)
                     {
                         StartAtking = true;
+                        animator.SetBool("StartMove", false);
                         animator.SetTrigger("EliteSkill1");
                         StartCoroutine(EliteMonster1Skill1());
                     }
@@ -67,6 +68,7 @@ public class FirstEliteMonster : MonsterAI
                     if (!StartAtking)
                     {
                         StartAtking = true;
+                        animator.SetBool("StartMove", false);
                         animator.SetBool("EliteSkill2", true);
                         StartCoroutine(EliteMonster1Skill2());
                     }
@@ -367,8 +369,8 @@ public class FirstEliteMonster : MonsterAI
             {
                 if (animTime >= 1f)
                 {
+                    animator.SetBool("StartMove", false);
                     animator.SetTrigger("EliteShiled");
-                    StartAtking = true;
                     yield return new WaitForSeconds(0.5f);
                 }
             }
@@ -410,7 +412,7 @@ public class FirstEliteMonster : MonsterAI
     }
 
     [PunRPC]
-    public void ShieldPStop()
+     void ShieldPStop()
     {
         ParticleSys[1].Stop();
     }    
