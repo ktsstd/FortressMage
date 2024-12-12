@@ -198,61 +198,64 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
             if (aniInfo.IsName("Pray") || aniInfo.IsName("Pray_Loop"))
             {
-                switch (skilltower.mixSkillNum)
+                if (skilltower.elementalSet[0] == elementalCode)
                 {
-                    case 0:
-                        break;
-                    case 1:
-                        if (Input.GetKeyDown(KeyCode.Space))
-                        {
-                            skilltower.pv.RPC("UseMasterCoolTimeBuff", RpcTarget.All, null);
-                        }
-                        break;
-                    case 2:
-                        if (Input.GetKeyDown(KeyCode.Space))
-                            skilltower.laserRange.SetActive(true);
-                        if (Input.GetKeyUp(KeyCode.Space))
-                        {
-                            skilltower.laserRange.SetActive(false);
-                            skilltower.pv.RPC("UseMasterLazer", RpcTarget.All, null);
-                        }
-                        break;
-                    case 3:
-                        if (Input.GetKey(KeyCode.Space))
-                        {
-                            skilltower.meteorRange.SetActive(true);
-                            skilltower.meteorRange.transform.position = GetSkillRange(20f);
-                        }
-                        if (Input.GetKeyUp(KeyCode.Space))
-                        {
-                            skilltower.meteorRange.SetActive(false);
-                            skilltower.pv.RPC("UseMasterMeteor", RpcTarget.All, GetSkillRange(20f));
-                        }
-                        break;
-                    case 4:
-                        if (Input.GetKey(KeyCode.Space))
-                        {
-                            skilltower.barricadeRange.SetActive(true);
-                            skilltower.barricadeRange.transform.position = new Vector3(GetSkillRange(20f).x, GetSkillRange(20f).y, 0);
-                        }
-                        if (Input.GetKeyUp(KeyCode.Space))
-                        {
-                            skilltower.barricadeRange.SetActive(false);
-                            skilltower.pv.RPC("UseMasterBarricade", RpcTarget.All, skilltower.barricadeRange.transform.position);
-                        }
-                        break;
-                    case 5:
-                        if (Input.GetKeyDown(KeyCode.Space))
-                        {
-                            skilltower.pv.RPC("UseMasterShield", RpcTarget.All, null);
-                        }
-                        break;
-                    case 6:
-                        if (Input.GetKeyDown(KeyCode.Space))
-                        {
-                            skilltower.pv.RPC("UseMasterAtkUpBuff", RpcTarget.All, null);
-                        }
-                        break;
+                    switch (skilltower.mixSkillNum)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            if (Input.GetKeyDown(KeyCode.Space))
+                            {
+                                skilltower.pv.RPC("UseMasterCoolTimeBuff", RpcTarget.All, null);
+                            }
+                            break;
+                        case 2:
+                            if (Input.GetKeyDown(KeyCode.Space))
+                                skilltower.laserRange.SetActive(true);
+                            if (Input.GetKeyUp(KeyCode.Space))
+                            {
+                                skilltower.laserRange.SetActive(false);
+                                skilltower.pv.RPC("UseMasterLazer", RpcTarget.All, null);
+                            }
+                            break;
+                        case 3:
+                            if (Input.GetKey(KeyCode.Space))
+                            {
+                                skilltower.meteorRange.SetActive(true);
+                                skilltower.meteorRange.transform.position = GetSkillRange(20f);
+                            }
+                            if (Input.GetKeyUp(KeyCode.Space))
+                            {
+                                skilltower.meteorRange.SetActive(false);
+                                skilltower.pv.RPC("UseMasterMeteor", RpcTarget.All, GetSkillRange(20f));
+                            }
+                            break;
+                        case 4:
+                            if (Input.GetKey(KeyCode.Space))
+                            {
+                                skilltower.barricadeRange.SetActive(true);
+                                skilltower.barricadeRange.transform.position = new Vector3(GetSkillRange(20f).x, GetSkillRange(20f).y, 0);
+                            }
+                            if (Input.GetKeyUp(KeyCode.Space))
+                            {
+                                skilltower.barricadeRange.SetActive(false);
+                                skilltower.pv.RPC("UseMasterBarricade", RpcTarget.All, skilltower.barricadeRange.transform.position);
+                            }
+                            break;
+                        case 5:
+                            if (Input.GetKeyDown(KeyCode.Space))
+                            {
+                                skilltower.pv.RPC("UseMasterShield", RpcTarget.All, null);
+                            }
+                            break;
+                        case 6:
+                            if (Input.GetKeyDown(KeyCode.Space))
+                            {
+                                skilltower.pv.RPC("UseMasterAtkUpBuff", RpcTarget.All, null);
+                            }
+                            break;
+                    }
                 }
             }
         }

@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.Log("Spawning with MasterClient");
             // StartCoroutine(StartSpawnMonster());
             photonView.RPC("StartWaveTimer", RpcTarget.All);
+            isStartWave = false;
         }
         if (NickText != null)
         {
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void StartWaveTimer()
     {
+        isStartWave = false;
         StartCoroutine(WaveTimer());
     }
 
