@@ -384,7 +384,7 @@ public class FirstEliteMonster : MonsterAI
             CurShield -= playerdamage;
             if (CurShield <= 0)
             {
-                ParticleSys[1].Stop();
+                photonView.RPC("ShieldPStop", RpcTarget.All);
             }
         }
 
@@ -408,4 +408,10 @@ public class FirstEliteMonster : MonsterAI
     {
         StartCoroutine(EliteMonsterShield(MonsterShield));
     }
+
+    [PunRPC]
+    private void ShieldPStop()
+    {
+        ParticleSys[1].Stop();
+    }    
 }

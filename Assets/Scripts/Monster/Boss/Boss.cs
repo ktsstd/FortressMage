@@ -531,6 +531,26 @@ public class Boss : MonsterAI
         // }
     }
 
+    public override void MonsterDmged(int playerDamage)
+    {
+        if (!photonView.IsMine) return;
+
+        CurHp -= playerDamage;
+        // GameObject DmgTextObj = PhotonNetwork.Instantiate("Additional/DmgText", DmgTextPos, transform.rotation);
+        // DmgTextObj.transform.SetParent(GameObject.Find("DmgCanvas").transform, false);
+        // DmgText DmgTextScript = DmgTextObj.GetComponent<DmgText>();
+        // string playerdamageText = playerDamage.ToString();
+        // DmgTextScript.ShowDamageMessage(playerdamageText);
+        StartCoroutine(MonsterFadeInOut());
+
+        if (CurHp <= 0)
+        {
+            animator.SetTrigger("BossDie");
+            isBossAtking = true;
+            isBossPatern = true;             
+        }
+    }
+
     public override void OnMonsterStun(float _time)
     {
         
