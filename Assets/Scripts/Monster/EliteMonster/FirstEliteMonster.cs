@@ -404,13 +404,13 @@ public class FirstEliteMonster : MonsterAI
     }
 
     [PunRPC]
-    private void ShieldPStart()
+    public void ShieldPStart()
     {
         StartCoroutine(EliteMonsterShield(MonsterShield));
     }
 
     [PunRPC]
-    private void ShieldPStop()
+    public void ShieldPStop()
     {
         ParticleSys[1].Stop();
     }    
