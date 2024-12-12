@@ -13,8 +13,7 @@ public class ToggleObject : MonoBehaviour
 
     public void ExitGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
-
+        // UnityEditor.EditorApplication.isPlaying = false;
     }
 
 
@@ -30,7 +29,7 @@ public class ToggleObject : MonoBehaviour
     void OnQuitButtonClicked()
     {
         Application.Quit();
-        UnityEditor.EditorApplication.isPlaying = false;
+        // UnityEditor.EditorApplication.isPlaying = false;
 
     }
 }

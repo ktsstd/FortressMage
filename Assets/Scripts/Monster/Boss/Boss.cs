@@ -18,7 +18,7 @@ public class Boss : MonsterAI
 
     // private ParticleSystem
 
-    private float[] BossMonsterSkillCooldowns = { 2f, 2f, 2f };
+    private float[] BossMonsterSkillCooldowns = { 4f, 4f, 4f };
     private float[] BossMonsterSkillTimers = new float[3];  // �� ��ų�� ���� ��Ÿ���� �����ϴ� �迭
 
     private float AllSkillCooldown = 3f;  // ��ü ��ų ��Ÿ��

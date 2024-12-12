@@ -11,10 +11,15 @@ public class DefeatScene : MonoBehaviour
     public Sprite[] storyImages;
     public TextMeshProUGUI storyText;
 
+    public AudioSource audioSource;
+    public AudioClip clip;
+
     int num = 0;
 
     public void ClickEvent()
     {
+        audioSource = GameObject.Find("BGM").GetComponent<AudioSource>();
+        audioSource.PlayOneShot(clip);
         num++;
         switch (num)
         {
