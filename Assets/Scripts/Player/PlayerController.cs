@@ -439,8 +439,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             skillMaxCooltimeS /= 2;
             playerUi.isCooltimeBuff = true;
             chromaticAberrationEffect.intensity.value = 0.5f;
-            Invoke("OffCoolTimeBuff", 10f);
         }
+        Invoke("OffCoolTimeBuff", 10f);
     }
     public void OffCoolTimeBuff()
     {
@@ -460,8 +460,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             playerAtk += defaultAtk;
             playerUi.isAktBuff = true;
             chromaticAberrationEffect.intensity.value = 0.5f;
-            Invoke("OffAtkUpBuff", 10f);
         }
+        Invoke("OffAtkUpBuff", 10f);
     }
     public void OffAtkUpBuff()
     {

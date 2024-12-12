@@ -34,6 +34,7 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
     public void OnDestroyWall()
     {
         animator.SetTrigger("Defeat");
+        GameManager.Instance.StartCoroutine("DefeatEvent");
     }
 
 
@@ -41,12 +42,10 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // �� Ŭ���̾�Ʈ���� ���� ��ġ�� ȸ���� ����
             stream.SendNext(health);
         }
         else
         {
-            // �ٸ� Ŭ���̾�Ʈ���� ���� ��ġ�� ȸ���� ����
             health = (float)stream.ReceiveNext();
         }
     }

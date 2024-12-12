@@ -42,7 +42,6 @@ public class FireStorm : MonoBehaviour
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
                     monster.MonsterDmged(damage);
-                    monster.OnMonsterBurningStart(3, 2);
                 }
 
                 Debug.Log(damage);
@@ -50,6 +49,18 @@ public class FireStorm : MonoBehaviour
                 damageDelay = 0.5f;
             }
         }   
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            if (other.gameObject.TryGetComponent(out MonsterAI monster))
+            {
+                monster.OnMonsterBurningStart(3, 2);
+            }
+        }
+
     }
 
     void SelfDestroy()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject TestSpawnObj;
     public GameObject DEMObossObj;
     public GameObject WaveTextImg;
+
+    public Image[] EndImage;
 
     private int[] maxMonsterCount = { 5, 5, 5, 6, 7 };
     private int totalmonsterCount;
@@ -329,6 +332,27 @@ public class GameManager : MonoBehaviourPunCallbacks
     //     UpdatePlayerListUI(); // ���ο� ���� ���� ����
     // }
 
+    public IEnumerator DefeatEvent()
+    {
+        EndImage[0].gameObject.SetActive(true);
+
+        float timeElapsed = 0f;
+        Color color = EndImage[0].color;
+
+        while (timeElapsed < 1)
+        {
+            timeElapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(0, 1, timeElapsed / 1);
+            color.a = alpha;
+            EndImage[0].color = color;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(3);
+        DefeatScene();
+    }
+
+
     public void TestButtonOn()
     {
         TestSpawnObj.SetActive(true);
@@ -407,4 +431,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("New Scene");
     }
 
+
+    public void VictoryScene()
+    {
+        SceneManager.LoadScene("VictoryScene");
+    }
+
+    public void DefeatScene()
+    {
+        SceneManager.LoadScene("DefeatScene");
+    }
 }
