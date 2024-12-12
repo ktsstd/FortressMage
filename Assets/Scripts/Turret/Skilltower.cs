@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.ComponentModel;
+using UnityEngine.UI;
 
 public class Skilltower : MonoBehaviourPun
 {
-    public float health = 100f;
+    public float health;
+    public float maxHealth;
 
     public float cooldownTime = 0f;
     public float maxCooldownTime = 20f;
@@ -37,6 +39,8 @@ public class Skilltower : MonoBehaviourPun
     public float[] elementalSetCoolTime;
     public float[] elementalSetMaxCoolTime;
 
+    public Image barImage;
+
     //private float resetTime = 0.5f;
 
     private void Start()
@@ -44,6 +48,9 @@ public class Skilltower : MonoBehaviourPun
         animator = GetComponent<Animator>();
         pv = GetComponent<PhotonView>();
         playerUi = FindObjectOfType<PlayerUi>();
+
+        maxHealth = 100f;
+        health = maxHealth;
     }
 
     private void Update()
@@ -259,6 +266,7 @@ public class Skilltower : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -272,6 +280,12 @@ public class Skilltower : MonoBehaviourPun
             // GameManager의 Wave 값을 가져와서 비교
             float currentWave = GameManager.Instance.GetWave();
             GameManager.Instance.CheckTurretDestroyedOnWave(currentWave); // 현재 웨이브 전달
+        }
+
+        if (barImage != null)
+        {
+            float healthPercentage = health / maxHealth;
+            photonView.RPC("UpdateHealthBar", RpcTarget.AllBuffered, healthPercentage);
         }
     }
 
@@ -304,6 +318,12 @@ public class Skilltower : MonoBehaviourPun
     }
 
     [PunRPC]
+    private void UpdateHealthBar(float healthPercentage)
+    {
+        barImage.fillAmount = healthPercentage;
+    }
+
+    [PunRPC]
     public void ResetHealth()
     {
         health = 100f; // ü���� 100���� ����
@@ -313,6 +333,11 @@ public class Skilltower : MonoBehaviourPun
         {
             animator.ResetTrigger("DestroyTrigger"); // "DestroyTrigger" 초기화
             animator.SetTrigger("RebuildTrigger");   // 재구축 애니메이션 트리거
+        }
+
+        if (barImage != null)
+        {
+            photonView.RPC("UpdateHealthBar", RpcTarget.AllBuffered, 1f); // 체력바를 처음에 꽉 차게 설정
         }
     }
 }

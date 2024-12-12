@@ -19,15 +19,18 @@ public class Turret : MonoBehaviourPun
     public float fireRateIncreaseAmount;
     public float detectionRadius;
     public float health;
+    public float maxHealth;
 
     public float damage;
     public float increaseAmount;
-    
+
     public bool canAttack = true; // ���� ���θ� üũ�ϴ� ����
     private Animator animator; // Animator 컴포넌트 참조
     public GameObject explosionEffectPrefab; // 폭발 이펙트 프리팹
 
     private bool hasExploded = false;
+
+    public Image barImage;
 
     private void Start()
     {
@@ -36,6 +39,9 @@ public class Turret : MonoBehaviourPun
             StartCoroutine(FireContinuously());
         }
 
+        maxHealth = 100f;
+        health = maxHealth;
+
         minLaunchPower = 10f;
         maxLaunchPower = 50f;
         fireRate = 1f;
@@ -43,7 +49,6 @@ public class Turret : MonoBehaviourPun
         explosionRadius = 3f;
         fireRateIncreaseAmount = 0.2f;
         detectionRadius = 20f;
-        health = 100f;
 
         damage = 2f;
         increaseAmount = 5f;
@@ -87,7 +92,7 @@ public class Turret : MonoBehaviourPun
     {
         // ��Ʈ��ũ�� ���� �߻�ü ����
         GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab.name, firePoint.position, Quaternion.identity);
-        
+
         // �߻�ü�� PhotonView�� �߰��Ͽ� ���� ������ ����ȭ
         PhotonView projectilePhotonView = projectile.GetComponent<PhotonView>();
 
@@ -134,6 +139,7 @@ public class Turret : MonoBehaviourPun
         return Mathf.Lerp(minLaunchPower, maxLaunchPower, normalizedDistance);
     }
 
+    [PunRPC]
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -143,10 +149,16 @@ public class Turret : MonoBehaviourPun
             canAttack = false;
 
             photonView.RPC("HandleDestruction", RpcTarget.AllBuffered);
-            
+
             // GameManager�� Wave ���� �����ͼ� ��
             float currentWave = GameManager.Instance.GetWave();
             GameManager.Instance.CheckTurretDestroyedOnWave(currentWave); // ���� ���̺� ����
+        }
+
+        if (barImage != null)
+        {
+            float healthPercentage = health / maxHealth;
+            photonView.RPC("UpdateHealthBar", RpcTarget.AllBuffered, healthPercentage);
         }
     }
 
@@ -183,9 +195,16 @@ public class Turret : MonoBehaviourPun
     }
 
     [PunRPC]
+    private void UpdateHealthBar(float healthPercentage)
+    {
+        barImage.fillAmount = healthPercentage;
+    }
+
+
+    [PunRPC]
     public void ResetHealth()
     {
-        health = 100f; // ü���� 100���� ����
+        health = maxHealth; // ü���� 100���� ����
         canAttack = true; // ���� �����ϰ� ����
         hasExploded = false;
         if (animator != null)
@@ -194,6 +213,11 @@ public class Turret : MonoBehaviourPun
             animator.SetTrigger("RebuildTrigger");   // 재구축 애니메이션 트리거
         }
         StartCoroutine(FireContinuously()); // ���� �ڷ�ƾ �ٽ� ����
+
+        if (barImage != null)
+        {
+            photonView.RPC("UpdateHealthBar", RpcTarget.AllBuffered, 1f); // 체력바를 처음에 꽉 차게 설정
+        }
     }
 
     private void OnDrawGizmos()
