@@ -151,7 +151,12 @@ public class DarkSpirit : MonsterAI, IPunObservable
                     DarkDamageTarget(closestTarget);
                     Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 2.5f, transform.position.z);
                     SEffectpos = EffectPos;
-                    PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+                    GameObject TeleportEffect = PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+                    TeleportEffect.transform.SetParent(this.transform);
+
+                    TeleportEffect.transform.localPosition = EffectPos; 
+                    TeleportEffect.transform.localRotation = Quaternion.identity;
+                    
                     yield return new WaitForSeconds(2f);
                     StartCoroutine(DarkGoStart());
                     yield break;
@@ -188,7 +193,11 @@ public class DarkSpirit : MonsterAI, IPunObservable
         }
         transform.position = StartPosition;
         Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 1.18f, transform.position.z);
-        PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+        GameObject TeleportEffect = PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
+        TeleportEffect.transform.SetParent(this.transform);
+
+        TeleportEffect.transform.localPosition = EffectPos; 
+        TeleportEffect.transform.localRotation = Quaternion.identity;
         soundManager.PlayMonster(11, 1.0f, EffectPos);
 
         yield return new WaitForSeconds(1.9f);

@@ -79,14 +79,14 @@ public class Boss : MonsterAI
         if (closestTarget != null)
         {
             GameObject castleObj = GameObject.FindWithTag("Castle");
-            closestTarget = castleObj.transform;
+            Transform castlepos = castleObj.transform;
             float sqrDistanceToTarget = (closestTarget.position - transform.position).sqrMagnitude;
 
             if (sqrDistanceToTarget > attackRange * attackRange)
             {
                 if (!isBossPatern)
                 {
-                    agent.SetDestination(closestTarget.position);
+                    agent.SetDestination(castlepos.position);
                 }
                 else
                 {
