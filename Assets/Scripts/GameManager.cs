@@ -193,12 +193,17 @@ public class GameManager : MonoBehaviourPunCallbacks
         Wave += 1;
         if (Wave == 9)
         {
-            // 승리
+            for (int remainTimer = 5; remainTimer > 0; remainTimer --)
+            WaveText.text = "Victory!";
+            yield return new WaitForSeconds(1f);
         }
         for (int remainTimer = 15; remainTimer > 0; remainTimer --)
         {
-            WaveText.text = "next: Wave " + Wave.ToString() + "\nTime: " + remainTimer + "seconds";
-            yield return new WaitForSeconds(1f);
+            if (Wave != 9)
+            {
+                WaveText.text = "next: Wave " + Wave.ToString() + "\nTime: " + remainTimer + "seconds";
+                yield return new WaitForSeconds(1f);
+            }
         }
         if (PhotonNetwork.IsMasterClient)
         {

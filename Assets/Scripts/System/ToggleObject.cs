@@ -7,36 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class ToggleObject : MonoBehaviour
 {
-    public Slider sizeSlider;
-    public TMP_Text valueText;
-    public RectTransform uiSize1;
-    public RectTransform uiSize2;
-
     public GameObject objectToToggle;
 
-    public Button quitButton;
 
-    private Vector3 initialScale;
-
-    void Start()
+    public void ExitGame()
     {
-        initialScale = uiSize1.localScale;
-
-        sizeSlider.minValue = 1;
-        sizeSlider.maxValue = 100;
-
-        sizeSlider.value = 100f;
-
-        valueText.text = sizeSlider.value.ToString("F0");
-        sizeSlider.onValueChanged.AddListener(OnSliderValueChanged);
-
-        UpdateUIElements();
-
-        if (quitButton != null)
-        {
-            quitButton.onClick.AddListener(OnQuitButtonClicked);
-        }
+        // 에디터에서 실행 중일 때는 게임을 종료하지 않고, 유니티 에디터를 종료하는 기능
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+            // 실제 게임이 실행 중인 경우 애플리케이션 종료
+            Application.Quit();
+#endif
     }
+
 
     void Update()
     {
@@ -46,19 +30,6 @@ public class ToggleObject : MonoBehaviour
         }
     }
 
-    void OnSliderValueChanged(float value)
-    {
-        valueText.text = value.ToString("F0"); 
-        UpdateUIElements();
-    }
-
-    void UpdateUIElements()
-    {
-        float newSize = Mathf.Lerp(0.4f, 1f, sizeSlider.value / 100f);
-
-        uiSize1.localScale = new Vector3(newSize, newSize, 1);
-        uiSize2.localScale = new Vector3(newSize, newSize, 1);
-    }
 
     void OnQuitButtonClicked()
     {
