@@ -34,6 +34,7 @@ public class Turret : MonoBehaviourPun
 
     public AudioClip destructionSound;
     private AudioSource audioSource;
+    public AudioClip rebuildSound;
 
     private void Start()
     {
@@ -228,6 +229,10 @@ public class Turret : MonoBehaviourPun
         }
         StartCoroutine(FireContinuously()); // ���� �ڷ�ƾ �ٽ� ����
 
+        if (rebuildSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(rebuildSound); // 포탑 재생성 사운드 재생
+        }
         if (barImage != null)
         {
             photonView.RPC("UpdateHealthBar", RpcTarget.AllBuffered, 1f); // 체력바를 처음에 꽉 차게 설정
