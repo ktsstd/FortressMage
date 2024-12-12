@@ -7,6 +7,7 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
 {
     private AudioSource audioSource;
     public AudioClip audioClip;
+    bool playEvent = false;
 
     public float health = 100f;
     Animator animator;
@@ -22,11 +23,11 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
     {
         health -= damage;
 
-        if (health <= 0f)
+        if (health <= 0f && !playEvent)
         {
             photonView.RPC("OnDestroyWall", RpcTarget.All);
             audioSource.PlayOneShot(audioClip, 0.5f);
-            // 여기서 패배 띄우면 됨
+            playEvent = true;
         }
     }
 
