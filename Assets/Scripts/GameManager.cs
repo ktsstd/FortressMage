@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void StartWaveTimer()
     {
+        isStartWave = false;
         StartCoroutine(WaveTimer());
     }
 
