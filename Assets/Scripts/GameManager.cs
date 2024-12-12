@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using UnityEditor.MPE;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -156,7 +155,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 }
             }
             isStartWave = false;
-            StartCoroutine(WaveTimer());
+            photonView.RPC("StartWaveTimer", RpcTarget.All);
         }
     }
 
@@ -177,6 +176,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     private IEnumerator WaveTimer()
     {
         Wave += 1;
+        int remainTimer = 15;
         if (Wave == 9)
         {
             // 승리

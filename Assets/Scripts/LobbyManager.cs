@@ -359,6 +359,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         if (!isStarting)
         {
             PhotonNetwork.LoadLevel("MultiplayScene");
+            // RoomOptions ro = new RoomOptions();
+            // ro.IsOpen = false;
+            // ro.IsVisible = PhotonNetwork.CurrentRoom.IsVisible;
+            // ro.MaxPlayers = PhotonNetwork.CurrentRoom.MaxPlayers;
+            
             isStarting = true;
         }
         else

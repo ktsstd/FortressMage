@@ -242,9 +242,9 @@ public class FirstEliteMonster : MonsterAI
             if (animTime >= 0.8f)
             {
                 soundManager.PlayMonster(4, 1.0f, soundPosition);
+                PhotonNetwork.Instantiate("Additional/EliteAttack", closestTarget.position, Quaternion.identity);
                 yield return new WaitForSeconds(0.2f);
                 StartAtking = false;
-                PhotonNetwork.Instantiate("Additional/EliteAttack", closestTarget.position, Quaternion.identity);
                 EliteDamageTarget(closestTarget);
                 attackTimer = attackCooldown;
                 yield break;
