@@ -5184,7 +5184,6 @@ MonoBehaviour:
   skillTower: {fileID: 0}
   turret: {fileID: 0}
   castle: {fileID: 0}
-  parent: {fileID: 0}
   DmgTextPos: {x: 0, y: 0, z: 0}
   attackRange: 2
   attackCooldown: 2
@@ -5211,6 +5210,7 @@ MonoBehaviour:
   soundClip: {fileID: 0}
   MonsterAudio:
   - {fileID: 8300000, guid: c4be3f714a531734589576cb0b3f1929, type: 3}
+  soundManager: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

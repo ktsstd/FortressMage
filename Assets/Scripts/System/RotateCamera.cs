@@ -37,6 +37,6 @@ public class RotateCamera : MonoBehaviour
         }
 
         // 카메라의 Y축 회전 적용
-        transform.rotation = Quaternion.Euler(0f, currentRotation, 0f);
+        transform.rotation = Quaternion.Euler(40f, currentRotation, 0f);
     }
 }

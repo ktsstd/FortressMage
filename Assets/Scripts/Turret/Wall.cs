@@ -24,7 +24,6 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
 
         if (health <= 0f)
         {
-            photonView.RPC("TowerTest", RpcTarget.All);
             photonView.RPC("OnDestroyWall", RpcTarget.All);
             audioSource.PlayOneShot(audioClip, 0.5f);
             // 여기서 패배 띄우면 됨
@@ -37,11 +36,6 @@ public class Wall : MonoBehaviourPunCallbacks, IPunObservable
         animator.SetTrigger("Defeat");
     }
 
-    [PunRPC]
-    public void TowerTest()
-    {
-        PhotonNetwork.Destroy(gameObject);
-    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

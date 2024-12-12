@@ -40,7 +40,10 @@ public class FireStorm : MonoBehaviour
             if (damageDelay <= 0)
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
+                {
                     monster.MonsterDmged(damage);
+                    monster.OnMonsterBurningStart(3, 2);
+                }
 
                 Debug.Log(damage);
 

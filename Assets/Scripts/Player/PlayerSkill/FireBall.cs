@@ -67,7 +67,7 @@ public class FireBall : MonoBehaviour
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
                 {
                     monster.MonsterDmged(damage);
-                    monster.OnMonsterBurned(5, 1);
+                    monster.OnMonsterBurningStart(5, 1);
                 }
             }
         }

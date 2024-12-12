@@ -20,7 +20,7 @@ public class FireRoad : MonoBehaviour
             if (damageDelay <=0)
             {
                 if (other.gameObject.TryGetComponent(out MonsterAI monster))
-                    monster.OnMonsterBurned(3, 3);
+                    monster.MonsterDmged(1);
 
                 damageDelay = 0.5f;
             }
