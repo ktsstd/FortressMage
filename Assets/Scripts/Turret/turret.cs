@@ -35,6 +35,9 @@ public class Turret : MonoBehaviourPun
     public AudioClip destructionSound;
     private AudioSource audioSource;
     public AudioClip rebuildSound;
+    public SoundManager soundManager;
+
+    public AudioClip fireSound;
 
     private void Start()
     {
@@ -61,6 +64,7 @@ public class Turret : MonoBehaviourPun
         animator = GetComponent<Animator>();
 
         audioSource = GetComponent<AudioSource>();
+        soundManager = FindObjectOfType<SoundManager>();
     }
     private IEnumerator FireContinuously()
     {
@@ -93,9 +97,21 @@ public class Turret : MonoBehaviourPun
         return closestTarget;
     }
 
+    private void PlayFireSound()
+    {
+        Vector3 soundPosition = transform.position;
+        soundManager.PlayMonster(21, 1.0f, soundPosition);
+        //if (fireSound != null && audioSource != null)
+        //{
+          //  Vector3 soundPosition = transform.position;
+            //soundManager.PlayMonster(21, 1.0f, soundPosition);
+        //}
+    }
+
     [PunRPC]
     public void Fire(Transform target)
     {
+        PlayFireSound();
         // ��Ʈ��ũ�� ���� �߻�ü ����
         GameObject projectile = PhotonNetwork.Instantiate(projectilePrefab.name, firePoint.position, Quaternion.identity);
 
