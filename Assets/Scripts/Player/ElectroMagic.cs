@@ -177,4 +177,11 @@ public class ElectroMagic : PlayerController
         GameObject fire = Instantiate(tempestfuryPrefab, _skillPos, transform.rotation);
         fire.GetComponent<TempestFury>().damage = _damage;
     }
+
+    public override void OffSkillRange()
+    {
+        skillRangeA.SetActive(false);
+        skillRangeS.SetActive(false);
+        skillRangeD.SetActive(false);
+    }
 }

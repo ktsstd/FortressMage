@@ -195,4 +195,11 @@ public class EarthMagic : PlayerController
         fire.GetComponent<StoneWall>().oriPos = _position;
         fire.GetComponent<StoneWall>().oriRot = _rotation;
     }
+
+    public override void OffSkillRange()
+    {
+        skillRangeA.SetActive(false);
+        skillRangeS.SetActive(false);
+        skillRangeD.SetActive(false);
+    }
 }

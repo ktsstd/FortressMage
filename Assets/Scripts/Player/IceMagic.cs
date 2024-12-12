@@ -225,4 +225,11 @@ public class IceMagic : PlayerController
 
         return spawnPosition;
     }
+
+    public override void OffSkillRange()
+    {
+        skillRangeA.SetActive(false);
+        skillRangeS.SetActive(false);
+        skillRangeD.SetActive(false);
+    }
 }

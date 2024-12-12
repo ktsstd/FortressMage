@@ -179,7 +179,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     private IEnumerator WaveTimer()
     {
         Wave += 1;
-        int remainTimer = 15;
         if (Wave == 9)
         {
             // 승리
