@@ -127,9 +127,10 @@ MonoBehaviour:
   - PlayShieldEffect
   - OnDestroyWall
   - StartWaveTimer
-  - ChangeHealthBarAmount
-  - UpdateHealthBar
+  - StopAnimation
   - ShieldPStart
+  - ShieldPStop
+  - UpdateHealthBar
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

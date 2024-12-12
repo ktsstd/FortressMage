@@ -184,4 +184,10 @@ public class FireMagic : PlayerController, ISkillAnimationEvent
         audioSource.PlayOneShot(phoenix, 0.05f);
         Invoke("OffPhoenix", 15f);
     }
+
+    public override void OffSkillRange()
+    {
+        skillRangeA.SetActive(false);
+        skillRangeS.SetActive(false);
+    }
 }

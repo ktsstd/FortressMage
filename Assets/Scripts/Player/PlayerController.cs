@@ -129,8 +129,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                     virtualCamera.LookAt = allPlayer[playerCode].transform;
                     playerCode++;
 
-                    playerUi.playerLvText.text = playerCode + " Tlqkf " + allPlayer.Length;
-
                     if (playerCode >= allPlayer.Length)
                         playerCode = 0;
                 }
@@ -157,6 +155,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (skilltower.canAttack)
         {
+            AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
+
             if (skilltower.elementalSet[0] == _set || skilltower.elementalSet[1] == _set)
             {
                 pv.RPC("PlayAnimation", RpcTarget.All, "StopWait");
@@ -165,11 +165,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 else
                     skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, 0);
                 pv.RPC("PlaySkillEffect", RpcTarget.All, false);
+
+            }
+            else if (aniInfo.IsName("Pray") || aniInfo.IsName("Pray_Loop"))
+            {
+                pv.RPC("PlayAnimation", RpcTarget.All, "StopWait");
+                pv.RPC("PlaySkillEffect", RpcTarget.All, false);
             }
             else if (skilltower.elementalSet[_slot] == 0 && skilltower.cooldownTime <= 0)
             {
                 if (elementalSetCoolTime <= 0)
                 {
+                    pv.RPC("StopAnimation", RpcTarget.All, "StopWait");
                     pv.RPC("PlayAnimation", RpcTarget.All, "StartWait");
                     skilltower.pv.RPC("SetingElemental", RpcTarget.All, _slot, _set);
                     pv.RPC("PlaySkillEffect", RpcTarget.All, true);
@@ -187,63 +194,67 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (skilltower.canUseSkill && skilltower.cooldownTime <= 0)
         {
-            switch (skilltower.mixSkillNum)
-            {
-                case 0:
-                    break;
-                case 1:
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        skilltower.pv.RPC("UseMasterCoolTimeBuff", RpcTarget.All, null);
-                    }
-                    break;
-                case 2:
-                    if (Input.GetKeyDown(KeyCode.Space))
-                        skilltower.laserRange.SetActive(true);
-                    if (Input.GetKeyUp(KeyCode.Space))
-                    {
-                        skilltower.laserRange.SetActive(false);
-                        skilltower.pv.RPC("UseMasterLazer", RpcTarget.All, null);
-                    }
-                    break;
-                case 3:
-                    if (Input.GetKey(KeyCode.Space))
-                    {
-                        skilltower.meteorRange.SetActive(true);
-                        skilltower.meteorRange.transform.position = GetSkillRange(20f);
-                    }
-                    if (Input.GetKeyUp(KeyCode.Space))
-                    {
-                        skilltower.meteorRange.SetActive(false);
-                        skilltower.pv.RPC("UseMasterMeteor", RpcTarget.All, GetSkillRange(20f));
-                    }
-                    break;
-                case 4:
-                    if (Input.GetKey(KeyCode.Space))
-                    {
-                        skilltower.barricadeRange.SetActive(true);
-                        skilltower.barricadeRange.transform.position = new Vector3(GetSkillRange(20f).x, GetSkillRange(20f).y, 0);
-                    }
-                    if (Input.GetKeyUp(KeyCode.Space))
-                    {
-                        skilltower.barricadeRange.SetActive(false);
-                        skilltower.pv.RPC("UseMasterBarricade", RpcTarget.All, skilltower.barricadeRange.transform.position);
-                    }
-                    break;
-                case 5:
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        skilltower.pv.RPC("UseMasterShield", RpcTarget.All, null);
-                    }
-                        break;
-                case 6:
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        skilltower.pv.RPC("UseMasterAtkUpBuff", RpcTarget.All, null);
-                    }
-                    break;
-            }
+            AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
 
+            if (aniInfo.IsName("Pray") || aniInfo.IsName("Pray_Loop"))
+            {
+                switch (skilltower.mixSkillNum)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            skilltower.pv.RPC("UseMasterCoolTimeBuff", RpcTarget.All, null);
+                        }
+                        break;
+                    case 2:
+                        if (Input.GetKeyDown(KeyCode.Space))
+                            skilltower.laserRange.SetActive(true);
+                        if (Input.GetKeyUp(KeyCode.Space))
+                        {
+                            skilltower.laserRange.SetActive(false);
+                            skilltower.pv.RPC("UseMasterLazer", RpcTarget.All, null);
+                        }
+                        break;
+                    case 3:
+                        if (Input.GetKey(KeyCode.Space))
+                        {
+                            skilltower.meteorRange.SetActive(true);
+                            skilltower.meteorRange.transform.position = GetSkillRange(20f);
+                        }
+                        if (Input.GetKeyUp(KeyCode.Space))
+                        {
+                            skilltower.meteorRange.SetActive(false);
+                            skilltower.pv.RPC("UseMasterMeteor", RpcTarget.All, GetSkillRange(20f));
+                        }
+                        break;
+                    case 4:
+                        if (Input.GetKey(KeyCode.Space))
+                        {
+                            skilltower.barricadeRange.SetActive(true);
+                            skilltower.barricadeRange.transform.position = new Vector3(GetSkillRange(20f).x, GetSkillRange(20f).y, 0);
+                        }
+                        if (Input.GetKeyUp(KeyCode.Space))
+                        {
+                            skilltower.barricadeRange.SetActive(false);
+                            skilltower.pv.RPC("UseMasterBarricade", RpcTarget.All, skilltower.barricadeRange.transform.position);
+                        }
+                        break;
+                    case 5:
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            skilltower.pv.RPC("UseMasterShield", RpcTarget.All, null);
+                        }
+                        break;
+                    case 6:
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            skilltower.pv.RPC("UseMasterAtkUpBuff", RpcTarget.All, null);
+                        }
+                        break;
+                }
+            }
         }
     }
 
@@ -342,7 +353,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 playerHp -= _damage;
-                pv.RPC("PlaySkillEffect", RpcTarget.All, false);
+                AnimatorStateInfo aniInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (skilltower.elementalSet[0] == elementalCode || skilltower.elementalSet[1] == elementalCode)
+                {
+                    pv.RPC("PlayAnimation", RpcTarget.All, "StopWait");
+                    if (skilltower.elementalSet[0] == elementalCode)
+                        skilltower.pv.RPC("SetingElemental", RpcTarget.All, 0, 0);
+                    else
+                        skilltower.pv.RPC("SetingElemental", RpcTarget.All, 1, 0);
+                    pv.RPC("PlaySkillEffect", RpcTarget.All, false);
+
+                }
+                else if (aniInfo.IsName("Pray") || aniInfo.IsName("Pray_Loop"))
+                {
+                    pv.RPC("PlayAnimation", RpcTarget.All, "StopWait");
+                    pv.RPC("PlaySkillEffect", RpcTarget.All, false);
+                }
             }
             playerUi.playerHp = playerHp;
             playerUi.playerMaxHp = playerMaxHp;
@@ -352,6 +378,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 if (!isDie)
                 {
                     pv.RPC("PlayAnimation", RpcTarget.All, "Die");
+                    OffSkillRange();
                     audioSource.PlayOneShot(audioClip[3], 0.5f);
                 }
 
@@ -560,6 +587,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
+    public void StopAnimation(string _ani)
+    {
+        animator.ResetTrigger(_ani);
+    }
+
+    [PunRPC]
     public void PlaySkillEffect(bool _bool)
     {
         SkillEffect.SetActive(_bool);
@@ -594,5 +627,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             audioSource.PlayOneShot(audioClip[9]);
     }
 
+    public virtual void OffSkillRange()
+    {
 
+    }
 }
