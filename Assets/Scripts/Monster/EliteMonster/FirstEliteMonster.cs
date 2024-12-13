@@ -338,19 +338,19 @@ public class FirstEliteMonster : MonsterAI
     private bool soundPlayed1 = false;
     private IEnumerator EliteMonsterShield(int MonsterShield)
     {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if (isShielded) yield break;
         isShielded = true;
-        ShieldAni = false;
-
-        while(!ShieldAni)
+        while (!ShieldAni)
         {
-            float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             agent.ResetPath();
-            StartAtking = true;
-            if (stateInfo.IsName("Shield"))
+            animator.SetBool("StartMove", false);
+            if (stateInfo.IsName("Idle"))
             {
+                StartAtking = true;
+                animator.SetTrigger("EliteShiled");
                 Vector3 soundPosition = transform.position;
+                float animTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
                 if (!soundPlayed1)
                 {
                     soundManager.PlayMonster(6, 0.6f, soundPosition);
@@ -361,20 +361,13 @@ public class FirstEliteMonster : MonsterAI
                     CurShield = MonsterShield;
                     ParticleSys[1].Play();
                     ShieldAni = true;
-                    yield return new WaitForSeconds(0.5f);
                     StartAtking = false;
                 }
             }
             else
             {
-                if (animTime >= 1f)
-                {
-                    animator.SetBool("StartMove", false);
-                    animator.SetTrigger("EliteShiled");
-                    yield return new WaitForSeconds(0.5f);
-                }
+                yield return null;
             }
-            yield return null;
         }
     }
 
