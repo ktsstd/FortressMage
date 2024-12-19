@@ -12,6 +12,7 @@ public class FirstEliteMonster : MonsterAI
 
     private bool StartAtking = false;
     private bool isShielded = false;
+    private bool ParticleStart = false;
 
     private Transform closestTarget;
 
@@ -92,6 +93,9 @@ public class FirstEliteMonster : MonsterAI
             {
                 animator.SetBool("StartMove", false);
                 StopCoroutine(EliteMonster1Skill1());
+                StartAtking = false;
+                ParticleStart = false;
+                attackTimer = attackCooldown;
             }
         }
 
@@ -238,7 +242,6 @@ public class FirstEliteMonster : MonsterAI
     private IEnumerator EliteMonster1Skill1()
     {
         Vector3 soundPosition = transform.position;
-        bool ParticleStart = false;
         yield return new WaitForSeconds(0.5f);
         while(StartAtking)
         {

@@ -15200,6 +15200,7 @@ MonoBehaviour:
   defaultspped: 0
   monsterSlowCurTime: 0
   monsterBurnCurTime: 0
+  monsterStunCurTime: 0
   EffectPrefab:
   - {fileID: 8710003545082903473}
   - {fileID: 6906982899270778795}
