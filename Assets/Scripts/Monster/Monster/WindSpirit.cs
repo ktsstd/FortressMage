@@ -19,6 +19,7 @@ public class WindSpirit : MonsterAI
         MaxHp = 60f;
         Speed = 4f;
         attackRange = 1f;
+        stopDistance = 20.0f;
         defaultspped = Speed;
         CurHp = MaxHp;
         particleSys = GetComponentInChildren<ParticleSystem>();

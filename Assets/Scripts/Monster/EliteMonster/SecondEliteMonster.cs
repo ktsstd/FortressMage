@@ -9,16 +9,16 @@ public class SecondEliteMonster : MonsterAI
     private Animator thisanimator;
     private Transform closestTarget;
 
-    private bool StartAtking = false;
-    private bool isEliteMonsterPatern = false;
+    public bool StartAtking = false;
+    public bool isEliteMonsterPatern = false;
 
     private float stopDistance = 20.0f;
     private float speedBuff = 2f; // 버프 적용 시 속도 증가 비율
     private float attackCooldownReduction = 4f; // 쿨타임 감소량
-    private float[] EliteskillCooldown = { 10f, 10f, 10f };
-    private float AllSkillCooldown = 10f;
+    public float[] EliteskillCooldown = { 10f, 10f, 10f };
+    public float AllSkillCooldown = 10f;
 
-    private float[] EliteSkillTimers = new float[3];
+    public float[] EliteSkillTimers = new float[3];
     public float AllSkillCooldownTimer;
 
     public override void Start()
@@ -29,6 +29,7 @@ public class SecondEliteMonster : MonsterAI
         MaxHp = 450f;
         Speed = 4f;
         attackRange = 3f;
+        stopDistance = 20.0f;
         defaultspped = Speed;
         CurHp = MaxHp;
         MonsterDmg = 0;
@@ -55,12 +56,12 @@ public class SecondEliteMonster : MonsterAI
             {
                 agent.SetDestination(closestTarget.position);
             }
-            else if (distanceTotarget > attackRange + stopDistance && StartAtking)
+            if (distanceTotarget > attackRange + stopDistance && StartAtking)
             {
                 agent.ResetPath();
             }
 
-            else if (distanceTotarget <= attackRange + stopDistance && !StartAtking)
+            if (distanceTotarget <= attackRange + stopDistance && !StartAtking)
             {
                 agent.ResetPath();
                 if (AllSkillCooldownTimer <= 0)
@@ -69,10 +70,14 @@ public class SecondEliteMonster : MonsterAI
                     StartCoroutine(SecEliteMonsterChoosePattern());
                 }
             }
-            else if (distanceTotarget <= attackRange + stopDistance && StartAtking)
+            if (distanceTotarget <= attackRange + stopDistance && StartAtking)
             {
                 agent.ResetPath();
             }
+        }
+        else
+        {
+            agent.ResetPath();
         }
 
         for (int i = 0; i < EliteSkillTimers.Length; i++)
@@ -338,5 +343,43 @@ public class SecondEliteMonster : MonsterAI
         StartAtking = false;
         isEliteMonsterPatern = false;
         yield break;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(CurHp);
+            stream.SendNext(AllSkillCooldownTimer);
+        }
+        else
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            CurHp = (float)stream.ReceiveNext();
+            AllSkillCooldownTimer = (float)stream.ReceiveNext();
+        }
+    }
+
+    private Coroutine stunCoroutine;
+    public override void OnMonsterStun(float _time)
+    {
+        if (stunCoroutine != null)
+            StopCoroutine(stunCoroutine);
+
+        stunCoroutine = StartCoroutine(MonsterStun(_time));
+    }
+
+    IEnumerator MonsterStun(float _time) // 스턴 상태 처리
+    {
+        canMove = false;
+        thisanimator.speed = 0f;
+        EffectPrefab[1].SetActive(true);
+        yield return new WaitForSeconds(_time);
+        canMove = true;
+        thisanimator.speed = 1f;
+        EffectPrefab[1].SetActive(false);
     }
 }

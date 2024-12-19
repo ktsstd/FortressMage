@@ -20,6 +20,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     public float defaultspped;
     public float monsterSlowCurTime;
     public float monsterBurnCurTime;
+    public float monsterStunCurTime;
 
     public GameObject[] EffectPrefab;
 
@@ -196,6 +197,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         canMove = true;
         animator.speed = 1f;
         EffectPrefab[1].SetActive(false);
+        monsterStunCurTime += _time;
     }
 
     public virtual void OnMonsterSpeedDown(float _time, float _moveSpeed)
@@ -212,7 +214,7 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     private Coroutine speedCoroutine;
-    public void OnMonsterSpeedDownStart(float _time, float _moveSpeed)
+    public virtual void OnMonsterSpeedDownStart(float _time, float _moveSpeed)
     {
         if (speedCoroutine != null)
             StopCoroutine(speedCoroutine);

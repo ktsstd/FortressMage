@@ -60,7 +60,7 @@ public class FirstEliteMonster : MonsterAI
                     agent.ResetPath();
                 }
             }
-            else if (sqrDistanceToTarget <= attackRange * attackRange && !closestTarget.CompareTag("Obstacle"))
+            if (sqrDistanceToTarget <= attackRange * attackRange && !closestTarget.CompareTag("Obstacle"))
             {
                 agent.ResetPath();
                 animator.SetBool("StartMove", false);
@@ -72,7 +72,7 @@ public class FirstEliteMonster : MonsterAI
                     StartCoroutine(EliteMonster1Skill1());
                 }
             }
-            else if (closestTarget.CompareTag("Obstacle"))
+            if (closestTarget.CompareTag("Obstacle"))
             {
                 agent.ResetPath();
                 animator.SetBool("StartMove", false);
@@ -334,7 +334,7 @@ public class FirstEliteMonster : MonsterAI
     {
         MonsterDmg += MonsterDmg;
         yield return new WaitForSeconds(20f);
-        MonsterDmg += MonsterDmg;
+        MonsterDmg -= MonsterDmg;
     }
 
     private bool ShieldAni = false;
@@ -376,7 +376,6 @@ public class FirstEliteMonster : MonsterAI
 
     public override void MonsterDmged(int playerdamage)
     {
-        if (!photonView.IsMine) return;
         if (CurShield >=0)
         {
             CurShield -= playerdamage;
@@ -408,8 +407,28 @@ public class FirstEliteMonster : MonsterAI
     }
 
     [PunRPC]
-     void ShieldPStop()
+    public void ShieldPStop()
     {
         ParticleSys[1].Stop();
     }    
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(CurHp);
+            stream.SendNext(CurShield);
+            stream.SendNext(attackTimer);
+        }
+        else
+        {
+            transform.position = (Vector3)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
+            CurHp = (float)stream.ReceiveNext();
+            CurShield = (int)stream.ReceiveNext();
+            attackTimer = (float)stream.ReceiveNext();
+        }
+    }
 }
