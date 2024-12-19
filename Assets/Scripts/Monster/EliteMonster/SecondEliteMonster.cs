@@ -27,8 +27,8 @@ public class SecondEliteMonster : MonsterAI
         thisanimator = GetComponentInChildren<Animator>();
         isEliteMonsterPatern = false;
         MaxHp = 450f;
-        Speed = 6f;
-        attackRange = 1f;
+        Speed = 4f;
+        attackRange = 3f;
         defaultspped = Speed;
         CurHp = MaxHp;
         MonsterDmg = 0;
@@ -36,10 +36,11 @@ public class SecondEliteMonster : MonsterAI
     
     public override void Update()
     {
-        if (!StartAtking && !NoTarget)
+        if (!NoTarget)
         {
             closestTarget = GetClosestTarget();
         }
+
         if (closestTarget == null)
         {
             NoTarget = true;
@@ -50,18 +51,27 @@ public class SecondEliteMonster : MonsterAI
         float distanceTotarget = Vector3.Distance(transform.position, closestTarget.position);
         if (canMove)
         {
-            if (distanceTotarget > attackRange + stopDistance)
+            if (distanceTotarget > attackRange + stopDistance && !StartAtking)
             {
                 agent.SetDestination(closestTarget.position);
             }
-            else
+            else if (distanceTotarget > attackRange + stopDistance && StartAtking)
             {
                 agent.ResetPath();
-                if (AllSkillCooldownTimer <= 0 && !StartAtking)
+            }
+
+            else if (distanceTotarget <= attackRange + stopDistance && !StartAtking)
+            {
+                agent.ResetPath();
+                if (AllSkillCooldownTimer <= 0)
                 {
                     StartAtking = true;   
                     StartCoroutine(SecEliteMonsterChoosePattern());
                 }
+            }
+            else if (distanceTotarget <= attackRange + stopDistance && StartAtking)
+            {
+                agent.ResetPath();
             }
         }
 
@@ -228,12 +238,6 @@ public class SecondEliteMonster : MonsterAI
                 {
                     float healHp = lostHp * 0.05f;
                     float newCurHp = Mathf.Min(MonsterCurHp + healHp, MonsterMaxHp);
-
-                    Debug.Log("몬스터: " + heal.gameObject.name);
-                    Debug.Log("현재 체력: " + MonsterCurHp);
-                    Debug.Log("최대 체력: " + MonsterMaxHp);
-                    Debug.Log("회복해야 할 값: " + healHp);
-                    Debug.Log("회복 후 남은 체력: " + newCurHp);
 
                     heal.CurHp = newCurHp;
 
