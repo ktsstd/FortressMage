@@ -244,11 +244,6 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             var nextSlowEffect = slowEffects[0];
             slowEffects.RemoveAt(0);
-
-            OnMonsterSpeedDownStart(nextSlowEffect.slowtime, nextSlowEffect.slowmoveSpeed);
-        }
-        else
-        {
             if (!hasBuffed)
             {
                 Speed = defaultspped;
@@ -257,6 +252,10 @@ public class MonsterAI : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Speed += _moveSpeed;
             }
+            OnMonsterSpeedDownStart(nextSlowEffect.slowtime, nextSlowEffect.slowmoveSpeed);
+        }
+        else
+        {
             speedCoroutine = null;
             isSlow = false;
             EffectPrefab[2].SetActive(false);
