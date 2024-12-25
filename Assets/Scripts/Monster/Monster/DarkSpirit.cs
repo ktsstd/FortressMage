@@ -9,6 +9,8 @@ public class DarkSpirit : MonsterAI, IPunObservable
     private ParticleSystem particleSys;
     private Transform closestTarget;
     private Vector3 StartPosition;  // 몬스터의 초기 위치
+    
+    private GameObject TeleportEffect;
 
     private Vector3 SEffectpos;
 
@@ -151,8 +153,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
                     DarkDamageTarget(closestTarget);
                     Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 2.5f, transform.position.z);
                     SEffectpos = EffectPos;
-                    GameObject TeleportEffect = PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
-                    TeleportEffect.transform.SetParent(this.transform);
+                    TeleportEffect = PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
 
                     TeleportEffect.transform.localPosition = EffectPos; 
                     TeleportEffect.transform.localRotation = Quaternion.identity;
@@ -193,8 +194,7 @@ public class DarkSpirit : MonsterAI, IPunObservable
         }
         transform.position = StartPosition;
         Vector3 EffectPos = new Vector3(transform.position.x + 0.1f, transform.position.y - 1.18f, transform.position.z);
-        GameObject TeleportEffect = PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
-        TeleportEffect.transform.SetParent(this.transform);
+        TeleportEffect = PhotonNetwork.Instantiate("Additional/Spirit of Dark_Teleport Effect", EffectPos, Quaternion.Euler(90, 0, 0));
 
         TeleportEffect.transform.localPosition = EffectPos; 
         TeleportEffect.transform.localRotation = Quaternion.identity;
@@ -241,6 +241,22 @@ public class DarkSpirit : MonsterAI, IPunObservable
             {
                 towerScript.TakeDamage(MonsterDmg);
             }
+        }
+    }
+
+    public override void MonsterDmged(int playerDamage)
+    {
+        if (!photonView.IsMine) return;
+
+        CurHp -= playerDamage;
+        Vector3 soundPosition = transform.position;
+        soundManager.PlayMonster(20, 0.4f, soundPosition);
+        StartCoroutine(MonsterFadeInOut());
+
+        if (CurHp <= 0)
+        {
+            MonsterDied();
+            Destroy(TeleportEffect);
         }
     }
 }

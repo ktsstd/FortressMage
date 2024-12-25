@@ -9,7 +9,7 @@ public class BossSkill4Dmg : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             PlayerController playerScript = other.GetComponent<PlayerController>();
-            playerScript.OnHitPlayer(100f);
+            playerScript.OnHitPlayer(60f);
         }
     }
 }

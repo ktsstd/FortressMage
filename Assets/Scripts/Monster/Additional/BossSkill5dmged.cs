@@ -13,7 +13,7 @@ public class BossSkill5dmged : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             PlayerController playerScript = other.GetComponent<PlayerController>();
-            playerScript.OnHitPlayer(100f);
+            playerScript.OnHitPlayer(50f);
         }
     }
 

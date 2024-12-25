@@ -27,6 +27,8 @@ public class FirstEliteMonster : MonsterAI
         MaxHp = 400f;
         CurHp = MaxHp;
         MaxHp40Per = MaxHp * 0.4f;
+        Speed = 3f;
+        defaultspped = Speed;
         MonsterDmg = 20;
     }
 
